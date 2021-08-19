@@ -92,11 +92,11 @@ public final class ComputedProperties {
             float progress;
 
             if (this.mc.player.getUseItem().getItem() == Items.CROSSBOW) {
-                usageItemDuration = (float) CrossbowItem.getChargeDuration(this.mc.player.getUseItem());
-                progress = Math.min(usageItemDuration, usageItemDuration - this.mc.player.getTicksUsingItem());
+                usageItemDuration = (float)CrossbowItem.getChargeDuration(this.mc.player.getUseItem());
+                progress = Math.min(usageItemDuration, this.mc.player.getTicksUsingItem());
             }
             else {
-                progress = Math.min(usageItemDuration, this.mc.player.getTicksUsingItem() + this.mc.player.getUseItemRemainingTicks());
+                progress = Math.min(usageItemDuration, this.mc.player.getTicksUsingItem());
             }
 
             return baseGap + Math.round((usageItemDuration - progress) * gapModifier);
