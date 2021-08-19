@@ -6,8 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.ComputedProperties;
 import com.wjbaker.ccm.crosshair.style.AbstractCrosshairStyle;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public final class DefaultStyle extends AbstractCrosshairStyle {
@@ -23,6 +23,8 @@ public final class DefaultStyle extends AbstractCrosshairStyle {
     @Override
     public void draw(final PoseStack matrixStack, final int x, final int y, final ComputedProperties computedProperties) {
         RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableDepthTest();
 
         RenderSystem.blendFuncSeparate(
             GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
@@ -30,13 +32,16 @@ public final class DefaultStyle extends AbstractCrosshairStyle {
             GlStateManager.SourceFactor.ONE,
             GlStateManager.DestFactor.ZERO);
 
-        Minecraft.getInstance().getTextureManager().bindForSetup(this.guiIconsLocation);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, this.guiIconsLocation);
 
         int crosshairSize = 15;
         int textureSize = 256;
 
         Gui.blit(
-            new PoseStack(),
+            matrixStack,
             x - Math.round(crosshairSize / 2.0F),
             y - Math.round(crosshairSize / 2.0F),
             0, 0,
@@ -44,5 +49,6 @@ public final class DefaultStyle extends AbstractCrosshairStyle {
             textureSize, textureSize);
 
         RenderSystem.disableBlend();
+        RenderSystem.enableDepthTest();
     }
 }
