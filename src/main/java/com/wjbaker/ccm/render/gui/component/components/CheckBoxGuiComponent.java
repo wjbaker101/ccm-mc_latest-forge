@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.property.BooleanProperty;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
@@ -38,10 +39,11 @@ public final class CheckBoxGuiComponent extends GuiComponent implements IBindabl
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(final PoseStack matrixStack) {
+        super.draw(matrixStack);
 
         this.renderManager.drawBorderedRectangle(
+            matrixStack,
             this.x, this.y,
             this.x + this.boxSize, this.y + this.boxSize,
             2.0F,
@@ -52,12 +54,14 @@ public final class CheckBoxGuiComponent extends GuiComponent implements IBindabl
 
         if (this.isChecked.get()) {
             this.renderManager.drawFilledRectangle(
+                matrixStack,
                 this.x + inset, this.y + inset,
                 this.x + this.boxSize - inset, this.y + this.boxSize - inset,
                 ModTheme.SUCCESS);
         }
 
         this.renderManager.drawText(
+            matrixStack,
             this.label,
             this.x + this.boxSize + this.labelSpacing,
             this.y + (this.boxSize / 2) - 3,

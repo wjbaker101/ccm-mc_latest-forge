@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.component.custom;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.CrosshairRenderManager;
@@ -24,8 +25,8 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(final PoseStack matrixStack) {
+        super.draw(matrixStack);
 
         int gridCount = 30;
         int gridSize = this.width / gridCount;
@@ -37,6 +38,7 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
                     : ModTheme.DARK_GREY.setOpacity(140);
 
                 this.renderManager.drawFilledRectangle(
+                    matrixStack,
                     this.x + gridSize * gridX,
                     this.y + gridSize * gridY,
                     this.x + gridSize * gridX + gridSize,
@@ -46,6 +48,7 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
         }
 
         this.renderManager.drawRectangle(
+            matrixStack,
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,
@@ -55,6 +58,7 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
 
         if (!CustomCrosshairMod.INSTANCE.properties().getIsModEnabled().get())
             this.renderManager.drawSmallText(
+                matrixStack,
                 "Mod is disabled, re-enable to see this crosshair!",
                 this.x + 5,
                 this.y + this.height - 8,

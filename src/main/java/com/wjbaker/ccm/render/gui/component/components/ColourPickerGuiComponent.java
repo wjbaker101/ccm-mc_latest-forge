@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.property.RGBAProperty;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
@@ -36,10 +37,11 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(final PoseStack matrixStack) {
+        super.draw(matrixStack);
 
         this.renderManager.drawBorderedRectangle(
+            matrixStack,
             this.x, this.y,
             this.x + this.boxSize, this.y + this.boxSize,
             2.0F,
@@ -47,11 +49,13 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
             this.currentBackgroundColour);
 
         this.renderManager.drawFilledRectangle(
+            matrixStack,
             this.x + 2, this.y + 2,
             this.x + this.boxSize - 2, this.y + this.boxSize - 2,
             this.colour.get());
 
         this.renderManager.drawText(
+            matrixStack,
             this.label,
             this.x + this.boxSize + this.labelSpacing,
             this.y + (this.boxSize / 2) - 3,
@@ -83,7 +87,7 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
         if (!this.isMouseDownInside)
             return;
 
-        Minecraft.getInstance().displayGuiScreen(new EditColourGuiScreen(this.colour));
+        Minecraft.getInstance().setScreen(new EditColourGuiScreen(this.colour));
 
         this.isMouseDownInside = false;
     }

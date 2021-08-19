@@ -5,17 +5,16 @@ import com.google.common.collect.ImmutableSet;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IAngerable;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.Map;
 import java.util.Set;
@@ -114,8 +113,10 @@ public final class ComputedProperties {
 
         boolean isSpectator = this.mc.player.isSpectator();
 
-        boolean isHoldingItem = !this.mc.player.getHeldItemMainhand().isEmpty()
-            || !this.mc.player.getHeldItemOffhand().isEmpty();
+        ItemStack mainHandItem = this.mc.player.getMainHandItem();
+
+        boolean isHoldingItem = !mainHandItem.isEmpty()
+            || !this.mc.player.getOffhandItem().isEmpty();
 
         boolean isDynamicBowEnabled = this.crosshair.isDynamicBowEnabled.get();
         boolean isDynamicAttackIndicatorEnabled = this.crosshair.isDynamicAttackIndicatorEnabled.get();
@@ -124,28 +125,36 @@ public final class ComputedProperties {
             return baseGap;
 
         int gapModifier = 2;
-        Float usageItemDuration = this.usageItemsDurations.get(this.mc.player.getActiveItemStack().getItem());
+        Float usageItemDuration = this.usageItemsDurations.get(this.mc.player.getUseItem().getItem());
 
         if (isDynamicBowEnabled && usageItemDuration != null) {
             float progress;
 
-            if (this.mc.player.getActiveItemStack().getItem() == Items.CROSSBOW) {
-                usageItemDuration = (float) CrossbowItem.getChargeTime(this.mc.player.getActiveItemStack());
-                progress = Math.min(usageItemDuration, usageItemDuration - this.mc.player.getItemInUseCount());
+            if (this.mc.player.getUseItem().getItem() == Items.CROSSBOW) {
+                usageItemDuration = (float) CrossbowItem.getChargeDuration(this.mc.player.getUseItem());
+                progress = Math.min(usageItemDuration, usageItemDuration - this.mc.player.getTicksUsingItem());
             }
             else {
-                progress = Math.min(usageItemDuration, this.mc.player.getItemInUseMaxCount());
+                progress = Math.min(usageItemDuration, this.mc.player.getTicksUsingItem() + this.mc.player.getUseItemRemainingTicks());
             }
 
             return baseGap + Math.round((usageItemDuration - progress) * gapModifier);
         }
-        else if (isDynamicAttackIndicatorEnabled &&
-            this.attackableItems.contains(this.mc.player.getHeldItemMainhand().getItem())) {
+        else if (isDynamicAttackIndicatorEnabled) {
+            var hasAttackSpeedModifier = mainHandItem
+                .getItem()
+                .getAttributeModifiers(EquipmentSlot.MAINHAND, mainHandItem)
+                .entries()
+                .stream()
+                .anyMatch(x -> x.getKey().equals(Attributes.ATTACK_SPEED));
 
-            float currentAttackUsage = this.mc.player.getCooledAttackStrength(1.0F);
+            if (!hasAttackSpeedModifier)
+                return baseGap;
+
+            float currentAttackUsage = this.mc.player.getCurrentItemAttackStrengthDelay();
             float maxAttackUsage = 1.0F;
 
-            if (this.mc.player.getCooldownPeriod() > 5.0F && currentAttackUsage < maxAttackUsage)
+            if (this.mc.player.getAttackStrengthScale(0.0F) > 5.0F && currentAttackUsage < maxAttackUsage)
                 return baseGap + Math.round((maxAttackUsage - currentAttackUsage) * gapModifier * 20);
         }
 
@@ -153,15 +162,15 @@ public final class ComputedProperties {
     }
 
     private RGBA calculateColour() {
-        Entity target = this.mc.pointedEntity;
+        Entity target = this.mc.crosshairPickEntity;
 
         boolean isHighlightPlayersEnabled = this.crosshair.isHighlightPlayersEnabled.get();
-        if (isHighlightPlayersEnabled && target instanceof PlayerEntity) {
+        if (isHighlightPlayersEnabled && target instanceof Player) {
             return this.crosshair.highlightPlayersColour.get();
         }
 
         boolean isHighlightHostilesEnabled = this.crosshair.isHighlightHostilesEnabled.get();
-        if (isHighlightHostilesEnabled && (target instanceof MonsterEntity || target instanceof IAngerable)) {
+        if (isHighlightHostilesEnabled && target instanceof Enemy) {
             return this.crosshair.highlightHostilesColour.get();
         }
 
@@ -204,15 +213,14 @@ public final class ComputedProperties {
         if (!this.crosshair.isVisibleDefault.get())
             return false;
 
-        if (!this.crosshair.isVisibleHiddenGui.get() && this.mc.gameSettings.hideGUI)
+        if (!this.crosshair.isVisibleHiddenGui.get() && this.mc.options.hideGui)
             return false;
 
-        PointOfView pov = this.mc.gameSettings.getPointOfView();
-        boolean isThirdPerson = pov == PointOfView.THIRD_PERSON_BACK || pov == PointOfView.THIRD_PERSON_FRONT;
+        boolean isThirdPerson = !this.mc.options.getCameraType().isFirstPerson();
         if (!this.crosshair.isVisibleThirdPerson.get() && isThirdPerson)
             return false;
 
-        if (!this.crosshair.isVisibleDebug.get() && this.mc.gameSettings.showDebugInfo)
+        if (!this.crosshair.isVisibleDebug.get() && this.mc.options.renderDebug)
             return false;
 
         if (!this.crosshair.isVisibleSpectator.get() && this.mc.player.isSpectator())
@@ -227,11 +235,11 @@ public final class ComputedProperties {
         return true;
     }
 
-    private boolean isHoldingItem(final ClientPlayerEntity player, final Set<Item> items) {
-        ItemStack mainHandItem = player.getHeldItemMainhand();
+    private boolean isHoldingItem(final Player player, final Set<Item> items) {
+        ItemStack mainHandItem = player.getMainHandItem();
 
         boolean isMainHand = items.contains(mainHandItem.getItem());
-        boolean isOffhand = items.contains(player.getHeldItemOffhand().getItem());
+        boolean isOffhand = items.contains(player.getOffhandItem().getItem());
 
         return isMainHand || (isOffhand && mainHandItem.isEmpty());
     }

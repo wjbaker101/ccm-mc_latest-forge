@@ -1,7 +1,9 @@
 package com.wjbaker.ccm.crosshair.render;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyle;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyleFactory;
@@ -9,12 +11,12 @@ import com.wjbaker.ccm.crosshair.style.ICrosshairStyle;
 import com.wjbaker.ccm.render.RenderManager;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Set;
 
@@ -41,60 +43,60 @@ public final class CrosshairRenderManager {
         if (!computedProperties.isVisible())
             return;
 
-        MatrixStack matrixStack = new MatrixStack();
+        PoseStack matrixStack = new PoseStack();
 
         RenderGameOverlayEvent eventParent = new RenderGameOverlayEvent(
             matrixStack,
             1.0F,
-            Minecraft.getInstance().getMainWindow());
+            Minecraft.getInstance().getWindow());
 
-        MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Pre(
+        MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.PreLayer(
             matrixStack,
             eventParent,
-            RenderGameOverlayEvent.ElementType.CROSSHAIRS));
+            ForgeIngameGui.CROSSHAIR_ELEMENT));
 
         ICrosshairStyle style = this.crosshairStyleFactory.from(this.crosshair.style.get(), this.crosshair);
         boolean isItemCooldownEnabled = this.crosshair.isItemCooldownEnabled.get();
         boolean isDotEnabled = this.crosshair.isDotEnabled.get();
 
         if (isItemCooldownEnabled)
-            this.drawItemCooldownIndicator(computedProperties, x, y);
+            this.drawItemCooldownIndicator(matrixStack, computedProperties, x, y);
 
         if (isDotEnabled && this.crosshair.style.get() != CrosshairStyle.DEFAULT)
-            this.renderManager.drawCircle(x, y, 0.5F, 1.0F, this.crosshair.dotColour.get());
+            this.renderManager.drawCircle(matrixStack, x, y, 0.5F, 1.0F, this.crosshair.dotColour.get());
 
-        this.preTransformation(x, y);
+        this.preTransformation(matrixStack, x, y);
 
-        style.draw(x, y, computedProperties);
+        style.draw(matrixStack, 0, 0, computedProperties);
 
-        this.postTransformation();
+        this.postTransformation(matrixStack);
 
-        MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Post(
+        MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.PostLayer(
             matrixStack,
             eventParent,
-            RenderGameOverlayEvent.ElementType.CROSSHAIRS));
+            ForgeIngameGui.CROSSHAIR_ELEMENT));
     }
 
-    private void preTransformation(final int x, final int y) {
-        int rotation = this.crosshair.rotation.get();
-        int scale = this.crosshair.scale.get();
+    private void preTransformation(final PoseStack matrixStack, final int x, final int y) {
+        var rotation = this.crosshair.rotation.get();
+        var scale = this.crosshair.scale.get() - 2;
+        var windowScaling = (float)Minecraft.getInstance().getWindow().getGuiScale() / 2.0F;
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, 0);
-        GL11.glScalef(scale / 100.0F, scale / 100.0F, 1.0F);
-        GL11.glRotatef(rotation, x, y, 8000);
-        GL11.glTranslatef(-x, -y, 0);
+        matrixStack.translate(x, y, 0.0D);
+        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotation));
+        matrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
     }
 
-    private void postTransformation() {
-        GL11.glPopMatrix();
+    private void postTransformation(final PoseStack matrixStack) {
+        matrixStack.popPose();
     }
 
     private void drawItemCooldownIndicator(
+        final PoseStack matrixStack,
         final ComputedProperties computedProperties,
         final int x, final int y) {
 
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        Player player = Minecraft.getInstance().player;
 
         if (player == null)
             return;
@@ -107,7 +109,7 @@ public final class CrosshairRenderManager {
         int offset = 3;
 
         for (final Item item : this.itemCooldownItems) {
-            float cooldown = player.getCooldownTracker().getCooldown(item, 0.0F);
+            float cooldown = player.getCooldowns().getCooldownPercent(item, 0.0F);
 
             if (cooldown == 0.0F)
                 continue;
@@ -115,6 +117,7 @@ public final class CrosshairRenderManager {
             int progress = Math.round(360 - (360 * cooldown));
 
             this.renderManager.drawPartialCircle(
+                matrixStack,
                 x, y,
                 computedProperties.gap() + maxSize + offset,
                 0,

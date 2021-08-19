@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.component.event.IGuiComponentEvent;
 import com.wjbaker.ccm.render.gui.component.event.IOnClickEvent;
@@ -28,10 +29,11 @@ public final class ButtonGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(final PoseStack matrixStack) {
+        super.draw(matrixStack);
 
         this.renderManager.drawBorderedRectangle(
+            matrixStack,
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,
@@ -41,7 +43,7 @@ public final class ButtonGuiComponent extends GuiComponent {
         int centreX = this.x + (this.width / 2) - (this.renderManager.textWidth(this.label) / 2);
         int centreY = this.y + (this.height / 2) - (7 / 2);
 
-        this.renderManager.drawText(this.label, centreX, centreY, this.currentTextColour, false);
+        this.renderManager.drawText(matrixStack, this.label, centreX, centreY, this.currentTextColour, false);
     }
 
     @Override

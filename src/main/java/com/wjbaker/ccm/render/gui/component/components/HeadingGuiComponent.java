@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 
@@ -22,9 +23,9 @@ public final class HeadingGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(final PoseStack matrixStack) {
+        super.draw(matrixStack);
 
-        this.renderManager.drawBigText(this.label, this.x, this.y, this.currentTextColour, true);
+        this.renderManager.drawBigText(matrixStack, this.label, this.x, this.y, this.currentTextColour, true);
     }
 }

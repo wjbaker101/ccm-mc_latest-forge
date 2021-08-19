@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.helper.ExternalHelper;
 import com.wjbaker.ccm.render.ModTheme;
@@ -56,24 +57,25 @@ public abstract class GuiScreen extends GuiScreenAdapter {
     }
 
     @Override
-    public void draw() {
-        this.renderManager.drawFilledRectangle(0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
+    public void draw(final PoseStack matrixStack) {
+        this.renderManager.drawFilledRectangle(matrixStack, 0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
 
-        this.components.forEach(GuiComponent::draw);
+        this.components.forEach(x -> x.draw(matrixStack));
 
-        this.drawHeader();
+        this.drawHeader(matrixStack);
     }
 
-    private void drawHeader() {
-        this.renderManager.drawFilledRectangle(0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
-        this.renderManager.drawLine(0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
+    private void drawHeader(final PoseStack matrixStack) {
+        this.renderManager.drawFilledRectangle(matrixStack, 0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
+        this.renderManager.drawLine(matrixStack, 0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
 
         int titleWidth = this.renderManager.textWidth(CustomCrosshairMod.TITLE);
         int centreY = (this.headerHeight / 2) - (7 / 2);
 
-        this.renderManager.drawText(CustomCrosshairMod.TITLE, 5, centreY, ModTheme.WHITE, true);
+        this.renderManager.drawText(matrixStack, CustomCrosshairMod.TITLE, 5, centreY, ModTheme.WHITE, true);
 
         this.renderManager.drawSmallText(
+            matrixStack,
             "v" + CustomCrosshairMod.VERSION,
             8 + titleWidth,
             (headerHeight / 2),
@@ -81,7 +83,7 @@ public abstract class GuiScreen extends GuiScreenAdapter {
             false);
 
         if (!CustomCrosshairMod.INSTANCE.properties().isLatestVersion().get())
-            this.newVersionButton.draw();
+            this.newVersionButton.draw(matrixStack);
     }
 
     @Override
@@ -126,7 +128,7 @@ public abstract class GuiScreen extends GuiScreenAdapter {
     @Override
     public void onKeyDown(final int keyCode) {
         if (keyCode == 256 && this.parentGuiScreen != null)
-            Minecraft.getInstance().displayGuiScreen(this.parentGuiScreen);
+            Minecraft.getInstance().setScreen(this.parentGuiScreen);
     }
 
     @Override

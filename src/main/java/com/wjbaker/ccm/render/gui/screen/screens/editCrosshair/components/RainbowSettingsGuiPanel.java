@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.screen.screens.editCrosshair.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.render.ModTheme;
@@ -32,7 +33,7 @@ public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
             this.parentGuiScreen, -1, -1, 250, "Rainbow Speed", 0, 1000, crosshair.rainbowSpeed.get()) {
 
             @Override
-            protected void drawLabel() {
+            protected void drawLabel(final PoseStack matrixStack) {
                 String label = this.getValue() < 333
                     ? "Slow"
                     : this.getValue() < 666
@@ -42,6 +43,7 @@ public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
                 int posY = this.y + 8 + this.titleSpacing;
 
                 this.renderManager.drawText(
+                    matrixStack,
                     label,
                     this.x + this.width + this.titleSpacing,
                     posY + (this.thumbSize / 2) - 3,

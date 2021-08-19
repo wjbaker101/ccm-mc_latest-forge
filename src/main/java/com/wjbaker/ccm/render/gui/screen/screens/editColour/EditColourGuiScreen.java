@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.screen.screens.editColour;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.property.IntegerProperty;
 import com.wjbaker.ccm.crosshair.property.RGBAProperty;
@@ -68,7 +69,7 @@ public final class EditColourGuiScreen extends GuiScreen {
 
         ButtonGuiComponent doneButton = new ButtonGuiComponent(this, -1, -1, 50, 35, "Done");
         doneButton.addEvent(IOnClickEvent.class, () -> {
-            Minecraft.getInstance().displayGuiScreen(new EditCrosshairGuiScreen());
+            Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen());
         });
 
         ColourPreviewGuiComponent colourPreview = new ColourPreviewGuiComponent(this, -1, -1, this.colour);
@@ -120,9 +121,9 @@ public final class EditColourGuiScreen extends GuiScreen {
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(final PoseStack matrixStack) {
+        super.draw(matrixStack);
 
-        this.crosshairPreviewPanel.draw();
+        this.crosshairPreviewPanel.draw(matrixStack);
     }
 }

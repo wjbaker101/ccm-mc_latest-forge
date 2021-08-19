@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.component;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.render.gui.event.IMouseEvents;
 
 import java.util.ArrayList;
@@ -9,8 +10,8 @@ public abstract class GuiComponentWithComponents extends GuiComponentTheme imple
 
     protected List<GuiComponent> components = new ArrayList<>();
 
-    public void draw() {
-        this.components.forEach(GuiComponent::draw);
+    public void draw(final PoseStack matrixStack) {
+        this.components.forEach(x -> x.draw(matrixStack));
     }
 
     @Override

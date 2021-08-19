@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.screen.screens.editCrosshair;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.render.gui.component.components.ScrollPanelGuiComponent;
 import com.wjbaker.ccm.render.gui.component.custom.CrosshairPreviewGuiComponent;
@@ -67,9 +68,9 @@ public final class EditCrosshairGuiScreen extends GuiScreen {
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(final PoseStack matrixStack) {
+        super.draw(matrixStack);
 
-        this.crosshairPreviewPanel.draw();
+        this.crosshairPreviewPanel.draw(matrixStack);
     }
 }

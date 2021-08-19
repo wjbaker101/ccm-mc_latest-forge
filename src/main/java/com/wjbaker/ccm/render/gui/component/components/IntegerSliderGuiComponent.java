@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.property.IntegerProperty;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.type.IBindableGuiComponent;
@@ -39,10 +40,11 @@ public class IntegerSliderGuiComponent
     }
 
     @Override
-    protected void drawLabel() {
+    protected void drawLabel(final PoseStack matrixStack) {
         int posY = this.y + 8 + this.titleSpacing;
 
         this.renderManager.drawText(
+            matrixStack,
             "" + this.value.get(),
             this.x + this.width + this.titleSpacing,
             posY + (this.thumbSize / 2) - 3,

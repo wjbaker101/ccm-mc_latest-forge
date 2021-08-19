@@ -1,13 +1,13 @@
 package com.wjbaker.ccm.render.gui.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.StringTextComponent;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TextComponent;
 
 public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
 
     protected GuiScreenAdapter(final String title) {
-        super(new StringTextComponent(title));
+        super(new TextComponent(title));
     }
 
     @Override
@@ -23,8 +23,8 @@ public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
     }
 
     @Override
-    public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta) {
-        this.draw();
+    public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
+        this.draw(matrices);
         super.render(matrices, mouseX, mouseY, delta);
     }
 
