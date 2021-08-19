@@ -151,10 +151,10 @@ public final class ComputedProperties {
             if (!hasAttackSpeedModifier)
                 return baseGap;
 
-            float currentAttackUsage = this.mc.player.getCurrentItemAttackStrengthDelay();
+            float currentAttackUsage = this.mc.player.getAttackStrengthScale(0.0F);
             float maxAttackUsage = 1.0F;
 
-            if (this.mc.player.getAttackStrengthScale(0.0F) > 5.0F && currentAttackUsage < maxAttackUsage)
+            if (this.mc.player.getCurrentItemAttackStrengthDelay() > 5.0F && currentAttackUsage < maxAttackUsage)
                 return baseGap + Math.round((maxAttackUsage - currentAttackUsage) * gapModifier * 20);
         }
 
