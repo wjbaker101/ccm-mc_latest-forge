@@ -1,6 +1,7 @@
 package com.wjbaker.ccm.crosshair.render;
 
 import com.google.common.collect.ImmutableSet;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -10,7 +11,11 @@ import com.wjbaker.ccm.crosshair.style.CrosshairStyleFactory;
 import com.wjbaker.ccm.crosshair.style.ICrosshairStyle;
 import com.wjbaker.ccm.render.RenderManager;
 import com.wjbaker.ccm.type.RGBA;
+import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -64,6 +69,8 @@ public final class CrosshairRenderManager {
 
         if (isDotEnabled && this.crosshair.style.get() != CrosshairStyle.DEFAULT)
             this.renderManager.drawCircle(matrixStack, x, y, 0.5F, 1.0F, this.crosshair.dotColour.get());
+
+        this.drawDefaultAttackIndicator(matrixStack, computedProperties, x, y);
 
         this.preTransformation(matrixStack, x, y);
 
@@ -126,6 +133,44 @@ public final class CrosshairRenderManager {
                 colour);
 
             offset += 3;
+        }
+    }
+
+    private void drawDefaultAttackIndicator(
+        final PoseStack matrixStack,
+        final ComputedProperties computedProperties,
+        final int x, final int y) {
+
+        RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
+
+        RenderSystem.blendFuncSeparate(
+            GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO);
+
+        var mc = Minecraft.getInstance();
+
+        if (mc.options.attackIndicator == AttackIndicatorStatus.CROSSHAIR && mc.player != null) {
+            float f = mc.player.getAttackStrengthScale(0.0F);
+            boolean flag = false;
+
+            if (mc.crosshairPickEntity instanceof LivingEntity && f >= 1.0F) {
+                flag = mc.player.getCurrentItemAttackStrengthDelay() > 5.0F;
+                flag = flag & mc.crosshairPickEntity.isAlive();
+            }
+
+            int j = mc.getWindow().getGuiScaledHeight() / 2 - 7 + 16;
+            int k = mc.getWindow().getGuiScaledWidth() / 2 - 8;
+
+            if (flag) {
+                GuiComponent.blit(matrixStack, k, j, 0, 68, 94, 16, 16, 256, 256);
+            }
+            else if (f < 1.0F) {
+                int l = (int)(f * 17.0F);
+                GuiComponent.blit(matrixStack, k, j, 0, 36, 94, 16, 4, 256, 256);
+                GuiComponent.blit(matrixStack, k, j, 0, 52, 94, l, 4, 256, 256);
+            }
         }
     }
 }
