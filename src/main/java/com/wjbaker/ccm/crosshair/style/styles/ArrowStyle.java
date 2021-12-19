@@ -18,6 +18,7 @@ public final class ArrowStyle extends AbstractCrosshairStyle {
         int width = this.crosshair.width.get();
         int height = this.crosshair.height.get();
         int thickness = this.crosshair.thickness.get();
+        var isAdaptiveColourEnabled = this.crosshair.isAdaptiveColourEnabled.get();
 
         if (isOutlineEnabled) {
             RGBA outlineColour = this.crosshair.outlineColour.get();
@@ -33,6 +34,6 @@ public final class ArrowStyle extends AbstractCrosshairStyle {
         this.renderManager.drawLines(matrixStack, new float[] {
             x - width, y + height, x, y,
             x, y, x + width, y + height
-        }, thickness, computedProperties.colour());
+        }, thickness, computedProperties.colour(), isAdaptiveColourEnabled);
     }
 }

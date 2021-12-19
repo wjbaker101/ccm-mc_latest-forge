@@ -35,10 +35,28 @@ public final class RenderManager {
     }
 
     public void drawLines(final PoseStack matrixStack, float[] points, final float thickness, final RGBA colour) {
+        this.drawLines(matrixStack, points, thickness, colour, false);
+    }
+
+    public void drawLines(
+        final PoseStack matrixStack,
+        float[] points,
+        final float thickness,
+        final RGBA colour,
+        final boolean isBlendEnabled) {
+
         var bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
+
+        if (isBlendEnabled) {
+            RenderSystem.blendFuncSeparate(
+                GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
+                GlStateManager.SourceFactor.ONE,
+                GlStateManager.DestFactor.ZERO);
+        }
 
         for (int i = 0; i < points.length; i += 2) {
             bufferBuilder
