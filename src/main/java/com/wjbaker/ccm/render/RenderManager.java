@@ -1,5 +1,6 @@
 package com.wjbaker.ccm.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.wjbaker.ccm.render.type.GuiBounds;
@@ -54,12 +55,29 @@ public final class RenderManager {
     }
 
     public void drawFilledShape(final PoseStack matrixStack, final float[] points, final RGBA colour) {
+        this.drawFilledShape(matrixStack, points, colour, false);
+    }
+
+    public void drawFilledShape(
+        final PoseStack matrixStack,
+        final float[] points,
+        final RGBA colour,
+        final boolean isBlendEnabled) {
+
         this.setGlProperty(GL11.GL_LINE_SMOOTH, false);
 
         var bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
+
+        if (isBlendEnabled) {
+            RenderSystem.blendFuncSeparate(
+                GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
+                GlStateManager.SourceFactor.ONE,
+                GlStateManager.DestFactor.ZERO);
+        }
 
         for (int i = 0; i < points.length; i += 2) {
             bufferBuilder
@@ -108,12 +126,22 @@ public final class RenderManager {
         final float x2, final float y2,
         final RGBA colour) {
 
+        this.drawFilledRectangle(matrixStack, x1, y1, x2, y2, colour, false);
+    }
+
+    public void drawFilledRectangle(
+        final PoseStack matrixStack,
+        final float x1, final float y1,
+        final float x2, final float y2,
+        final RGBA colour,
+        final boolean isBlendEnabled) {
+
         this.drawFilledShape(matrixStack, new float[] {
             x1, y1,
             x1, y2,
             x2, y2,
             x2, y1
-        }, colour);
+        }, colour, isBlendEnabled);
     }
 
     public void drawBorderedRectangle(
@@ -124,7 +152,19 @@ public final class RenderManager {
         final RGBA borderColour,
         final RGBA fillColour) {
 
-        this.drawFilledRectangle(matrixStack, x1, y1, x2, y2, fillColour);
+        this.drawBorderedRectangle(matrixStack, x1, y1, x2, y2, borderThickness, borderColour, fillColour, false);
+    }
+
+    public void drawBorderedRectangle(
+        final PoseStack matrixStack,
+        final float x1, final float y1,
+        final float x2, final float y2,
+        final float borderThickness,
+        final RGBA borderColour,
+        final RGBA fillColour,
+        final boolean isBlendEnabled) {
+
+        this.drawFilledRectangle(matrixStack, x1, y1, x2, y2, fillColour, isBlendEnabled);
         this.drawRectangle(matrixStack, x1, y1, x2, y2, borderThickness, borderColour);
     }
 

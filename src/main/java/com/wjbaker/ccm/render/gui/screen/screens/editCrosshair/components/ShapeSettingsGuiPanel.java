@@ -2,10 +2,7 @@ package com.wjbaker.ccm.render.gui.screen.screens.editCrosshair.components;
 
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
-import com.wjbaker.ccm.render.gui.component.components.ColourPickerGuiComponent;
-import com.wjbaker.ccm.render.gui.component.components.HeadingGuiComponent;
-import com.wjbaker.ccm.render.gui.component.components.IntegerSliderGuiComponent;
-import com.wjbaker.ccm.render.gui.component.components.PanelGuiComponent;
+import com.wjbaker.ccm.render.gui.component.components.*;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 
 public final class ShapeSettingsGuiPanel extends PanelGuiComponent {
@@ -25,6 +22,13 @@ public final class ShapeSettingsGuiPanel extends PanelGuiComponent {
 
         ColourPickerGuiComponent colourPicker = new ColourPickerGuiComponent(this.parentGuiScreen, -1, -1, "Crosshair Colour");
         colourPicker.bind(crosshair.colour);
+
+        var isAdaptiveColourEnabledCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen,
+            -1, -1,
+            "Enable Adaptive Colour",
+            CustomCrosshairMod.INSTANCE.properties().getCrosshair().isAdaptiveColourEnabled.get());
+        isAdaptiveColourEnabledCheckBox.bind(CustomCrosshairMod.INSTANCE.properties().getCrosshair().isAdaptiveColourEnabled);
 
         IntegerSliderGuiComponent widthSlider = new IntegerSliderGuiComponent(
             this.parentGuiScreen, -1, -1, 150, "Width", 0, 50, crosshair.width.get());
@@ -52,6 +56,7 @@ public final class ShapeSettingsGuiPanel extends PanelGuiComponent {
 
         this.addComponent(heading);
         this.addComponent(colourPicker);
+        this.addComponent(isAdaptiveColourEnabledCheckBox);
         this.addComponent(widthSlider);
         this.addComponent(heightSlider);
         this.addComponent(gapSlider);
