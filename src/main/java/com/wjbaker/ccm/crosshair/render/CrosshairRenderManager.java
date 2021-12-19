@@ -72,11 +72,15 @@ public final class CrosshairRenderManager {
 
         this.drawDefaultAttackIndicator(matrixStack, computedProperties, x, y);
 
-        this.preTransformation(matrixStack, x, y);
+        var transformMatrixStack = this.crosshair.style.get() == CrosshairStyle.DEBUG
+            ? RenderSystem.getModelViewStack()
+            : matrixStack;
 
-        style.draw(matrixStack, 0, 0, computedProperties);
+        this.preTransformation(transformMatrixStack, x, y);
 
-        this.postTransformation(matrixStack);
+        style.draw(transformMatrixStack, 0, 0, computedProperties);
+
+        this.postTransformation(transformMatrixStack);
 
         MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.PostLayer(
             matrixStack,
@@ -89,13 +93,17 @@ public final class CrosshairRenderManager {
         var scale = this.crosshair.scale.get() - 2;
         var windowScaling = (float)Minecraft.getInstance().getWindow().getGuiScale() / 2.0F;
 
+        matrixStack.pushPose();
         matrixStack.translate(x, y, 0.0D);
         matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotation));
         matrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
+
+        RenderSystem.applyModelViewMatrix();
     }
 
     private void postTransformation(final PoseStack matrixStack) {
         matrixStack.popPose();
+        RenderSystem.applyModelViewMatrix();
     }
 
     private void drawItemCooldownIndicator(

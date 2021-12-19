@@ -12,6 +12,7 @@ public final class CrosshairStyleFactory {
             case SQUARE: return new SquareStyle(crosshair);
             case TRIANGLE: return new TriangleStyle(crosshair);
             case ARROW: return new ArrowStyle(crosshair);
+            case DEBUG: return new DebugStyle(crosshair);
 
             default: return new CrossStyle(crosshair);
         }
