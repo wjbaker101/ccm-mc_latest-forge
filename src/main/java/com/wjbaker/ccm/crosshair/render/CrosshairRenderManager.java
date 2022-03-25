@@ -60,7 +60,11 @@ public final class CrosshairRenderManager {
             eventParent,
             ForgeIngameGui.CROSSHAIR_ELEMENT));
 
-        ICrosshairStyle style = this.crosshairStyleFactory.from(this.crosshair.style.get(), this.crosshair);
+        var calculatedStyle = Minecraft.getInstance().options.renderDebug && crosshair.isKeepDebugEnabled.get()
+            ? CrosshairStyle.DEBUG
+            : this.crosshair.style.get();
+
+        ICrosshairStyle style = this.crosshairStyleFactory.from(calculatedStyle, this.crosshair);
         boolean isItemCooldownEnabled = this.crosshair.isItemCooldownEnabled.get();
         boolean isDotEnabled = this.crosshair.isDotEnabled.get();
 
@@ -72,7 +76,7 @@ public final class CrosshairRenderManager {
 
         this.drawDefaultAttackIndicator(matrixStack, computedProperties, x, y);
 
-        var transformMatrixStack = this.crosshair.style.get() == CrosshairStyle.DEBUG
+        var transformMatrixStack = calculatedStyle == CrosshairStyle.DEBUG
             ? RenderSystem.getModelViewStack()
             : matrixStack;
 
