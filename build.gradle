@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 
-version = '1.3.9-forge'
+version = '1.4.0-forge'
 group = 'com.wjbaker.ccm' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'custom_crosshair_mod'
 
