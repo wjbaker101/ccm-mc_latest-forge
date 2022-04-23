@@ -55,7 +55,7 @@ public final class CustomCrosshairMod {
     public CustomCrosshairMod() {
         this.logger = getLogger(CustomCrosshairMod.class);
         this.properties = new GlobalProperties();
-        this.crosshairRenderManager = new CrosshairRenderManager(this.properties.getCrosshair());
+        this.crosshairRenderManager = new CrosshairRenderManager();
 
         INSTANCE = this;
 
@@ -66,12 +66,10 @@ public final class CustomCrosshairMod {
     }
 
     private void loadConfig() {
-        List<ICrosshairProperty<?>> configProperties = this.properties.getCrosshair().propertiesAsList;
-        configProperties.add(this.properties.getIsModEnabled());
-
-        this.configManager = new ConfigManager("crosshair_config.ccmcfg", configProperties
-            .stream()
-            .collect(Collectors.toMap(ICrosshairProperty::alias, p -> p)));
+        this.configManager = new ConfigManager(
+            "crosshair_config.ccmcfg",
+            this.properties.getCrosshair(),
+            this.properties.getIsModEnabled());
 
         if (!this.configManager.read()) {
             if (!this.configManager.write()) {
@@ -111,7 +109,7 @@ public final class CustomCrosshairMod {
     @SubscribeEvent
     public static void onClientTickEvent(final TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().screen == null && editCrosshairKeyBinding.isDown())
-            Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen());
+            Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(CustomCrosshairMod.INSTANCE.properties.getCrosshair()));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -135,7 +133,10 @@ public final class CustomCrosshairMod {
         int x = Math.round(width / 2.0F);
         int y = Math.round(height / 2.0F);
 
-        CustomCrosshairMod.INSTANCE.crosshairRenderManager.draw(x, y);
+        CustomCrosshairMod.INSTANCE.crosshairRenderManager.draw(
+            CustomCrosshairMod.INSTANCE.properties.getCrosshair(),
+            x,
+            y);
     }
 
     public GlobalProperties properties() {

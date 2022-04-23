@@ -20,7 +20,8 @@ public final class ShapeSettingsGuiPanel extends PanelGuiComponent {
 
         HeadingGuiComponent heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, "Crosshair Shape Settings");
 
-        ColourPickerGuiComponent colourPicker = new ColourPickerGuiComponent(this.parentGuiScreen, -1, -1, "Crosshair Colour");
+        ColourPickerGuiComponent colourPicker = new ColourPickerGuiComponent(
+            this.parentGuiScreen, crosshair, -1, -1, "Crosshair Colour");
         colourPicker.bind(crosshair.colour);
 
         var isAdaptiveColourEnabledCheckBox = new CheckBoxGuiComponent(
@@ -54,6 +55,14 @@ public final class ShapeSettingsGuiPanel extends PanelGuiComponent {
             this.parentGuiScreen, -1, -1, 250, "Scale (%)", 25, 500, crosshair.scale.get());
         scaleSlider.bind(crosshair.scale);
 
+        var offsetXSlider = new IntegerSliderGuiComponent(
+            this.parentGuiScreen, -1, -1, 251, "Offset (X)", -500, 500, crosshair.offsetX.get());
+        offsetXSlider.bind(crosshair.offsetX);
+
+        var offsetYSlider = new IntegerSliderGuiComponent(
+            this.parentGuiScreen, -1, -1, 251, "Offset (Y)", -500, 500, crosshair.offsetY.get());
+        offsetYSlider.bind(crosshair.offsetY);
+
         this.addComponent(heading);
         this.addComponent(colourPicker);
         this.addComponent(isAdaptiveColourEnabledCheckBox);
@@ -63,6 +72,8 @@ public final class ShapeSettingsGuiPanel extends PanelGuiComponent {
         this.addComponent(thicknessSlider);
         this.addComponent(rotationSlider);
         this.addComponent(scaleSlider);
+        this.addComponent(offsetXSlider);
+        this.addComponent(offsetYSlider);
         this.pack();
     }
 }

@@ -28,7 +28,7 @@ public final class ItemCooldownSettingsGuiPanel extends PanelGuiComponent {
         isItemCooldownEnabledCheckBox.bind(crosshair.isItemCooldownEnabled);
 
         ColourPickerGuiComponent itemCooldownColourColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, -1, -1, "Indicator Colour");
+            this.parentGuiScreen, crosshair, -1, -1, "Indicator Colour");
         itemCooldownColourColourPicker.bind(crosshair.itemCooldownColour);
 
         this.addComponent(heading);

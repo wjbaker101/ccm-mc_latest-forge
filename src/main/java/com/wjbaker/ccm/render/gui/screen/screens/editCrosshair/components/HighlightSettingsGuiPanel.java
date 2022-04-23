@@ -28,7 +28,7 @@ public final class HighlightSettingsGuiPanel extends PanelGuiComponent {
         isHighlightHostilesEnabledCheckBox.bind(crosshair.isHighlightHostilesEnabled);
 
         ColourPickerGuiComponent hostilesColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, -1, -1, "Hostile Mobs Colour");
+            this.parentGuiScreen, crosshair, -1, -1, "Hostile Mobs Colour");
         hostilesColourPicker.bind(crosshair.highlightHostilesColour);
 
         CheckBoxGuiComponent isHighlightPassivesEnabledCheckBox = new CheckBoxGuiComponent(
@@ -36,7 +36,7 @@ public final class HighlightSettingsGuiPanel extends PanelGuiComponent {
         isHighlightPassivesEnabledCheckBox.bind(crosshair.isHighlightPassivesEnabled);
 
         ColourPickerGuiComponent passivesColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, -1, -1, "Passive Mobs Colour");
+            this.parentGuiScreen, crosshair, -1, -1, "Passive Mobs Colour");
         passivesColourPicker.bind(crosshair.highlightPassivesColour);
 
         CheckBoxGuiComponent isHighlightPlayersEnabledCheckBox = new CheckBoxGuiComponent(
@@ -44,7 +44,7 @@ public final class HighlightSettingsGuiPanel extends PanelGuiComponent {
         isHighlightPlayersEnabledCheckBox.bind(crosshair.isHighlightPlayersEnabled);
 
         ColourPickerGuiComponent playersColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, -1, -1, "Players Colour");
+            this.parentGuiScreen, crosshair, -1, -1, "Players Colour");
         playersColourPicker.bind(crosshair.highlightPlayersColour);
 
         this.addComponent(heading);

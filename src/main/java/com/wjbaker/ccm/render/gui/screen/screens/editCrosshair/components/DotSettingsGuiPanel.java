@@ -28,7 +28,11 @@ public final class DotSettingsGuiPanel extends PanelGuiComponent {
         isDotEnabledCheckBox.bind(crosshair.isDotEnabled);
 
         ColourPickerGuiComponent dotColourColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, -1, -1, "Dot Colour");
+            this.parentGuiScreen,
+            crosshair,
+            -1,
+            -1,
+            "Dot Colour");
         dotColourColourPicker.bind(crosshair.dotColour);
 
         this.addComponent(heading);
