@@ -50,6 +50,10 @@ public final class VisibilitySettingsGuiPanel extends PanelGuiComponent {
             this.parentGuiScreen, -1, -1, "Visible Holding Throwable Item", crosshair.isVisibleHoldingThrowableItem.get());
         isVisibleHoldingThrowableItem.bind(crosshair.isVisibleHoldingThrowableItem);
 
+        var isVisibleUsingSpyglassCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, "Visible Using Spyglass", crosshair.isVisibleUsingSpyglass.get());
+        isVisibleUsingSpyglassCheckBox.bind(crosshair.isVisibleUsingSpyglass);
+
         this.addComponent(heading);
         this.addComponent(isVisibleDefaultCheckBox);
         this.addComponent(isVisibleHiddenGuiCheckBox);
@@ -58,6 +62,7 @@ public final class VisibilitySettingsGuiPanel extends PanelGuiComponent {
         this.addComponent(isVisibleSpectatorCheckBox);
         this.addComponent(isVisibleHoldingRangedWeapon);
         this.addComponent(isVisibleHoldingThrowableItem);
+        this.addComponent(isVisibleUsingSpyglassCheckBox);
         this.pack();
     }
 }
