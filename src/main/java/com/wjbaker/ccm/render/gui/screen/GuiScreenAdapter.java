@@ -2,12 +2,12 @@ package com.wjbaker.ccm.render.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
 
     protected GuiScreenAdapter(final String title) {
-        super(new TextComponent(title));
+        super(Component.literal(title));
     }
 
     @Override

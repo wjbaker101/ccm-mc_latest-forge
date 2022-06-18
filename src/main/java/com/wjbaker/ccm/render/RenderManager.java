@@ -45,7 +45,8 @@ public final class RenderManager {
         final RGBA colour,
         final boolean isBlendEnabled) {
 
-        var bufferBuilder = Tesselator.getInstance().getBuilder();
+        var tesselator = RenderSystem.renderThreadTesselator();
+        var bufferBuilder = tesselator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
@@ -66,8 +67,7 @@ public final class RenderManager {
                 .endVertex();
         }
 
-        bufferBuilder.end();
-        BufferUploader.end(bufferBuilder);
+        tesselator.end();
 
         this.postRender(matrixStack);
     }
@@ -84,7 +84,8 @@ public final class RenderManager {
 
         this.setGlProperty(GL11.GL_LINE_SMOOTH, false);
 
-        var bufferBuilder = Tesselator.getInstance().getBuilder();
+        var tesselator = RenderSystem.renderThreadTesselator();
+        var bufferBuilder = tesselator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
@@ -104,8 +105,7 @@ public final class RenderManager {
                 .endVertex();
         }
 
-        bufferBuilder.end();
-        BufferUploader.end(bufferBuilder);
+        tesselator.end();
 
         this.postRender(matrixStack);
     }
@@ -204,7 +204,8 @@ public final class RenderManager {
 
         var ratio = (float)Math.PI / 180.F;
 
-        var bufferBuilder = Tesselator.getInstance().getBuilder();
+        var tesselator = RenderSystem.renderThreadTesselator();
+        var bufferBuilder = tesselator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
@@ -219,8 +220,7 @@ public final class RenderManager {
                 .endVertex();
         }
 
-        bufferBuilder.end();
-        BufferUploader.end(bufferBuilder);
+        tesselator.end();
 
         this.postRender(matrixStack);
     }
@@ -265,7 +265,8 @@ public final class RenderManager {
 
         var ratio = (float)Math.PI / 180.F;
 
-        var bufferBuilder = Tesselator.getInstance().getBuilder();
+        var tesselator = RenderSystem.renderThreadTesselator();
+        var bufferBuilder = tesselator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
@@ -286,8 +287,7 @@ public final class RenderManager {
                 .endVertex();
         }
 
-        bufferBuilder.end();
-        BufferUploader.end(bufferBuilder);
+        tesselator.end();
 
         this.postRender(matrixStack);
     }

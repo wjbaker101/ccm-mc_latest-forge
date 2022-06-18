@@ -171,7 +171,7 @@ public final class CrosshairRenderManager {
 
         var mc = Minecraft.getInstance();
 
-        if (mc.options.attackIndicator == AttackIndicatorStatus.CROSSHAIR && mc.player != null) {
+        if (mc.options.attackIndicator().get() == AttackIndicatorStatus.CROSSHAIR && mc.player != null) {
             float f = mc.player.getAttackStrengthScale(0.0F);
             boolean flag = false;
 
