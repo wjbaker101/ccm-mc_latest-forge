@@ -175,7 +175,7 @@ public final class CrosshairRenderManager {
             float f = mc.player.getAttackStrengthScale(0.0F);
             boolean flag = false;
 
-            if (mc.crosshairPickEntity instanceof LivingEntity && f >= 1.0F) {
+            if (mc.crosshairPickEntity instanceof LivingEntity && f < 1.0F) {
                 flag = mc.player.getCurrentItemAttackStrengthDelay() > 5.0F;
                 flag = flag & mc.crosshairPickEntity.isAlive();
             }
