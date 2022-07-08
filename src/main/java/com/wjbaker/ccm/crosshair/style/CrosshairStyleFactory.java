@@ -6,15 +6,16 @@ import com.wjbaker.ccm.crosshair.style.styles.*;
 public final class CrosshairStyleFactory {
 
     public ICrosshairStyle from(final CrosshairStyle style, final CustomCrosshair crosshair) {
-        switch (style) {
-            case DEFAULT: return new DefaultStyle(crosshair);
-            case CIRCLE: return new CircleStyle(crosshair);
-            case SQUARE: return new SquareStyle(crosshair);
-            case TRIANGLE: return new TriangleStyle(crosshair);
-            case ARROW: return new ArrowStyle(crosshair);
-            case DEBUG: return new DebugStyle(crosshair);
+        return switch (style) {
+            case DEFAULT -> new DefaultStyle(crosshair);
+            case CIRCLE -> new CircleStyle(crosshair);
+            case SQUARE -> new SquareStyle(crosshair);
+            case TRIANGLE -> new TriangleStyle(crosshair);
+            case ARROW -> new ArrowStyle(crosshair);
+            case DEBUG -> new DebugStyle(crosshair);
+            case DRAWN -> new DrawnStyle(crosshair);
 
-            default: return new CrossStyle(crosshair);
-        }
+            default -> new CrossStyle(crosshair);
+        };
     }
 }
