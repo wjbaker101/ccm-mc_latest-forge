@@ -2,7 +2,10 @@ package com.wjbaker.ccm.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.wjbaker.ccm.crosshair.custom.CustomCrosshairDrawer;
 import com.wjbaker.ccm.render.type.GuiBounds;
 import com.wjbaker.ccm.render.type.IDrawInsideWindowCallback;
 import com.wjbaker.ccm.type.RGBA;
@@ -290,6 +293,23 @@ public final class RenderManager {
         tesselator.end();
 
         this.postRender(matrixStack);
+    }
+
+    public void drawImage(
+        final PoseStack matrixStack,
+        final int x, final int y,
+        final CustomCrosshairDrawer image,
+        final RGBA colour) {
+
+        var width = image.getWidth();
+        var height = image.getHeight();
+
+        for (int imageX = 0; imageX < width; ++imageX) {
+            for (int imageY = 0; imageY < height; ++imageY) {
+                if (image.getAt(imageX, imageY) == 1)
+                    this.drawFilledRectangle(matrixStack, x + imageX, y + imageY, x + imageX + 1, y + imageY + 1, colour);
+            }
+        }
     }
 
     public void drawText(final PoseStack matrixStack, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
