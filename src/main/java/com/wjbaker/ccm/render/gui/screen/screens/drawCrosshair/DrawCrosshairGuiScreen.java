@@ -7,7 +7,7 @@ import com.wjbaker.ccm.render.gui.component.components.HeadingGuiComponent;
 import com.wjbaker.ccm.render.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.render.gui.component.event.IOnClickEvent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
-import com.wjbaker.ccm.render.gui.screen.screens.editColour.components.DrawCrosshairGuiComponent;
+import com.wjbaker.ccm.render.gui.screen.screens.drawCrosshair.components.DrawCrosshairGuiComponent;
 
 public final class DrawCrosshairGuiScreen extends GuiScreen {
 
