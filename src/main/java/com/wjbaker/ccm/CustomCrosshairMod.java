@@ -34,8 +34,8 @@ public final class CustomCrosshairMod {
     public static CustomCrosshairMod INSTANCE;
 
     public static final String TITLE = "Custom Crosshair Mod";
-    public static final String VERSION = "1.4.0-forge";
-    public static final String MC_VERSION = "1.18.2-forge";
+    public static final String VERSION = "1.5.0-forge";
+    public static final String MC_VERSION = "1.19-forge";
     public static final String CURSEFORGE_PAGE = "https://www.curseforge.com/projects/242995/";
     public static final String MC_FORUMS_PAGE = "https://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2637819/";
     public static final String PATREON_PAGE = "https://www.patreon.com/bePatron?u=66431720";
