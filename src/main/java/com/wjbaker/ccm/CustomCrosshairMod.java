@@ -2,7 +2,6 @@ package com.wjbaker.ccm;
 
 import com.wjbaker.ccm.config.ConfigManager;
 import com.wjbaker.ccm.config.GlobalProperties;
-import com.wjbaker.ccm.crosshair.property.ICrosshairProperty;
 import com.wjbaker.ccm.crosshair.render.CrosshairRenderManager;
 import com.wjbaker.ccm.helper.RequestHelper;
 import com.wjbaker.ccm.render.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
@@ -10,9 +9,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,8 +21,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -35,7 +32,7 @@ public final class CustomCrosshairMod {
 
     public static final String TITLE = "Custom Crosshair Mod";
     public static final String VERSION = "1.5.1-forge";
-    public static final String MC_VERSION = "1.19-forge";
+    public static final String MC_VERSION = "1.19.2-forge";
     public static final String CURSEFORGE_PAGE = "https://www.curseforge.com/projects/242995/";
     public static final String MC_FORUMS_PAGE = "https://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2637819/";
     public static final String PATREON_PAGE = "https://www.patreon.com/bePatron?u=66431720";
@@ -61,8 +58,6 @@ public final class CustomCrosshairMod {
 
         this.loadConfig();
         this.checkVersion();
-
-        ClientRegistry.registerKeyBinding(editCrosshairKeyBinding);
 
         this.properties.getCustomCrosshairDrawer().loadImage();
     }
@@ -109,14 +104,19 @@ public final class CustomCrosshairMod {
     }
 
     @SubscribeEvent
+    public static void onRegisterKeyBindings(final RegisterKeyMappingsEvent event) {
+        event.register(editCrosshairKeyBinding);
+    }
+
+    @SubscribeEvent
     public static void onClientTickEvent(final TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().screen == null && editCrosshairKeyBinding.isDown())
             Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(CustomCrosshairMod.INSTANCE.properties.getCrosshair()));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onRenderCrosshair(final RenderGameOverlayEvent.PreLayer event) {
-        if (event.getOverlay() != ForgeIngameGui.CROSSHAIR_ELEMENT)
+    public static void onRenderCrosshair(final RenderGuiOverlayEvent.Pre event) {
+        if (event.getOverlay().id() != VanillaGuiOverlay.CROSSHAIR.id())
             return;
 
         event.setCanceled(CustomCrosshairMod.INSTANCE.properties.getIsModEnabled().get());

@@ -19,8 +19,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Set;
@@ -48,15 +48,11 @@ public final class CrosshairRenderManager {
 
         PoseStack matrixStack = new PoseStack();
 
-        RenderGameOverlayEvent eventParent = new RenderGameOverlayEvent(
+        MinecraftForge.EVENT_BUS.post(new RenderGuiOverlayEvent.Pre(
+            Minecraft.getInstance().getWindow(),
             matrixStack,
             1.0F,
-            Minecraft.getInstance().getWindow());
-
-        MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.PreLayer(
-            matrixStack,
-            eventParent,
-            ForgeIngameGui.CROSSHAIR_ELEMENT));
+            VanillaGuiOverlay.CROSSHAIR.type()));
 
         var calculatedStyle = Minecraft.getInstance().options.renderDebug && crosshair.isKeepDebugEnabled.get()
             ? CrosshairStyle.DEBUG
@@ -87,10 +83,11 @@ public final class CrosshairRenderManager {
 
         this.postTransformation(transformMatrixStack);
 
-        MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.PostLayer(
+        MinecraftForge.EVENT_BUS.post(new RenderGuiOverlayEvent.Post(
+            Minecraft.getInstance().getWindow(),
             matrixStack,
-            eventParent,
-            ForgeIngameGui.CROSSHAIR_ELEMENT));
+            1.0F,
+            VanillaGuiOverlay.CROSSHAIR.type()));
     }
 
     private void preTransformation(
