@@ -1,12 +1,11 @@
 package com.wjbaker.ccm.crosshair.render;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyle;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyleFactory;
@@ -110,7 +109,7 @@ public final class CrosshairRenderManager {
 
         matrixStack.pushPose();
         matrixStack.translate(x, y, 0.0D);
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotation));
+        matrixStack.mulPose(Axis.ZP.rotationDegrees(rotation));
         matrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
 
         RenderSystem.applyModelViewMatrix();

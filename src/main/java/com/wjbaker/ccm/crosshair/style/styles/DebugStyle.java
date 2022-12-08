@@ -2,7 +2,7 @@ package com.wjbaker.ccm.crosshair.style.styles;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.ComputedProperties;
 import com.wjbaker.ccm.crosshair.style.AbstractCrosshairStyle;
@@ -19,8 +19,8 @@ public final class DebugStyle extends AbstractCrosshairStyle {
 
         var renderMatrixStack = RenderSystem.getModelViewStack();
         renderMatrixStack.pushPose();
-        renderMatrixStack.mulPose(Vector3f.XN.rotationDegrees(camera.getXRot()));
-        renderMatrixStack.mulPose(Vector3f.YP.rotationDegrees(camera.getYRot()));
+        renderMatrixStack.mulPose(Axis.XN.rotationDegrees(camera.getXRot()));
+        renderMatrixStack.mulPose(Axis.YP.rotationDegrees(camera.getYRot()));
         renderMatrixStack.scale(-1, -1, -1);
 
         RenderSystem.applyModelViewMatrix();
