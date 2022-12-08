@@ -181,5 +181,5 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 configurations {
-    jar.archiveName = "custom-crosshair-mod-v${project.version}-mc1.19.2.jar"
+    jar.archiveName = "custom-crosshair-mod-v${project.version}-mc1.19.3.jar"
 }
