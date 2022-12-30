@@ -21,6 +21,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -31,7 +32,7 @@ public final class CustomCrosshairMod {
     public static CustomCrosshairMod INSTANCE;
 
     public static final String TITLE = "Custom Crosshair Mod";
-    public static final String VERSION = "1.5.2-forge";
+    public static final String VERSION = "1.5.3-forge";
     public static final String MC_VERSION = "1.19.3-forge";
     public static final String CURSEFORGE_PAGE = "https://www.curseforge.com/projects/242995/";
     public static final String MC_FORUMS_PAGE = "https://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2637819/";
@@ -57,7 +58,7 @@ public final class CustomCrosshairMod {
         INSTANCE = this;
 
         this.loadConfig();
-        this.checkVersion();
+        this.checkVersionAsync();
 
         this.properties.getCustomCrosshairDrawer().loadImage();
     }
@@ -73,6 +74,10 @@ public final class CustomCrosshairMod {
                 this.error("Config Manager (Load)", "Unable to load or write config.");
             }
         }
+    }
+
+    private void checkVersionAsync() {
+        Executors.newSingleThreadExecutor().submit(this::checkVersion);
     }
 
     private void checkVersion() {
