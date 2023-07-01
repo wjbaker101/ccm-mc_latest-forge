@@ -1,11 +1,11 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.component.type.PanelOrientation;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 import com.wjbaker.ccm.render.type.GuiBounds;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 
@@ -64,9 +64,9 @@ public class PanelGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
+    public void draw(final GuiGraphics guiGraphics) {
         this.renderManager.drawBorderedRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,
@@ -79,13 +79,13 @@ public class PanelGuiComponent extends GuiComponent {
                 () -> this.components
                     .stream()
                     .filter(x -> !this.isComponentOutside(x))
-                    .forEach(x -> x.draw(matrixStack)));
+                    .forEach(x -> x.draw(guiGraphics)));
         }
         else {
             this.components
                 .stream()
                 .filter(x -> !this.isComponentOutside(x))
-                .forEach(x -> x.draw(matrixStack));
+                .forEach(x -> x.draw(guiGraphics));
         }
     }
 

@@ -10,6 +10,7 @@ import com.wjbaker.ccm.render.type.GuiBounds;
 import com.wjbaker.ccm.render.type.IDrawInsideWindowCallback;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import org.lwjgl.opengl.GL11;
 
@@ -25,14 +26,12 @@ public final class RenderManager {
     private void preRender(final PoseStack matrixStack) {
         matrixStack.pushPose();
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     private void postRender(final PoseStack matrixStack) {
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
         matrixStack.popPose();
     }
@@ -320,30 +319,34 @@ public final class RenderManager {
         }
     }
 
-    public void drawText(final PoseStack matrixStack, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+    public void drawText(final GuiGraphics guiGraphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
         var colourAsInt = this.rgbaAsInt(colour);
 
         if (hasShadow)
-            Minecraft.getInstance().font.drawShadow(matrixStack, text, x, y, colourAsInt);
+            guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, colourAsInt, true);
         else
-            Minecraft.getInstance().font.draw(matrixStack, text, x, y, colourAsInt);
+            guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, colourAsInt);
     }
 
-    public void drawSmallText(final PoseStack matrixStack, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+    public void drawSmallText(final GuiGraphics guiGraphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+        var matrixStack = guiGraphics.pose();
+
         matrixStack.pushPose();
         matrixStack.scale(0.5F, 0.5F, 1.0F);
         RenderSystem.applyModelViewMatrix();
 
-        this.drawText(matrixStack, text, x * 2, y * 2, colour, hasShadow);
+        this.drawText(guiGraphics, text, x * 2, y * 2, colour, hasShadow);
         matrixStack.popPose();
     }
 
-    public void drawBigText(final PoseStack matrixStack, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+    public void drawBigText(final GuiGraphics guiGraphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+        var matrixStack = guiGraphics.pose();
+
         matrixStack.pushPose();
         matrixStack.scale(1.5F, 1.5F, 1.0F);
         RenderSystem.applyModelViewMatrix();
 
-        this.drawText(matrixStack, text, (int)(x * 0.666F), (int)(y * 0.666F), colour, hasShadow);
+        this.drawText(guiGraphics, text, (int)(x * 0.666F), (int)(y * 0.666F), colour, hasShadow);
         matrixStack.popPose();
     }
 

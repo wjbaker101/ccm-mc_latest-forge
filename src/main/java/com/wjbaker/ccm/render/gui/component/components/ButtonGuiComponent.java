@@ -5,6 +5,7 @@ import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.component.event.IGuiComponentEvent;
 import com.wjbaker.ccm.render.gui.component.event.IOnClickEvent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +30,11 @@ public final class ButtonGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
         this.renderManager.drawBorderedRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,
@@ -43,7 +44,7 @@ public final class ButtonGuiComponent extends GuiComponent {
         int centreX = this.x + (this.width / 2) - (this.renderManager.textWidth(this.label) / 2);
         int centreY = this.y + (this.height / 2) - (7 / 2);
 
-        this.renderManager.drawText(matrixStack, this.label, centreX, centreY, this.currentTextColour, false);
+        this.renderManager.drawText(guiGraphics, this.label, centreX, centreY, this.currentTextColour, false);
     }
 
     @Override

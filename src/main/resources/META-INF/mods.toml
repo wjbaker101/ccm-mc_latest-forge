@@ -1,22 +1,13 @@
 modLoader = "javafml"
-loaderVersion = "[44,)"
+loaderVersion = "${loader_version_range}"
 
-license = "All rights reserved"
+license = "${mod_license}"
 
-[[mods]]
-
-modId = "custom_crosshair_mod"
-
-version = "1.5.2-forge"
-
-displayName = "Custom Crosshair Mod"
-
+[[mods]] #mandatory
+modId = "${mod_id}" #mandatory
+displayName = "${mod_name}"
+authors = "${mod_authors}"
 displayURL = "https://www.curseforge.com/projects/242995/"
-
 logoFile = "icon.png"
 
-authors = "Sparkless101"
-
-description = '''
-A dynamic and customisable crosshair.
-'''
+description = '''${mod_description}'''

@@ -1,14 +1,13 @@
 package com.wjbaker.ccm.render.gui.screen.screens.editCrosshair.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
-import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.components.CheckBoxGuiComponent;
 import com.wjbaker.ccm.render.gui.component.components.HeadingGuiComponent;
 import com.wjbaker.ccm.render.gui.component.components.IntegerSliderGuiComponent;
 import com.wjbaker.ccm.render.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
 
@@ -21,19 +20,19 @@ public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
 
         super(parentGuiScreen, x, y, width, height);
 
-        CustomCrosshair crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
+        var crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
 
-        HeadingGuiComponent heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, "Rainbow Settings");
+        var heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, "Rainbow Settings");
 
-        CheckBoxGuiComponent isRainbowEnabledCheckBox = new CheckBoxGuiComponent(
+        var isRainbowEnabledCheckBox = new CheckBoxGuiComponent(
             this.parentGuiScreen, -1, -1, "Enable Rainbow", crosshair.isRainbowEnabled.get());
         isRainbowEnabledCheckBox.bind(crosshair.isRainbowEnabled);
 
-        IntegerSliderGuiComponent rainbowSpeedSlider = new IntegerSliderGuiComponent(
+        var rainbowSpeedSlider = new IntegerSliderGuiComponent(
             this.parentGuiScreen, -1, -1, 250, "Rainbow Speed", 0, 1000, crosshair.rainbowSpeed.get()) {
 
             @Override
-            protected void drawLabel(final PoseStack matrixStack) {
+            protected void drawLabel(final GuiGraphics guiGraphics) {
                 String label = this.getValue() < 333
                     ? "Slow"
                     : this.getValue() < 666
@@ -43,7 +42,7 @@ public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
                 int posY = this.y + 8 + this.titleSpacing;
 
                 this.renderManager.drawText(
-                    matrixStack,
+                    guiGraphics,
                     label,
                     this.x + this.width + this.titleSpacing,
                     posY + (this.thumbSize / 2) - 3,

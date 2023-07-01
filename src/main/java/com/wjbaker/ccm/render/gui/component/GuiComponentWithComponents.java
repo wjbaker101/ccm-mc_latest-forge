@@ -1,7 +1,7 @@
 package com.wjbaker.ccm.render.gui.component;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.render.gui.event.IMouseEvents;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ public abstract class GuiComponentWithComponents extends GuiComponentTheme imple
         this.components.clear();
     }
 
-    public void draw(final PoseStack matrixStack) {
-        this.components.forEach(x -> x.draw(matrixStack));
+    public void draw(final GuiGraphics guiGraphics) {
+        this.components.forEach(x -> x.draw(guiGraphics));
     }
 
     @Override

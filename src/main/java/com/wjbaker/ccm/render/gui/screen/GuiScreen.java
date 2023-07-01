@@ -1,6 +1,5 @@
 package com.wjbaker.ccm.render.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.helper.ExternalHelper;
 import com.wjbaker.ccm.render.ModTheme;
@@ -9,6 +8,7 @@ import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.component.components.ButtonGuiComponent;
 import com.wjbaker.ccm.render.gui.component.event.IOnClickEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,25 +93,25 @@ public abstract class GuiScreen extends GuiScreenAdapter {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        this.renderManager.drawFilledRectangle(matrixStack, 0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
+    public void draw(final GuiGraphics guiGraphics) {
+        this.renderManager.drawFilledRectangle(guiGraphics.pose(), 0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
 
-        this.components.forEach(x -> x.draw(matrixStack));
+        this.components.forEach(x -> x.draw(guiGraphics));
 
-        this.drawHeader(matrixStack);
+        this.drawHeader(guiGraphics);
     }
 
-    private void drawHeader(final PoseStack matrixStack) {
-        this.renderManager.drawFilledRectangle(matrixStack, 0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
-        this.renderManager.drawLine(matrixStack, 0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
+    private void drawHeader(final GuiGraphics guiGraphics) {
+        this.renderManager.drawFilledRectangle(guiGraphics.pose(), 0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
+        this.renderManager.drawLine(guiGraphics.pose(), 0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
 
         int titleWidth = this.renderManager.textWidth(CustomCrosshairMod.TITLE);
         int centreY = (this.headerHeight / 2) - (7 / 2);
 
-        this.renderManager.drawText(matrixStack, CustomCrosshairMod.TITLE, 5, centreY, ModTheme.WHITE, true);
+        this.renderManager.drawText(guiGraphics, CustomCrosshairMod.TITLE, 5, centreY, ModTheme.WHITE, true);
 
         this.renderManager.drawSmallText(
-            matrixStack,
+            guiGraphics,
             "v" + CustomCrosshairMod.VERSION,
             8 + titleWidth,
             (headerHeight / 2),
@@ -119,10 +119,10 @@ public abstract class GuiScreen extends GuiScreenAdapter {
             false);
 
         if (!CustomCrosshairMod.INSTANCE.properties().isLatestVersion().get())
-            this.newVersionButton.draw(matrixStack);
+            this.newVersionButton.draw(guiGraphics);
 
-        this.patreonButton.draw(matrixStack);
-        this.paypalButton.draw(matrixStack);
+        this.patreonButton.draw(guiGraphics);
+        this.paypalButton.draw(guiGraphics);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.property.RGBAProperty;
 import com.wjbaker.ccm.render.ModTheme;
@@ -9,6 +8,7 @@ import com.wjbaker.ccm.render.gui.component.type.IBindableGuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 import com.wjbaker.ccm.render.gui.screen.screens.editColour.EditColourGuiScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class ColourPickerGuiComponent extends GuiComponent implements IBindableGuiComponent<RGBAProperty> {
 
@@ -41,11 +41,11 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
         this.renderManager.drawBorderedRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x, this.y,
             this.x + this.boxSize, this.y + this.boxSize,
             2.0F,
@@ -53,13 +53,13 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
             this.currentBackgroundColour);
 
         this.renderManager.drawFilledRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x + 2, this.y + 2,
             this.x + this.boxSize - 2, this.y + this.boxSize - 2,
             this.colour.get());
 
         this.renderManager.drawText(
-            matrixStack,
+            guiGraphics,
             this.label,
             this.x + this.boxSize + this.labelSpacing,
             this.y + (this.boxSize / 2) - 3,

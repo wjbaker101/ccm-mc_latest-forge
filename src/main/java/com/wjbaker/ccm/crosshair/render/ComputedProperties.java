@@ -123,7 +123,7 @@ public final class ComputedProperties {
     private RGBA calculateColour() {
         var target = this.mc.crosshairPickEntity;
 
-        if (this.mc.player != null && target != null && !this.mc.player.canHit(target, 0))
+        if (this.mc.player != null && target instanceof LivingEntity livingTarget && !this.mc.player.canAttack(livingTarget))
             return this.crosshair.colour.get();
 
         var isHighlightPlayersEnabled = this.crosshair.isHighlightPlayersEnabled.get();

@@ -1,6 +1,5 @@
 package com.wjbaker.ccm.render.gui.component.custom;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.CrosshairRenderManager;
@@ -8,6 +7,7 @@ import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 import com.wjbaker.ccm.type.RGBA;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class CrosshairPreviewGuiComponent extends GuiComponent {
 
@@ -23,12 +23,12 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
         super(parentGuiScreen, x, y, 150, 150);
         this.crosshair = crosshair;
 
-        this.crosshairRenderManager = new CrosshairRenderManager();
+        this.crosshairRenderManager = new CrosshairRenderManager(true);
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
         int gridCount = 30;
         int gridSize = this.width / gridCount;
@@ -40,7 +40,7 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
                     : ModTheme.DARK_GREY.setOpacity(140);
 
                 this.renderManager.drawFilledRectangle(
-                    matrixStack,
+                    guiGraphics.pose(),
                     this.x + gridSize * gridX,
                     this.y + gridSize * gridY,
                     this.x + gridSize * gridX + gridSize,
@@ -50,7 +50,7 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
         }
 
         this.renderManager.drawRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,
@@ -60,7 +60,7 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
 
         if (!CustomCrosshairMod.INSTANCE.properties().getIsModEnabled().get())
             this.renderManager.drawSmallText(
-                matrixStack,
+                guiGraphics,
                 "Mod is disabled, re-enable to see this crosshair!",
                 this.x + 5,
                 this.y + this.height - 8,

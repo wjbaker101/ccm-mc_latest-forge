@@ -1,8 +1,8 @@
 {
-    "pack": {
-        "description": "A dynamic and customisable crosshair.",
-        "pack_format": 12,
-        "forge:resource_pack_format": 12,
-        "forge:data_pack_format": 10
-    }
+  "pack": {
+    "description": {
+      "text": "A dynamic and customisable crosshair."
+    },
+    "pack_format": 15
+  }
 }

@@ -1,10 +1,10 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.property.EnumProperty;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.type.IBindableGuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
+import net.minecraft.client.gui.GuiGraphics;
 import org.apache.commons.lang3.StringUtils;
 
 public final class EnumSliderGuiComponent<TEnum extends Enum<TEnum>>
@@ -39,11 +39,11 @@ public final class EnumSliderGuiComponent<TEnum extends Enum<TEnum>>
     }
 
     @Override
-    protected void drawLabel(final PoseStack matrixStack) {
+    protected void drawLabel(final GuiGraphics guiGraphics) {
         int posY = this.y + 8 + this.titleSpacing;
 
         this.renderManager.drawText(
-            matrixStack,
+            guiGraphics,
             StringUtils.capitalize(this.value.get().name().toLowerCase()),
             this.x + this.width + this.titleSpacing,
             posY + (this.thumbSize / 2) - 3,

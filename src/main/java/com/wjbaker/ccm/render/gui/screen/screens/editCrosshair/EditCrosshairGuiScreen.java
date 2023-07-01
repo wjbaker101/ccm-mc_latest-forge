@@ -1,6 +1,5 @@
 package com.wjbaker.ccm.render.gui.screen.screens.editCrosshair;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.render.gui.component.components.ButtonGuiComponent;
@@ -9,6 +8,7 @@ import com.wjbaker.ccm.render.gui.component.custom.CrosshairPreviewGuiComponent;
 import com.wjbaker.ccm.render.gui.component.event.IOnClickEvent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 import com.wjbaker.ccm.render.gui.screen.screens.editCrosshair.components.*;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class EditCrosshairGuiScreen extends GuiScreen {
 
@@ -95,11 +95,11 @@ public final class EditCrosshairGuiScreen extends GuiScreen {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
-        this.crosshairPreviewPanel.draw(matrixStack);
-        this.resetButton.draw(matrixStack);
+        this.crosshairPreviewPanel.draw(guiGraphics);
+        this.resetButton.draw(guiGraphics);
     }
 
     @Override

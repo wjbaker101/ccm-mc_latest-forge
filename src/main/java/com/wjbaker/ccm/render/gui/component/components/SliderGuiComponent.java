@@ -1,11 +1,11 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.component.event.IGuiComponentEvent;
 import com.wjbaker.ccm.render.gui.component.event.IOnValueChangedEvent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 import com.wjbaker.ccm.type.RGBA;
+import net.minecraft.client.gui.GuiGraphics;
 
 public abstract class SliderGuiComponent extends GuiComponent {
 
@@ -53,15 +53,15 @@ public abstract class SliderGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
-        this.renderManager.drawText(matrixStack, this.label, this.x, this.y, this.currentTextColour, false);
+        this.renderManager.drawText(guiGraphics, this.label, this.x, this.y, this.currentTextColour, false);
 
         int posY = this.y + 8 + this.titleSpacing;
 
         this.renderManager.drawBorderedRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x, posY + (this.thumbSize / 2.0F) - 2,
             this.x + this.width, posY + (this.thumbSize / 2.0F) - 1 + 3,
             2.0F,
@@ -69,14 +69,14 @@ public abstract class SliderGuiComponent extends GuiComponent {
             this.baseBackgroundColour);
 
         this.renderManager.drawBorderedRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x + this.thumbPosition, posY,
             this.x + this.thumbPosition + this.thumbSize, posY + this.thumbSize,
             2.0F,
             this.currentBorderColour,
             this.currentThumbColour);
 
-        this.drawLabel(matrixStack);
+        this.drawLabel(guiGraphics);
     }
 
     @Override
@@ -135,7 +135,7 @@ public abstract class SliderGuiComponent extends GuiComponent {
     }
 
     protected abstract void calculateValue();
-    protected abstract void drawLabel(final PoseStack matrixStack);
+    protected abstract void drawLabel(final GuiGraphics guiGraphics);
 
     public void setBaseThumbColour(final RGBA baseThumbColour) {
         this.baseThumbColour = baseThumbColour;

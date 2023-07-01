@@ -1,6 +1,5 @@
 package com.wjbaker.ccm.render.gui.screen.screens.drawCrosshair.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.custom.CustomCrosshairDrawer;
 import com.wjbaker.ccm.crosshair.property.IntegerProperty;
@@ -8,6 +7,7 @@ import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
 import com.wjbaker.ccm.type.RGBA;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class DrawCrosshairGuiComponent extends GuiComponent {
 
@@ -38,15 +38,15 @@ public final class DrawCrosshairGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
         var gridCount = this.imageSize.get();
 
         for (int gridX = 0; gridX < gridCount; ++gridX) {
             for (int gridY = 0; gridY < gridCount; ++gridY) {
                 this.renderManager.drawFilledRectangle(
-                    matrixStack,
+                    guiGraphics.pose(),
                     this.x + GRID_SIZE * gridX,
                     this.y + GRID_SIZE * gridY,
                     this.x + GRID_SIZE * gridX + GRID_SIZE,
@@ -55,7 +55,7 @@ public final class DrawCrosshairGuiComponent extends GuiComponent {
 
                 if (this.customCrosshairDrawer.getAt(gridX, gridY) == 1) {
                     this.renderManager.drawFilledRectangle(
-                        matrixStack,
+                        guiGraphics.pose(),
                         this.x + GRID_SIZE * gridX,
                         this.y + GRID_SIZE * gridY,
                         this.x + GRID_SIZE * gridX + GRID_SIZE,

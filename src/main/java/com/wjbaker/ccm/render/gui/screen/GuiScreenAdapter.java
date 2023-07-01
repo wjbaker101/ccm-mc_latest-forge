@@ -1,8 +1,9 @@
 package com.wjbaker.ccm.render.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
 
@@ -23,9 +24,9 @@ public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
     }
 
     @Override
-    public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
-        this.draw(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(final @NotNull GuiGraphics guiGraphics, final int mouseX, final int mouseY, final float delta) {
+        this.draw(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, delta);
     }
 
     @Override

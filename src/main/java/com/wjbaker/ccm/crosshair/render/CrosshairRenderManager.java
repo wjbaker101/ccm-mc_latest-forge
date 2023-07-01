@@ -16,14 +16,16 @@ import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,6 +34,9 @@ import java.util.Set;
 
 public final class CrosshairRenderManager {
 
+    private static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
+
+    private final boolean isForGui;
     private final RenderManager renderManager;
     private final CrosshairStyleFactory crosshairStyleFactory;
 
@@ -40,7 +45,8 @@ public final class CrosshairRenderManager {
         Items.CHORUS_FRUIT
     );
 
-    public CrosshairRenderManager() {
+    public CrosshairRenderManager(final boolean isForGui) {
+        this.isForGui = isForGui;
         this.renderManager = new RenderManager();
         this.crosshairStyleFactory = new CrosshairStyleFactory();
     }
@@ -51,11 +57,11 @@ public final class CrosshairRenderManager {
         if (!computedProperties.isVisible())
             return;
 
-        PoseStack matrixStack = new PoseStack();
+        var guiGraphics = new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
 
         MinecraftForge.EVENT_BUS.post(new RenderGuiOverlayEvent.Pre(
             Minecraft.getInstance().getWindow(),
-            matrixStack,
+            guiGraphics,
             1.0F,
             VanillaGuiOverlay.CROSSHAIR.type()));
 
@@ -68,31 +74,31 @@ public final class CrosshairRenderManager {
         boolean isDotEnabled = crosshair.isDotEnabled.get();
 
         if (isItemCooldownEnabled)
-            this.drawItemCooldownIndicator(matrixStack, crosshair, computedProperties, x, y);
+            this.drawItemCooldownIndicator(guiGraphics.pose(), crosshair, computedProperties, x, y);
 
         if (isDotEnabled && crosshair.style.get() != CrosshairStyle.DEFAULT)
-            this.renderManager.drawCircle(matrixStack, x, y, 0.5F, 1.0F, crosshair.dotColour.get());
+            this.renderManager.drawCircle(guiGraphics.pose(), x, y, 0.5F, 1.0F, crosshair.dotColour.get());
 
-        this.drawDefaultAttackIndicator(matrixStack, computedProperties, x, y);
+        this.drawDefaultAttackIndicator(guiGraphics, computedProperties, x, y);
 
         var transformMatrixStack = calculatedStyle == CrosshairStyle.DEBUG
             ? RenderSystem.getModelViewStack()
-            : matrixStack;
+            : guiGraphics.pose();
 
         var renderX = x + crosshair.offsetX.get();
         var renderY = y + crosshair.offsetY.get();
 
-        this.drawToolDamageIndicator(transformMatrixStack, crosshair, computedProperties, renderX, renderY);
+        this.drawToolDamageIndicator(guiGraphics, crosshair, computedProperties, renderX, renderY);
 
         this.preTransformation(transformMatrixStack, crosshair, renderX, renderY);
 
-        style.draw(transformMatrixStack, 0, 0, computedProperties);
+        style.draw(guiGraphics, 0, 0, computedProperties);
 
         this.postTransformation(transformMatrixStack);
 
         MinecraftForge.EVENT_BUS.post(new RenderGuiOverlayEvent.Post(
             Minecraft.getInstance().getWindow(),
-            matrixStack,
+            guiGraphics,
             1.0F,
             VanillaGuiOverlay.CROSSHAIR.type()));
     }
@@ -107,8 +113,10 @@ public final class CrosshairRenderManager {
         var scale = crosshair.scale.get() - 2;
         var windowScaling = (float)Minecraft.getInstance().getWindow().getGuiScale() / 2.0F;
 
+        var z = this.isForGui ? 0.0F : 1000F - ForgeHooksClient.getGuiFarPlane();
+
         matrixStack.pushPose();
-        matrixStack.translate(x, y, 0.0D);
+        matrixStack.translate(x, y, z);
         matrixStack.mulPose(Axis.ZP.rotationDegrees(rotation));
         matrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
 
@@ -161,11 +169,9 @@ public final class CrosshairRenderManager {
     }
 
     private void drawDefaultAttackIndicator(
-        final PoseStack matrixStack,
+        final GuiGraphics guiGraphics,
         final ComputedProperties computedProperties,
         final int x, final int y) {
-
-        RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
 
         RenderSystem.blendFuncSeparate(
             GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
@@ -188,18 +194,18 @@ public final class CrosshairRenderManager {
             int k = mc.getWindow().getGuiScaledWidth() / 2 - 8;
 
             if (flag) {
-                GuiComponent.blit(matrixStack, k, j, 0, 68, 94, 16, 16, 256, 256);
+                guiGraphics.blit(GUI_ICONS_LOCATION, k, j, 0, 68, 94, 16, 16, 256, 256);
             }
             else if (f < 1.0F) {
                 int l = (int)(f * 17.0F);
-                GuiComponent.blit(matrixStack, k, j, 0, 36, 94, 16, 4, 256, 256);
-                GuiComponent.blit(matrixStack, k, j, 0, 52, 94, l, 4, 256, 256);
+                guiGraphics.blit(GUI_ICONS_LOCATION ,k, j, 0, 36, 94, 16, 4, 256, 256);
+                guiGraphics.blit(GUI_ICONS_LOCATION, k, j, 0, 52, 94, l, 4, 256, 256);
             }
         }
     }
 
     private void drawToolDamageIndicator(
-        final PoseStack matrixStackP,
+        final GuiGraphics guiGraphics,
         final CustomCrosshair crosshair,
         final ComputedProperties computedProperties,
         final int x, final int y) {
@@ -244,7 +250,7 @@ public final class CrosshairRenderManager {
         var bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         Lighting.setupForFlatItems();
 
-        itemRenderer.render(tool, ItemTransforms.TransformType.GUI, false, new PoseStack(), bufferSource, 15728880, OverlayTexture.NO_OVERLAY, model);
+        itemRenderer.render(tool, ItemDisplayContext.GUI, false, new PoseStack(), bufferSource, 15728880, OverlayTexture.NO_OVERLAY, model);
         bufferSource.endBatch();
 
         RenderSystem.enableDepthTest();
@@ -252,6 +258,6 @@ public final class CrosshairRenderManager {
 
         matrixStack.popPose();
 
-        this.renderManager.drawSmallText(matrixStackP, "" + remainingDamage, drawX + 6, drawY, ModTheme.WHITE, true);
+        this.renderManager.drawSmallText(guiGraphics, "" + remainingDamage, drawX + 6, drawY, ModTheme.WHITE, true);
     }
 }

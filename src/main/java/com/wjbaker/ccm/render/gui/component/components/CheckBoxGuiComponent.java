@@ -1,11 +1,11 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.property.BooleanProperty;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.component.type.IBindableGuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class CheckBoxGuiComponent extends GuiComponent implements IBindableGuiComponent<BooleanProperty> {
 
@@ -39,11 +39,11 @@ public final class CheckBoxGuiComponent extends GuiComponent implements IBindabl
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
         this.renderManager.drawBorderedRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             this.x, this.y,
             this.x + this.boxSize, this.y + this.boxSize,
             2.0F,
@@ -54,14 +54,14 @@ public final class CheckBoxGuiComponent extends GuiComponent implements IBindabl
 
         if (this.isChecked.get()) {
             this.renderManager.drawFilledRectangle(
-                matrixStack,
+                guiGraphics.pose(),
                 this.x + inset, this.y + inset,
                 this.x + this.boxSize - inset, this.y + this.boxSize - inset,
                 ModTheme.SUCCESS);
         }
 
         this.renderManager.drawText(
-            matrixStack,
+            guiGraphics,
             this.label,
             this.x + this.boxSize + this.labelSpacing,
             this.y + (this.boxSize / 2) - 3,

@@ -1,10 +1,10 @@
 package com.wjbaker.ccm.crosshair.style.styles;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.ComputedProperties;
 import com.wjbaker.ccm.crosshair.style.AbstractCrosshairStyle;
 import com.wjbaker.ccm.type.RGBA;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class SquareStyle extends AbstractCrosshairStyle {
 
@@ -13,7 +13,7 @@ public final class SquareStyle extends AbstractCrosshairStyle {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack, final int x, final int y, final ComputedProperties computedProperties) {
+    public void draw(final GuiGraphics guiGraphics, final int x, final int y, final ComputedProperties computedProperties) {
         boolean isOutlineEnabled = this.crosshair.isOutlineEnabled.get();
         int width = this.crosshair.width.get();
         int height = this.crosshair.height.get();
@@ -27,7 +27,7 @@ public final class SquareStyle extends AbstractCrosshairStyle {
 
             // Inner
             this.renderManager.drawRectangle(
-                matrixStack,
+                guiGraphics.pose(),
                 x - width - gap + 0.5F, y - height - gap + 0.5F,
                 x + width + gap - 0.5F, y + height + gap - 0.5F,
                 2.0F,
@@ -35,7 +35,7 @@ public final class SquareStyle extends AbstractCrosshairStyle {
 
             // Outer
             this.renderManager.drawRectangle(
-                matrixStack,
+                guiGraphics.pose(),
                 x - width - thickness - gap - 0.5F, y - height - thickness - gap - 0.5F,
                 x + width + thickness + gap + 0.5F, y + height + thickness + gap + 0.5F,
                 2.0F,
@@ -44,28 +44,28 @@ public final class SquareStyle extends AbstractCrosshairStyle {
 
         // Top
         this.renderManager.drawFilledRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             x - width - thickness - gap, y - height - thickness - gap,
             x + width + thickness + gap, y - height - gap,
             colour, isAdaptiveColourEnabled);
 
         // Bottom
         this.renderManager.drawFilledRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             x - width - thickness - gap, y + height + gap,
             x + width + thickness + gap, y + height + thickness + gap,
             colour, isAdaptiveColourEnabled);
 
         // Left
         this.renderManager.drawFilledRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             x - width - thickness - gap, y - gap - height,
             x - width - gap, y + gap + height,
             colour, isAdaptiveColourEnabled);
 
         // Right
         this.renderManager.drawFilledRectangle(
-            matrixStack,
+            guiGraphics.pose(),
             x + width + gap, y - gap - height,
             x + width + thickness + gap, y + gap + height,
             colour, isAdaptiveColourEnabled);

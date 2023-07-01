@@ -1,8 +1,8 @@
 package com.wjbaker.ccm.render.gui.component.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.wjbaker.ccm.render.gui.component.GuiComponent;
 import com.wjbaker.ccm.render.gui.screen.GuiScreen;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class HeadingGuiComponent extends GuiComponent {
 
@@ -23,9 +23,9 @@ public final class HeadingGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw(final PoseStack matrixStack) {
-        super.draw(matrixStack);
+    public void draw(final GuiGraphics guiGraphics) {
+        super.draw(guiGraphics);
 
-        this.renderManager.drawBigText(matrixStack, this.label, this.x, this.y, this.currentTextColour, true);
+        this.renderManager.drawBigText(guiGraphics, this.label, this.x, this.y, this.currentTextColour, true);
     }
 }
