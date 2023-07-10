@@ -52,7 +52,7 @@ public final class CrosshairRenderManager {
     }
 
     public void draw(final CustomCrosshair crosshair, final int x, final int y) {
-        ComputedProperties computedProperties = new ComputedProperties(crosshair);
+        var computedProperties = new ComputedProperties(crosshair);
 
         if (!computedProperties.isVisible())
             return;
@@ -69,9 +69,9 @@ public final class CrosshairRenderManager {
             ? CrosshairStyle.DEBUG
             : crosshair.style.get();
 
-        ICrosshairStyle style = this.crosshairStyleFactory.from(calculatedStyle, crosshair);
-        boolean isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
-        boolean isDotEnabled = crosshair.isDotEnabled.get();
+        var style = this.crosshairStyleFactory.from(calculatedStyle, crosshair);
+        var isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
+        var isDotEnabled = crosshair.isDotEnabled.get();
 
         if (isItemCooldownEnabled)
             this.drawItemCooldownIndicator(guiGraphics.pose(), crosshair, computedProperties, x, y);
