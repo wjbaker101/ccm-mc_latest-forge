@@ -190,16 +190,16 @@ public final class CrosshairRenderManager {
                 flag = flag & mc.crosshairPickEntity.isAlive();
             }
 
-            int j = mc.getWindow().getGuiScaledHeight() / 2 - 7 + 16;
-            int k = mc.getWindow().getGuiScaledWidth() / 2 - 8;
+            int drawX = x - 8;
+            int drawY = y - 7 + 16;
 
             if (flag) {
-                guiGraphics.blit(GUI_ICONS_LOCATION, k, j, 0, 68, 94, 16, 16, 256, 256);
+                guiGraphics.blit(GUI_ICONS_LOCATION, drawX, drawY, 0, 68, 94, 16, 16, 256, 256);
             }
             else if (f < 1.0F) {
                 int l = (int)(f * 17.0F);
-                guiGraphics.blit(GUI_ICONS_LOCATION ,k, j, 0, 36, 94, 16, 4, 256, 256);
-                guiGraphics.blit(GUI_ICONS_LOCATION, k, j, 0, 52, 94, l, 4, 256, 256);
+                guiGraphics.blit(GUI_ICONS_LOCATION ,drawX, drawY, 0, 36, 94, 16, 4, 256, 256);
+                guiGraphics.blit(GUI_ICONS_LOCATION, drawX, drawY, 0, 52, 94, l, 4, 256, 256);
             }
         }
     }
