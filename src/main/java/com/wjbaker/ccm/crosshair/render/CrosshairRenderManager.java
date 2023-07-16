@@ -135,25 +135,23 @@ public final class CrosshairRenderManager {
         final int x,
         final int y) {
 
-        Player player = Minecraft.getInstance().player;
-
+        var player = Minecraft.getInstance().player;
         if (player == null)
             return;
 
-        RGBA colour = crosshair.itemCooldownColour.get();
+        var colour = crosshair.itemCooldownColour.get();
 
-        int width = crosshair.width.get();
-        int height = crosshair.height.get();
-        int maxSize = Math.max(width, height);
-        int offset = 3;
+        var width = crosshair.width.get();
+        var height = crosshair.height.get();
+        var maxSize = Math.max(width, height);
+        var offset = 3;
 
         for (final Item item : this.itemCooldownItems) {
-            float cooldown = player.getCooldowns().getCooldownPercent(item, 0.0F);
-
+            var cooldown = player.getCooldowns().getCooldownPercent(item, 0.0F);
             if (cooldown == 0.0F)
                 continue;
 
-            int progress = Math.round(360 - (360 * cooldown));
+            var progress = Math.round(360 - (360 * cooldown));
 
             this.renderManager.drawPartialCircle(
                 matrixStack,
@@ -182,16 +180,16 @@ public final class CrosshairRenderManager {
         var mc = Minecraft.getInstance();
 
         if (mc.options.attackIndicator().get() == AttackIndicatorStatus.CROSSHAIR && mc.player != null) {
-            float f = mc.player.getAttackStrengthScale(0.0F);
-            boolean flag = false;
+            var f = mc.player.getAttackStrengthScale(0.0F);
+            var flag = false;
 
             if (mc.crosshairPickEntity instanceof LivingEntity && f < 1.0F) {
                 flag = mc.player.getCurrentItemAttackStrengthDelay() > 5.0F;
                 flag = flag & mc.crosshairPickEntity.isAlive();
             }
 
-            int drawX = x - 8;
-            int drawY = y - 7 + 16;
+            var drawX = x - 8;
+            var drawY = y - 7 + 16;
 
             if (flag) {
                 guiGraphics.blit(GUI_ICONS_LOCATION, drawX, drawY, 0, 68, 94, 16, 16, 256, 256);
