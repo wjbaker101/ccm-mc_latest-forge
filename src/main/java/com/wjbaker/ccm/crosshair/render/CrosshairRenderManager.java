@@ -9,19 +9,14 @@ import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyle;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyleFactory;
-import com.wjbaker.ccm.crosshair.style.ICrosshairStyle;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.render.RenderManager;
-import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
@@ -73,14 +68,6 @@ public final class CrosshairRenderManager {
         var isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
         var isDotEnabled = crosshair.isDotEnabled.get();
 
-        if (isItemCooldownEnabled)
-            this.drawItemCooldownIndicator(guiGraphics.pose(), crosshair, computedProperties, x, y);
-
-        if (isDotEnabled && crosshair.style.get() != CrosshairStyle.DEFAULT)
-            this.renderManager.drawCircle(guiGraphics.pose(), x, y, 0.5F, 1.0F, crosshair.dotColour.get());
-
-        this.drawDefaultAttackIndicator(guiGraphics, computedProperties, x, y);
-
         var transformMatrixStack = calculatedStyle == CrosshairStyle.DEBUG
             ? RenderSystem.getModelViewStack()
             : guiGraphics.pose();
@@ -88,9 +75,17 @@ public final class CrosshairRenderManager {
         var renderX = x + crosshair.offsetX.get();
         var renderY = y + crosshair.offsetY.get();
 
+        this.preTransformation(transformMatrixStack, crosshair, renderX, renderY);
+
         this.drawToolDamageIndicator(guiGraphics, crosshair, computedProperties, renderX, renderY);
 
-        this.preTransformation(transformMatrixStack, crosshair, renderX, renderY);
+        this.drawDefaultAttackIndicator(guiGraphics, computedProperties, 0, 0);
+
+        if (isDotEnabled && crosshair.style.get() != CrosshairStyle.DEFAULT)
+            this.renderManager.drawCircle(guiGraphics.pose(), 0, 0, 0.5F, 1.0F, crosshair.dotColour.get());
+
+        if (isItemCooldownEnabled)
+            this.drawItemCooldownIndicator(guiGraphics.pose(), crosshair, computedProperties, 0, 0);
 
         style.draw(guiGraphics, 0, 0, computedProperties);
 
@@ -230,9 +225,6 @@ public final class CrosshairRenderManager {
         var itemRenderer = mc.getItemRenderer();
         var model = itemRenderer.getModel(tool, null, null, 0);
 
-        mc.getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
-        RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
-
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -245,17 +237,16 @@ public final class CrosshairRenderManager {
         matrixStack.scale(8F, 8F, 8F);
         RenderSystem.applyModelViewMatrix();
 
-        var bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         Lighting.setupForFlatItems();
 
-        itemRenderer.render(tool, ItemDisplayContext.GUI, false, new PoseStack(), bufferSource, 15728880, OverlayTexture.NO_OVERLAY, model);
-        bufferSource.endBatch();
+        itemRenderer.render(tool, ItemDisplayContext.GUI, false, new PoseStack(), guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, model);
+        guiGraphics.bufferSource().endBatch();
 
         RenderSystem.enableDepthTest();
         Lighting.setupFor3DItems();
 
         matrixStack.popPose();
 
-        this.renderManager.drawSmallText(guiGraphics, "" + remainingDamage, drawX + 6, drawY, ModTheme.WHITE, true);
+        this.renderManager.drawSmallText(guiGraphics, "" + remainingDamage, drawX + 6 - x, drawY - y, ModTheme.WHITE, true);
     }
 }
