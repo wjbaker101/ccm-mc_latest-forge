@@ -229,9 +229,8 @@ public final class CrosshairRenderManager {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        var matrixStack = RenderSystem.getModelViewStack();
+        var matrixStack = guiGraphics.pose();
         matrixStack.pushPose();
-        matrixStack.translate(x, y, (100.0F + 1));
         matrixStack.translate(8.0D, 8.0D, 0.0D);
         matrixStack.scale(1.0F, -1.0F, 1.0F);
         matrixStack.scale(8F, 8F, 8F);
@@ -239,7 +238,7 @@ public final class CrosshairRenderManager {
 
         Lighting.setupForFlatItems();
 
-        itemRenderer.render(tool, ItemDisplayContext.GUI, false, new PoseStack(), guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, model);
+        itemRenderer.render(tool, ItemDisplayContext.GUI, false, guiGraphics.pose(), guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, model);
         guiGraphics.bufferSource().endBatch();
 
         RenderSystem.enableDepthTest();
