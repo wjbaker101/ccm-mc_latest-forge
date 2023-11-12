@@ -25,8 +25,8 @@ public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
 
     @Override
     public void render(final @NotNull GuiGraphics guiGraphics, final int mouseX, final int mouseY, final float delta) {
-        this.draw(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, delta);
+        this.draw(guiGraphics);
     }
 
     @Override
@@ -60,13 +60,13 @@ public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
     }
 
     @Override
-    public boolean mouseScrolled(final double mouseX, final double mouseY, final double amount) {
-        if (amount > 0)
+    public boolean mouseScrolled(final double mouseX, final double mouseY, final double amountX, final double amountY) {
+        if (amountY > 0)
             this.onMouseScrollUp();
         else
             this.onMouseScrollDown();
 
-        return super.mouseScrolled(mouseX, mouseY, amount);
+        return super.mouseScrolled(mouseX, mouseY, amountX, amountY);
     }
 
     @Override

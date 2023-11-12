@@ -14,6 +14,7 @@ import com.wjbaker.ccm.render.RenderManager;
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -60,7 +62,7 @@ public final class CrosshairRenderManager {
             1.0F,
             VanillaGuiOverlay.CROSSHAIR.type()));
 
-        var calculatedStyle = Minecraft.getInstance().options.renderDebug && crosshair.isKeepDebugEnabled.get()
+        var calculatedStyle = Minecraft.getInstance().getDebugOverlay().showDebugScreen() && crosshair.isKeepDebugEnabled.get()
             ? CrosshairStyle.DEBUG
             : crosshair.style.get();
 
