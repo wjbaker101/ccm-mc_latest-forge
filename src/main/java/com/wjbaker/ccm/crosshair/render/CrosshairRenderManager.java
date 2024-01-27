@@ -76,10 +76,16 @@ public final class CrosshairRenderManager {
 
         var renderX = x + crosshair.offsetX.get();
         var renderY = y + crosshair.offsetY.get();
+        var scale = crosshair.scale.get() - 2;
+        var windowScaling = (float)Minecraft.getInstance().getWindow().getGuiScale() / 2.0F;
 
         this.preTransformation(transformMatrixStack, crosshair, renderX, renderY);
 
         this.drawToolDamageIndicator(guiGraphics, crosshair, computedProperties, renderX, renderY);
+
+        transformMatrixStack.mulPose(Axis.ZP.rotationDegrees(crosshair.rotation.get()));
+        transformMatrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
+        RenderSystem.applyModelViewMatrix();
 
         this.drawDefaultAttackIndicator(guiGraphics, computedProperties, 0, 0);
 
@@ -106,18 +112,10 @@ public final class CrosshairRenderManager {
         final int x,
         final int y) {
 
-        var rotation = crosshair.rotation.get();
-        var scale = crosshair.scale.get() - 2;
-        var windowScaling = (float)Minecraft.getInstance().getWindow().getGuiScale() / 2.0F;
-
         var z = this.isForGui ? 0.0F : 1000F - ForgeHooksClient.getGuiFarPlane();
 
         matrixStack.pushPose();
         matrixStack.translate(x, y, z);
-        matrixStack.mulPose(Axis.ZP.rotationDegrees(rotation));
-        matrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
-
-        RenderSystem.applyModelViewMatrix();
     }
 
     private void postTransformation(final PoseStack matrixStack) {
