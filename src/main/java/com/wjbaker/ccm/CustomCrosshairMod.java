@@ -3,21 +3,21 @@ package com.wjbaker.ccm;
 import com.wjbaker.ccm.config.ConfigManager;
 import com.wjbaker.ccm.config.GlobalProperties;
 import com.wjbaker.ccm.crosshair.render.CrosshairRenderManager;
+import com.wjbaker.ccm.events.KeyBindings;
+import com.wjbaker.ccm.events.ModEventBusRegistrar;
 import com.wjbaker.ccm.helper.RequestHelper;
 import com.wjbaker.ccm.render.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,11 +39,6 @@ public final class CustomCrosshairMod {
     public static final String PATREON_PAGE = "https://www.patreon.com/bePatron?u=66431720";
     public static final String PAYPAL_PAGE = "https://www.paypal.com/cgi-bin/webscr?return=https://www.curseforge.com/projects/242995&cn=Add+special+instructions+to+the+addon+author()&business=sparkless101%40gmail.com&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted&cancel_return=https://www.curseforge.com/projects/242995&lc=US&item_name=Custom+Crosshair+Mod+(from+curseforge.com)&cmd=_donations&rm=1&no_shipping=1&currency_code=USD";
 
-    private static final KeyMapping editCrosshairKeyBinding = new KeyMapping(
-        identifier("edit_crosshair"),
-        GLFW.GLFW_KEY_GRAVE_ACCENT,
-        identifier("category"));
-
     private final Logger logger;
     private final GlobalProperties properties;
     private final CrosshairRenderManager crosshairRenderManager;
@@ -61,6 +56,8 @@ public final class CustomCrosshairMod {
         this.checkVersionAsync();
 
         this.properties.getCustomCrosshairDrawer().loadImage();
+
+        FMLJavaModLoadingContext.get().getModEventBus().register(new ModEventBusRegistrar());
     }
 
     private void loadConfig() {
@@ -104,18 +101,9 @@ public final class CustomCrosshairMod {
         }
     }
 
-    private static String identifier(final String id) {
-        return String.format("key.custom-crosshair-mod.%s", id);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterKeyBindings(final RegisterKeyMappingsEvent event) {
-        event.register(editCrosshairKeyBinding);
-    }
-
     @SubscribeEvent
     public static void onClientTickEvent(final TickEvent.ClientTickEvent event) {
-        if (Minecraft.getInstance().screen == null && editCrosshairKeyBinding.isDown())
+        if (Minecraft.getInstance().screen == null && KeyBindings.EDIT_CROSSHAIR.isDown())
             Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(CustomCrosshairMod.INSTANCE.properties.getCrosshair()));
     }
 
