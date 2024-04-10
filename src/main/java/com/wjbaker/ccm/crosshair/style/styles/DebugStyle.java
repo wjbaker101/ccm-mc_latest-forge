@@ -4,10 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.ComputedProperties;
-import com.wjbaker.ccm.crosshair.types.AbstractCrosshairStyle;
+import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import net.minecraft.client.gui.GuiGraphics;
 
-public final class DebugStyle extends AbstractCrosshairStyle {
+public final class DebugStyle extends BaseCrosshairStyle {
 
     public DebugStyle(final CustomCrosshair crosshair) {
         super(crosshair);

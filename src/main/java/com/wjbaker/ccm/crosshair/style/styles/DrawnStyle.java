@@ -3,10 +3,10 @@ package com.wjbaker.ccm.crosshair.style.styles;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.ComputedProperties;
-import com.wjbaker.ccm.crosshair.types.AbstractCrosshairStyle;
+import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import net.minecraft.client.gui.GuiGraphics;
 
-public final class DrawnStyle extends AbstractCrosshairStyle {
+public final class DrawnStyle extends BaseCrosshairStyle {
 
     public DrawnStyle(final CustomCrosshair crosshair) {
         super(crosshair);

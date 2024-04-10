@@ -6,13 +6,13 @@ import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
-public abstract class AbstractCrosshairStyle {
+public abstract class BaseCrosshairStyle {
 
     protected final CustomCrosshair crosshair;
     protected final RenderManager renderManager;
     protected final Minecraft mc;
 
-    public AbstractCrosshairStyle(final CustomCrosshair crosshair) {
+    public BaseCrosshairStyle(final CustomCrosshair crosshair) {
         this.crosshair = crosshair;
         this.renderManager = new RenderManager();
         this.mc = Minecraft.getInstance();

@@ -2,11 +2,11 @@ package com.wjbaker.ccm.crosshair.style.styles;
 
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.render.ComputedProperties;
-import com.wjbaker.ccm.crosshair.types.AbstractCrosshairStyle;
+import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.gui.GuiGraphics;
 
-public final class SquareStyle extends AbstractCrosshairStyle {
+public final class SquareStyle extends BaseCrosshairStyle {
 
     public SquareStyle(final CustomCrosshair crosshair) {
         super(crosshair);
