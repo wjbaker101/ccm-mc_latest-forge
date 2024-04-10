@@ -19,7 +19,6 @@ public final class ComputedProperties {
 
     private final Minecraft mc;
     private final CustomCrosshair crosshair;
-    private final ComputeIndicators computeIndicators;
 
     private final int gap;
     private final RGBA colour;
@@ -39,7 +38,6 @@ public final class ComputedProperties {
     public ComputedProperties(final CustomCrosshair crosshair) {
         this.mc = Minecraft.getInstance();
         this.crosshair = crosshair;
-        this.computeIndicators = new ComputeIndicators(crosshair);
 
         this.gap = ComputeGap.compute(crosshair);
         this.colour = this.calculateColour();
@@ -148,6 +146,6 @@ public final class ComputedProperties {
     }
 
     public List<ComputeIndicators.IndicatorItem> getIndicatorItems() {
-        return this.computeIndicators.getIndicatorItems();
+        return ComputeIndicators.getIndicatorItems(this.crosshair);
     }
 }

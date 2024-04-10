@@ -7,23 +7,19 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ComputeIndicators {
+public abstract class ComputeIndicators {
 
     public record IndicatorItem(String text, ItemStack icon) {}
 
     private static final Minecraft mc = Minecraft.getInstance();
 
-    private final CustomCrosshair crosshair;
+    private ComputeIndicators() {}
 
-    public ComputeIndicators(final CustomCrosshair crosshair) {
-        this.crosshair = crosshair;
-    }
-
-    public List<IndicatorItem> getIndicatorItems() {
+    public static List<IndicatorItem> getIndicatorItems(final CustomCrosshair crosshair) {
         var indicatorItems = new ArrayList<IndicatorItem>();
 
         if (crosshair.isToolDamageEnabled.get()) {
-            if (this.mc.player != null) {
+            if (mc.player != null) {
                 var tool = mc.player.getMainHandItem();
                 if (tool.isDamageableItem()) {
                     var remainingDamage = tool.getMaxDamage() - tool.getDamageValue();
@@ -34,9 +30,9 @@ public final class ComputeIndicators {
             }
         }
 
-        if (crosshair.isProjectileIndicatorEnabled.get() && this.mc.player != null) {
+        if (crosshair.isProjectileIndicatorEnabled.get() && mc.player != null) {
             var tool = mc.player.getMainHandItem();
-            var projectile = this.mc.player.getProjectile(tool);
+            var projectile = mc.player.getProjectile(tool);
             if (projectile != ItemStack.EMPTY) {
                 indicatorItems.add(new IndicatorItem("" + projectile.getCount(), projectile));
             }
