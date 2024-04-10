@@ -218,7 +218,7 @@ public final class CrosshairRenderManager {
 
         var mc = Minecraft.getInstance();
         var itemRenderer = mc.getItemRenderer();
-        var indicatorItems = computedProperties.getIndicatorItems();
+        var indicatorItems = computedProperties.indicatorItems();
 
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
