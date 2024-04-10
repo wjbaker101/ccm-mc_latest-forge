@@ -6,7 +6,7 @@ import com.wjbaker.ccm.crosshair.render.CrosshairRenderManager;
 import com.wjbaker.ccm.events.KeyBindings;
 import com.wjbaker.ccm.events.ModEventBusRegistrar;
 import com.wjbaker.ccm.helpers.Helper;
-import com.wjbaker.ccm.render.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
+import com.wjbaker.ccm.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraftforge.api.distmarker.Dist;
