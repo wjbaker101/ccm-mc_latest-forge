@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
+import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.crosshair.styles.*;
 import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import com.wjbaker.ccm.rendering.ModTheme;
