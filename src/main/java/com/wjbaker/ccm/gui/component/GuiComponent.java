@@ -1,7 +1,7 @@
 package com.wjbaker.ccm.gui.component;
 
 import com.wjbaker.ccm.gui.component.event.IGuiComponentEvent;
-import com.wjbaker.ccm.render.RenderManager;
+import com.wjbaker.ccm.rendering.RenderManager;
 import com.wjbaker.ccm.gui.event.IMouseEvents;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 

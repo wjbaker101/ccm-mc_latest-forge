@@ -4,7 +4,7 @@ import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.gui.component.components.CheckBoxGuiComponent;
 import com.wjbaker.ccm.gui.component.components.IntegerSliderGuiComponent;
 import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
-import com.wjbaker.ccm.render.ModTheme;
+import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.gui.component.components.HeadingGuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import net.minecraft.client.gui.GuiGraphics;

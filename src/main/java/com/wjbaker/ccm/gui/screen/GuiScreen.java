@@ -5,8 +5,8 @@ import com.wjbaker.ccm.gui.component.GuiComponent;
 import com.wjbaker.ccm.gui.component.components.ButtonGuiComponent;
 import com.wjbaker.ccm.gui.component.event.IOnClickEvent;
 import com.wjbaker.ccm.helpers.Helper;
-import com.wjbaker.ccm.render.ModTheme;
-import com.wjbaker.ccm.render.RenderManager;
+import com.wjbaker.ccm.rendering.ModTheme;
+import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
