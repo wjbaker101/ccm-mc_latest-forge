@@ -1,14 +1,13 @@
 package com.wjbaker.ccm.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.wjbaker.ccm.crosshair.custom.CustomCrosshairDrawer;
-import com.wjbaker.ccm.render.type.GuiBounds;
-import com.wjbaker.ccm.render.type.IDrawInsideWindowCallback;
+import com.wjbaker.ccm.gui.type.GuiBounds;
+import com.wjbaker.ccm.gui.type.IDrawInsideWindowCallback;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

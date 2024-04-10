@@ -1,4 +1,4 @@
-package com.wjbaker.ccm.render.type;
+package com.wjbaker.ccm.gui.type;
 
 public interface IDrawInsideWindowCallback {
 

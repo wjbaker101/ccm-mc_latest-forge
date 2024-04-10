@@ -4,7 +4,7 @@ import com.wjbaker.ccm.gui.component.GuiComponent;
 import com.wjbaker.ccm.gui.component.type.PanelOrientation;
 import com.wjbaker.ccm.render.ModTheme;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
-import com.wjbaker.ccm.render.type.GuiBounds;
+import com.wjbaker.ccm.gui.type.GuiBounds;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;

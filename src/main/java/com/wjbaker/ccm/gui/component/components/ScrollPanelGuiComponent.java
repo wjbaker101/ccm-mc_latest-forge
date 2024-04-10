@@ -3,7 +3,7 @@ package com.wjbaker.ccm.gui.component.components;
 import com.wjbaker.ccm.gui.component.GuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.render.ModTheme;
-import com.wjbaker.ccm.render.type.GuiBounds;
+import com.wjbaker.ccm.gui.type.GuiBounds;
 import net.minecraft.client.gui.GuiGraphics;
 
 public final class ScrollPanelGuiComponent extends PanelGuiComponent {
