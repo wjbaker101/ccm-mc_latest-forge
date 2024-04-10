@@ -3,6 +3,7 @@ package com.wjbaker.ccm.crosshair;
 import com.google.common.collect.Lists;
 import com.wjbaker.ccm.crosshair.properties.*;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyle;
+import com.wjbaker.ccm.crosshair.types.ICrosshairProperty;
 import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.type.RGBA;
 
