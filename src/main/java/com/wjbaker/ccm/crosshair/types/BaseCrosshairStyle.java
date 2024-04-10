@@ -8,6 +8,17 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public abstract class BaseCrosshairStyle {
 
+    public enum Styles {
+        DEFAULT,
+        CROSS,
+        CIRCLE,
+        SQUARE,
+        TRIANGLE,
+        ARROW,
+        DEBUG,
+        DRAWN,
+    }
+
     protected final CustomCrosshair crosshair;
     protected final RenderManager renderManager;
     protected final Minecraft mc;

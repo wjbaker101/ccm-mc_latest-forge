@@ -7,8 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
-import com.wjbaker.ccm.crosshair.style.CrosshairStyle;
 import com.wjbaker.ccm.crosshair.style.CrosshairStyleFactory;
+import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.AttackIndicatorStatus;
@@ -61,14 +61,14 @@ public final class CrosshairRenderManager {
             VanillaGuiOverlay.CROSSHAIR.type()));
 
         var calculatedStyle = Minecraft.getInstance().getDebugOverlay().showDebugScreen() && crosshair.isKeepDebugEnabled.get()
-            ? CrosshairStyle.DEBUG
+            ? BaseCrosshairStyle.Styles.DEBUG
             : crosshair.style.get();
 
         var style = this.crosshairStyleFactory.from(calculatedStyle, crosshair);
         var isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
         var isDotEnabled = crosshair.isDotEnabled.get();
 
-        var transformMatrixStack = calculatedStyle == CrosshairStyle.DEBUG
+        var transformMatrixStack = calculatedStyle == BaseCrosshairStyle.Styles.DEBUG
             ? RenderSystem.getModelViewStack()
             : guiGraphics.pose();
 
@@ -87,7 +87,7 @@ public final class CrosshairRenderManager {
 
         this.drawDefaultAttackIndicator(guiGraphics, computedProperties, 0, 0);
 
-        if (isDotEnabled && crosshair.style.get() != CrosshairStyle.DEFAULT)
+        if (isDotEnabled && crosshair.style.get() != BaseCrosshairStyle.Styles.DEFAULT)
             this.renderManager.drawCircle(guiGraphics.pose(), 0, 0, 0.5F, 1.0F, crosshair.dotColour.get());
 
         if (isItemCooldownEnabled)

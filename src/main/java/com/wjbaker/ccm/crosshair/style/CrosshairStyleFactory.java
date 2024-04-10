@@ -6,7 +6,7 @@ import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 
 public final class CrosshairStyleFactory {
 
-    public BaseCrosshairStyle from(final CrosshairStyle style, final CustomCrosshair crosshair) {
+    public BaseCrosshairStyle from(final BaseCrosshairStyle.Styles style, final CustomCrosshair crosshair) {
         return switch (style) {
             case DEFAULT -> new DefaultStyle(crosshair);
             case CIRCLE -> new CircleStyle(crosshair);

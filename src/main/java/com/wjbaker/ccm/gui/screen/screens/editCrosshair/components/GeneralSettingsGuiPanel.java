@@ -2,7 +2,7 @@ package com.wjbaker.ccm.gui.screen.screens.editCrosshair.components;
 
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
-import com.wjbaker.ccm.crosshair.style.CrosshairStyle;
+import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import com.wjbaker.ccm.gui.component.components.*;
 import com.wjbaker.ccm.gui.component.event.IOnClickEvent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
@@ -31,7 +31,7 @@ public final class GeneralSettingsGuiPanel extends PanelGuiComponent {
             CustomCrosshairMod.INSTANCE.properties().getIsModEnabled().get());
         isModEnabledCheckbox.bind(CustomCrosshairMod.INSTANCE.properties().getIsModEnabled());
 
-        EnumSliderGuiComponent<CrosshairStyle> crosshairStyleSlider = new EnumSliderGuiComponent<>(
+        EnumSliderGuiComponent<BaseCrosshairStyle.Styles> crosshairStyleSlider = new EnumSliderGuiComponent<>(
             this.parentGuiScreen,
             -1, -1,
             50,
