@@ -2,6 +2,7 @@ package com.wjbaker.ccm.crosshair.style;
 
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.style.styles.*;
+import com.wjbaker.ccm.crosshair.types.ICrosshairStyle;
 
 public final class CrosshairStyleFactory {
 
