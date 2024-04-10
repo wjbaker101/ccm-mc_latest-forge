@@ -7,7 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
-import com.wjbaker.ccm.crosshair.style.CrosshairStyleFactory;
+import com.wjbaker.ccm.crosshair.style.styles.*;
 import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.rendering.RenderManager;
@@ -33,7 +33,6 @@ public final class CrosshairRenderManager {
 
     private final boolean isForGui;
     private final RenderManager renderManager;
-    private final CrosshairStyleFactory crosshairStyleFactory;
 
     private final Set<Item> itemCooldownItems = ImmutableSet.of(
         Items.ENDER_PEARL,
@@ -43,7 +42,6 @@ public final class CrosshairRenderManager {
     public CrosshairRenderManager(final boolean isForGui) {
         this.isForGui = isForGui;
         this.renderManager = new RenderManager();
-        this.crosshairStyleFactory = new CrosshairStyleFactory();
     }
 
     public void draw(final CustomCrosshair crosshair, final int x, final int y) {
@@ -64,7 +62,7 @@ public final class CrosshairRenderManager {
             ? BaseCrosshairStyle.Styles.DEBUG
             : crosshair.style.get();
 
-        var style = this.crosshairStyleFactory.from(calculatedStyle, crosshair);
+        var style = mapCrosshairStyle(calculatedStyle, crosshair);
         var isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
         var isDotEnabled = crosshair.isDotEnabled.get();
 
@@ -102,6 +100,20 @@ public final class CrosshairRenderManager {
             guiGraphics,
             1.0F,
             VanillaGuiOverlay.CROSSHAIR.type()));
+    }
+
+    private BaseCrosshairStyle mapCrosshairStyle(final BaseCrosshairStyle.Styles style, final CustomCrosshair crosshair) {
+        return switch (style) {
+            case DEFAULT -> new DefaultStyle(crosshair);
+            case CIRCLE -> new CircleStyle(crosshair);
+            case SQUARE -> new SquareStyle(crosshair);
+            case TRIANGLE -> new TriangleStyle(crosshair);
+            case ARROW -> new ArrowStyle(crosshair);
+            case DEBUG -> new DebugStyle(crosshair);
+            case DRAWN -> new DrawnStyle(crosshair);
+
+            default -> new CrossStyle(crosshair);
+        };
     }
 
     private void preTransformation(
