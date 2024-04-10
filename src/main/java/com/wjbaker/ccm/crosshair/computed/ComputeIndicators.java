@@ -16,28 +16,42 @@ public abstract class ComputeIndicators {
     private ComputeIndicators() {}
 
     public static List<IndicatorItem> getIndicatorItems(final CustomCrosshair crosshair) {
-        var indicatorItems = new ArrayList<IndicatorItem>();
+        var indicators = new ArrayList<IndicatorItem>();
 
-        if (crosshair.isToolDamageEnabled.get()) {
-            if (mc.player != null) {
-                var tool = mc.player.getMainHandItem();
-                if (tool.isDamageableItem()) {
-                    var remainingDamage = tool.getMaxDamage() - tool.getDamageValue();
-                    if (remainingDamage <= 10) {
-                        indicatorItems.add(new IndicatorItem("" + remainingDamage, tool));
-                    }
-                }
-            }
-        }
+        mutateForToolDamage(indicators, crosshair);
+        mutateForProjectiles(indicators, crosshair);
 
-        if (crosshair.isProjectileIndicatorEnabled.get() && mc.player != null) {
-            var tool = mc.player.getMainHandItem();
-            var projectile = mc.player.getProjectile(tool);
-            if (projectile != ItemStack.EMPTY) {
-                indicatorItems.add(new IndicatorItem("" + projectile.getCount(), projectile));
-            }
-        }
+        return indicators;
+    }
 
-        return indicatorItems;
+    private static void mutateForToolDamage(final List<IndicatorItem> indicators, final CustomCrosshair crosshair) {
+        if (!crosshair.isToolDamageEnabled.get())
+            return;
+
+        if (mc.player == null)
+            return;
+
+        var tool = mc.player.getMainHandItem();
+        if (!tool.isDamageableItem())
+            return;
+
+        var remainingDamage = tool.getMaxDamage() - tool.getDamageValue();
+        if (remainingDamage > 10)
+            return;
+
+        indicators.add(new IndicatorItem("" + remainingDamage, tool));
+    }
+
+    private static void mutateForProjectiles(final List<IndicatorItem> indicators, final CustomCrosshair crosshair) {
+        if (!crosshair.isProjectileIndicatorEnabled.get() || mc.player == null)
+            return;
+
+        var tool = mc.player.getMainHandItem();
+
+        var projectile = mc.player.getProjectile(tool);
+        if (projectile == ItemStack.EMPTY)
+            return;
+
+        indicators.add(new IndicatorItem("" + projectile.getCount(), projectile));
     }
 }
