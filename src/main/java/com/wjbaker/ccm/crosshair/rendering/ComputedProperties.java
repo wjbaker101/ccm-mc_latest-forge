@@ -1,22 +1,18 @@
 package com.wjbaker.ccm.crosshair.rendering;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
+import com.wjbaker.ccm.crosshair.computed.ComputeGap;
 import com.wjbaker.ccm.crosshair.computed.ComputeIndicators;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public final class ComputedProperties {
@@ -40,18 +36,12 @@ public final class ComputedProperties {
         Items.ENDER_EYE
     );
 
-    private final Map<Item, Float> usageItemsDurations = ImmutableMap.of(
-        Items.BOW, 20.0F,
-        Items.TRIDENT, 10.0F,
-        Items.CROSSBOW, 0.0F
-    );
-
     public ComputedProperties(final CustomCrosshair crosshair) {
         this.mc = Minecraft.getInstance();
         this.crosshair = crosshair;
         this.computeIndicators = new ComputeIndicators(crosshair);
 
-        this.gap = this.calculateGap();
+        this.gap = ComputeGap.compute(crosshair);
         this.colour = this.calculateColour();
         this.isVisible = this.calculateIsVisible();
     }
@@ -66,62 +56,6 @@ public final class ComputedProperties {
 
     public boolean isVisible() {
         return this.isVisible;
-    }
-
-    private int calculateGap() {
-        var baseGap = this.crosshair.gap.get();
-
-        if (this.mc.player == null)
-            return baseGap;
-
-        var isSpectator = this.mc.player.isSpectator();
-
-        var mainHandItem = this.mc.player.getMainHandItem();
-
-        var isHoldingItem = !mainHandItem.isEmpty()
-            || !this.mc.player.getOffhandItem().isEmpty();
-
-        var isDynamicBowEnabled = this.crosshair.isDynamicBowEnabled.get();
-        var isDynamicAttackIndicatorEnabled = this.crosshair.isDynamicAttackIndicatorEnabled.get();
-
-        if (isSpectator || !isHoldingItem || (!isDynamicAttackIndicatorEnabled && !isDynamicBowEnabled))
-            return baseGap;
-
-        var gapModifier = 2;
-        var usageItemDuration = this.usageItemsDurations.get(this.mc.player.getUseItem().getItem());
-
-        if (isDynamicBowEnabled && usageItemDuration != null) {
-            float progress;
-
-            if (this.mc.player.getUseItem().getItem() == Items.CROSSBOW) {
-                usageItemDuration = (float)CrossbowItem.getChargeDuration(this.mc.player.getUseItem());
-                progress = Math.min(usageItemDuration, this.mc.player.getTicksUsingItem());
-            }
-            else {
-                progress = Math.min(usageItemDuration, this.mc.player.getTicksUsingItem());
-            }
-
-            return baseGap + Math.round((usageItemDuration - progress) * gapModifier);
-        }
-        else if (isDynamicAttackIndicatorEnabled) {
-            var hasAttackSpeedModifier = mainHandItem
-                .getItem()
-                .getAttributeModifiers(EquipmentSlot.MAINHAND, mainHandItem)
-                .entries()
-                .stream()
-                .anyMatch(x -> x.getKey().equals(Attributes.ATTACK_SPEED));
-
-            if (!hasAttackSpeedModifier)
-                return baseGap;
-
-            var currentAttackUsage = this.mc.player.getAttackStrengthScale(0.0F);
-            var maxAttackUsage = 1.0F;
-
-            if (this.mc.player.getCurrentItemAttackStrengthDelay() > 5.0F && currentAttackUsage < maxAttackUsage)
-                return baseGap + Math.round((maxAttackUsage - currentAttackUsage) * gapModifier * 20);
-        }
-
-        return baseGap;
     }
 
     private RGBA calculateColour() {
