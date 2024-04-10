@@ -2,6 +2,7 @@ package com.wjbaker.ccm.crosshair.rendering;
 
 import com.google.common.collect.ImmutableSet;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
+import com.wjbaker.ccm.crosshair.computed.ComputeColour;
 import com.wjbaker.ccm.crosshair.computed.ComputeGap;
 import com.wjbaker.ccm.crosshair.computed.ComputeIndicators;
 import com.wjbaker.ccm.type.RGBA;
@@ -40,7 +41,7 @@ public final class ComputedProperties {
         this.crosshair = crosshair;
 
         this.gap = ComputeGap.compute(crosshair);
-        this.colour = this.calculateColour();
+        this.colour = ComputeColour.compute(crosshair);
         this.isVisible = this.calculateIsVisible();
     }
 
@@ -54,54 +55,6 @@ public final class ComputedProperties {
 
     public boolean isVisible() {
         return this.isVisible;
-    }
-
-    private RGBA calculateColour() {
-        var target = this.mc.crosshairPickEntity;
-
-        if (this.mc.player != null && target instanceof LivingEntity livingTarget && !this.mc.player.canAttack(livingTarget))
-            return this.crosshair.colour.get();
-
-        var isHighlightPlayersEnabled = this.crosshair.isHighlightPlayersEnabled.get();
-        if (isHighlightPlayersEnabled && target instanceof Player) {
-            return this.crosshair.highlightPlayersColour.get();
-        }
-
-        var isHighlightHostilesEnabled = this.crosshair.isHighlightHostilesEnabled.get();
-        if (isHighlightHostilesEnabled && target instanceof Enemy) {
-            return this.crosshair.highlightHostilesColour.get();
-        }
-
-        var isHighlightPassivesEnabled = this.crosshair.isHighlightPassivesEnabled.get();
-        if (isHighlightPassivesEnabled && target instanceof LivingEntity) {
-            return this.crosshair.highlightPassivesColour.get();
-        }
-
-        if (this.crosshair.isRainbowEnabled.get())
-            return this.getRainbowColour();
-
-        return this.crosshair.colour.get();
-    }
-
-    private RGBA getRainbowColour() {
-        var ticks = this.crosshair.rainbowTicks.get() + 1;
-
-        if (ticks > 125000)
-            ticks = 0;
-
-        this.crosshair.rainbowTicks.set(ticks);
-
-        var opacity = this.crosshair.colour.get().getOpacity();
-        var speed = this.crosshair.rainbowSpeed.get();
-
-        return new RGBA(255, 255, 255, opacity)
-            .setRed(this.getRainbowColourComponent(ticks, 0.0F, speed))
-            .setGreen(this.getRainbowColourComponent(ticks, 2.0F, speed))
-            .setBlue(this.getRainbowColourComponent(ticks, 4.0F, speed));
-    }
-
-    private int getRainbowColourComponent(final int ticks, final float offset, final int speed) {
-        return (int)(Math.sin((ticks * speed / 20000.0F) + offset) * 127 + 128);
     }
 
     private boolean calculateIsVisible() {
