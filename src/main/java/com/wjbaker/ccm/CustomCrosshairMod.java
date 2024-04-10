@@ -2,7 +2,7 @@ package com.wjbaker.ccm;
 
 import com.wjbaker.ccm.config.ConfigManager;
 import com.wjbaker.ccm.config.GlobalProperties;
-import com.wjbaker.ccm.crosshair.render.CrosshairRenderManager;
+import com.wjbaker.ccm.crosshair.rendering.CrosshairRenderManager;
 import com.wjbaker.ccm.events.KeyBindings;
 import com.wjbaker.ccm.events.ModEventBusRegistrar;
 import com.wjbaker.ccm.helpers.Helper;
