@@ -222,7 +222,6 @@ public final class ComputedProperties {
                     var remainingDamage = tool.getMaxDamage() - tool.getDamageValue();
                     if (remainingDamage <= 10) {
                         indicatorItems.add(new IndicatorItem("" + remainingDamage, tool));
-                        indicatorItems.add(new IndicatorItem("" + remainingDamage, tool));
                     }
                 }
             }
