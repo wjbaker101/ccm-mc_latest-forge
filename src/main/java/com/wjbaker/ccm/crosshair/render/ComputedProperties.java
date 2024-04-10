@@ -228,7 +228,7 @@ public final class ComputedProperties {
             }
         }
 
-        if (this.mc.player != null) {
+        if (crosshair.isProjectileIndicatorEnabled.get() && this.mc.player != null) {
             var tool = mc.player.getMainHandItem();
             var projectile = this.mc.player.getProjectile(tool);
             if (projectile != ItemStack.EMPTY) {

@@ -50,7 +50,7 @@ public final class EditCrosshairGuiScreen extends GuiScreen {
         var highlightSettingsPanel = new HighlightSettingsGuiPanel(this, -1, -1, this.panelWidth, -1);
         var itemCooldownSettingsPanel = new ItemCooldownSettingsGuiPanel(this, -1, -1, this.panelWidth, -1);
         var rainbowSettingsPanel = new RainbowSettingsGuiPanel(this, -1, -1, this.panelWidth, -1);
-        var toolDamageSettingsPanel = new ToolDamageSettingsGuiPanel(this, this.crosshair, -1, -1, this.panelWidth, -1);
+        var toolDamageSettingsPanel = new IndicatorSettingsGuiPanel(this, this.crosshair, -1, -1, this.panelWidth, -1);
 
         this.mainPanel.clearComponents();
         this.mainPanel.addComponent(generalSettingsPanel);
