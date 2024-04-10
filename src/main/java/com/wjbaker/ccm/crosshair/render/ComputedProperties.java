@@ -3,6 +3,7 @@ package com.wjbaker.ccm.crosshair.render;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
+import com.wjbaker.ccm.crosshair.render.types.IndicatorItem;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,6 +15,8 @@ import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -207,5 +210,24 @@ public final class ComputedProperties {
         var isOffhand = items.contains(player.getOffhandItem().getItem());
 
         return isMainHand || (isOffhand && mainHandItem.isEmpty());
+    }
+
+    public List<IndicatorItem> getIndicatorItems() {
+        var indicatorItems = new ArrayList<IndicatorItem>();
+
+        if (crosshair.isToolDamageEnabled.get()) {
+            if (this.mc.player != null) {
+                var tool = mc.player.getMainHandItem();
+                if (tool.isDamageableItem()) {
+                    var remainingDamage = tool.getMaxDamage() - tool.getDamageValue();
+                    if (remainingDamage <= 10) {
+                        indicatorItems.add(new IndicatorItem("" + remainingDamage, tool));
+                        indicatorItems.add(new IndicatorItem("" + remainingDamage, tool));
+                    }
+                }
+            }
+        }
+
+        return indicatorItems;
     }
 }

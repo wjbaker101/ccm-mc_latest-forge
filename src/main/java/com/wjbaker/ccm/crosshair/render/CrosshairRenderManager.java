@@ -203,49 +203,39 @@ public final class CrosshairRenderManager {
         final ComputedProperties computedProperties,
         final int x, final int y) {
 
-        if (!crosshair.isToolDamageEnabled.get())
-            return;
-
-        var drawX = x + crosshair.gap.get() + 5;
-        var drawY = y + crosshair.gap.get() + 5;
+        var drawX = crosshair.gap.get() + 5;
+        var drawY = crosshair.gap.get() + 5;
 
         var mc = Minecraft.getInstance();
-        if (mc.player == null)
-            return;
-
-        var tool = mc.player.getMainHandItem();
-        if (!tool.isDamageableItem())
-            return;
-
-        var remainingDamage = tool.getMaxDamage() - tool.getDamageValue();
-
-        if (remainingDamage > 10)
-            return;
-
         var itemRenderer = mc.getItemRenderer();
-        var model = itemRenderer.getModel(tool, null, null, 0);
+        var indicatorItems = computedProperties.getIndicatorItems();
 
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-        var matrixStack = guiGraphics.pose();
-        matrixStack.pushPose();
-        matrixStack.translate(8.0D, 8.0D, 0.0D);
-        matrixStack.scale(1.0F, -1.0F, 1.0F);
-        matrixStack.scale(8F, 8F, 8F);
-        RenderSystem.applyModelViewMatrix();
-
         Lighting.setupForFlatItems();
 
-        itemRenderer.render(tool, ItemDisplayContext.GUI, false, guiGraphics.pose(), guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, model);
-        guiGraphics.bufferSource().endBatch();
+        var matrixStack = guiGraphics.pose();
+        var bufferSource = guiGraphics.bufferSource();
+
+        for (var indicatorItem : indicatorItems) {
+            matrixStack.pushPose();
+            matrixStack.translate(drawX, drawY, 0.0D);
+            matrixStack.scale(1.0F, -1.0F, 1.0F);
+            matrixStack.scale(8F, 8F, 8F);
+
+            var model = itemRenderer.getModel(indicatorItem.getIcon(), null, null, 0);
+            itemRenderer.render(indicatorItem.getIcon(), ItemDisplayContext.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, model);
+
+            bufferSource.endBatch();
+            matrixStack.popPose();
+
+            this.renderManager.drawSmallText(guiGraphics, indicatorItem.getText(), drawX + 5, drawY, ModTheme.WHITE, true);
+
+            drawX += 15;
+        }
 
         RenderSystem.enableDepthTest();
         Lighting.setupFor3DItems();
-
-        matrixStack.popPose();
-
-        this.renderManager.drawSmallText(guiGraphics, "" + remainingDamage, drawX + 6 - x, drawY - y, ModTheme.WHITE, true);
     }
 }
