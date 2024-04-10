@@ -234,13 +234,13 @@ public final class CrosshairRenderManager {
             matrixStack.scale(1.0F, -1.0F, 1.0F);
             matrixStack.scale(8F, 8F, 8F);
 
-            var model = itemRenderer.getModel(indicatorItem.getIcon(), null, null, 0);
-            itemRenderer.render(indicatorItem.getIcon(), ItemDisplayContext.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, model);
+            var model = itemRenderer.getModel(indicatorItem.icon(), null, null, 0);
+            itemRenderer.render(indicatorItem.icon(), ItemDisplayContext.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, model);
 
             bufferSource.endBatch();
             matrixStack.popPose();
 
-            this.renderManager.drawSmallText(guiGraphics, indicatorItem.getText(), drawX + 5, drawY, ModTheme.WHITE, true);
+            this.renderManager.drawSmallText(guiGraphics, indicatorItem.text(), drawX + 5, drawY, ModTheme.WHITE, true);
 
             drawX += 15;
         }

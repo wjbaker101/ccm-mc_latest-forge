@@ -3,7 +3,7 @@ package com.wjbaker.ccm.crosshair.rendering;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
-import com.wjbaker.ccm.crosshair.rendering.types.IndicatorItem;
+import com.wjbaker.ccm.crosshair.computed.ComputeIndicators;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -13,10 +13,8 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +23,7 @@ public final class ComputedProperties {
 
     private final Minecraft mc;
     private final CustomCrosshair crosshair;
+    private final ComputeIndicators computeIndicators;
 
     private final int gap;
     private final RGBA colour;
@@ -50,6 +49,7 @@ public final class ComputedProperties {
     public ComputedProperties(final CustomCrosshair crosshair) {
         this.mc = Minecraft.getInstance();
         this.crosshair = crosshair;
+        this.computeIndicators = new ComputeIndicators(crosshair);
 
         this.gap = this.calculateGap();
         this.colour = this.calculateColour();
@@ -213,29 +213,7 @@ public final class ComputedProperties {
         return isMainHand || (isOffhand && mainHandItem.isEmpty());
     }
 
-    public List<IndicatorItem> getIndicatorItems() {
-        var indicatorItems = new ArrayList<IndicatorItem>();
-
-        if (crosshair.isToolDamageEnabled.get()) {
-            if (this.mc.player != null) {
-                var tool = mc.player.getMainHandItem();
-                if (tool.isDamageableItem()) {
-                    var remainingDamage = tool.getMaxDamage() - tool.getDamageValue();
-                    if (remainingDamage <= 10) {
-                        indicatorItems.add(new IndicatorItem("" + remainingDamage, tool));
-                    }
-                }
-            }
-        }
-
-        if (crosshair.isProjectileIndicatorEnabled.get() && this.mc.player != null) {
-            var tool = mc.player.getMainHandItem();
-            var projectile = this.mc.player.getProjectile(tool);
-            if (projectile != ItemStack.EMPTY) {
-                indicatorItems.add(new IndicatorItem("" + projectile.getCount(), projectile));
-            }
-        }
-
-        return indicatorItems;
+    public List<ComputeIndicators.IndicatorItem> getIndicatorItems() {
+        return this.computeIndicators.getIndicatorItems();
     }
 }
