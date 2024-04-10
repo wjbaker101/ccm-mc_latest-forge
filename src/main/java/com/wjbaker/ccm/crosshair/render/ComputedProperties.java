@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
@@ -224,6 +225,14 @@ public final class ComputedProperties {
                         indicatorItems.add(new IndicatorItem("" + remainingDamage, tool));
                     }
                 }
+            }
+        }
+
+        if (this.mc.player != null) {
+            var tool = mc.player.getMainHandItem();
+            var projectile = this.mc.player.getProjectile(tool);
+            if (projectile != ItemStack.EMPTY) {
+                indicatorItems.add(new IndicatorItem("" + projectile.getCount(), projectile));
             }
         }
 
