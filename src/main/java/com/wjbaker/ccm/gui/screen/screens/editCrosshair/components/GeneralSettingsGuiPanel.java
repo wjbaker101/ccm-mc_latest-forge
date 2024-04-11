@@ -2,12 +2,12 @@ package com.wjbaker.ccm.gui.screen.screens.editCrosshair.components;
 
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
-import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import com.wjbaker.ccm.gui.component.components.*;
 import com.wjbaker.ccm.gui.component.event.IOnClickEvent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.gui.screen.screens.drawCrosshair.DrawCrosshairGuiScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
 
 public final class GeneralSettingsGuiPanel extends PanelGuiComponent {
 
@@ -22,31 +22,31 @@ public final class GeneralSettingsGuiPanel extends PanelGuiComponent {
 
         CustomCrosshair crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
 
-        HeadingGuiComponent heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, "General Settings");
+        var heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.general_settings"));
 
-        CheckBoxGuiComponent isModEnabledCheckbox = new CheckBoxGuiComponent(
+        var isModEnabledCheckbox = new CheckBoxGuiComponent(
             this.parentGuiScreen,
             -1, -1,
-            "Enable " + CustomCrosshairMod.TITLE,
+            I18n.get("custom_crosshair_mod.screen.edit_crosshair.enable_mod") + " " + CustomCrosshairMod.TITLE,
             CustomCrosshairMod.INSTANCE.properties().getIsModEnabled().get());
         isModEnabledCheckbox.bind(CustomCrosshairMod.INSTANCE.properties().getIsModEnabled());
 
-        EnumSliderGuiComponent<BaseCrosshairStyle.Styles> crosshairStyleSlider = new EnumSliderGuiComponent<>(
+        var crosshairStyleSlider = new EnumSliderGuiComponent<>(
             this.parentGuiScreen,
             -1, -1,
             50,
-            "Crosshair Style",
+            I18n.get("custom_crosshair_mod.screen.edit_crosshair.crosshair_style"),
             crosshair.style.get());
         crosshairStyleSlider.bind(crosshair.style);
 
         var isKeepDebugEnabledCheckbox = new CheckBoxGuiComponent(
             this.parentGuiScreen,
             -1, -1,
-            "Keep Default Debug Crosshair When HUD Is Visible",
+            I18n.get("custom_crosshair_mod.screen.edit_crosshair.keep_vanilla_in_debug_hud"),
             crosshair.isKeepDebugEnabled.get());
         isKeepDebugEnabledCheckbox.bind(crosshair.isKeepDebugEnabled);
 
-        var drawCrosshairButton = new ButtonGuiComponent(this.parentGuiScreen, -1, -1, 90, 15, "Draw Crosshair");
+        var drawCrosshairButton = new ButtonGuiComponent(this.parentGuiScreen, -1, -1, 90, 15, I18n.get("custom_crosshair_mod.screen.edit_crosshair.draw_crosshair"));
         drawCrosshairButton.addEvent(IOnClickEvent.class, () -> {
             Minecraft.getInstance().setScreen(new DrawCrosshairGuiScreen());
         });

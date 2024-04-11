@@ -3,9 +3,10 @@ package com.wjbaker.ccm.gui.screen.screens.editCrosshair.components;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.gui.component.components.CheckBoxGuiComponent;
-import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.gui.component.components.HeadingGuiComponent;
+import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
+import net.minecraft.client.resources.language.I18n;
 
 public final class VisibilitySettingsGuiPanel extends PanelGuiComponent {
 
@@ -20,38 +21,38 @@ public final class VisibilitySettingsGuiPanel extends PanelGuiComponent {
 
         CustomCrosshair crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
 
-        HeadingGuiComponent heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, "Visibility Settings");
+        var heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visibility_settings"));
 
-        CheckBoxGuiComponent isVisibleDefaultCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible by Default", crosshair.isVisibleDefault.get());
+        var isVisibleDefaultCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_by_default"), crosshair.isVisibleDefault.get());
         isVisibleDefaultCheckBox.bind(crosshair.isVisibleDefault);
 
-        CheckBoxGuiComponent isVisibleHiddenGuiCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible Hidden Gui", crosshair.isVisibleHiddenGui.get());
+        var isVisibleHiddenGuiCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_hidden_gui"), crosshair.isVisibleHiddenGui.get());
         isVisibleHiddenGuiCheckBox.bind(crosshair.isVisibleHiddenGui);
 
-        CheckBoxGuiComponent isVisibleDebugCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible Debug Gui", crosshair.isVisibleDebug.get());
+        var isVisibleDebugCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_debug_gui"), crosshair.isVisibleDebug.get());
         isVisibleDebugCheckBox.bind(crosshair.isVisibleDebug);
 
-        CheckBoxGuiComponent isVisibleThirdPersonCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible in Third Person", crosshair.isVisibleThirdPerson.get());
+        var isVisibleThirdPersonCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_third_person"), crosshair.isVisibleThirdPerson.get());
         isVisibleThirdPersonCheckBox.bind(crosshair.isVisibleThirdPerson);
 
-        CheckBoxGuiComponent isVisibleSpectatorCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible in Spectator Mode", crosshair.isVisibleSpectator.get());
+        var isVisibleSpectatorCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_spectator_mode"), crosshair.isVisibleSpectator.get());
         isVisibleSpectatorCheckBox.bind(crosshair.isVisibleSpectator);
 
-        CheckBoxGuiComponent isVisibleHoldingRangedWeapon = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible Holding Ranged Weapon", crosshair.isVisibleHoldingRangedWeapon.get());
+        var isVisibleHoldingRangedWeapon = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_holding_ranged_weapon"), crosshair.isVisibleHoldingRangedWeapon.get());
         isVisibleHoldingRangedWeapon.bind(crosshair.isVisibleHoldingRangedWeapon);
 
-        CheckBoxGuiComponent isVisibleHoldingThrowableItem = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible Holding Throwable Item", crosshair.isVisibleHoldingThrowableItem.get());
+        var isVisibleHoldingThrowableItem = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_holding_throwable_item"), crosshair.isVisibleHoldingThrowableItem.get());
         isVisibleHoldingThrowableItem.bind(crosshair.isVisibleHoldingThrowableItem);
 
         var isVisibleUsingSpyglassCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Visible Using Spyglass", crosshair.isVisibleUsingSpyglass.get());
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.visible_using_spyglass"), crosshair.isVisibleUsingSpyglass.get());
         isVisibleUsingSpyglassCheckBox.bind(crosshair.isVisibleUsingSpyglass);
 
         this.addComponent(heading);

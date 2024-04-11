@@ -3,10 +3,11 @@ package com.wjbaker.ccm.gui.screen.screens.editCrosshair.components;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.gui.component.components.CheckBoxGuiComponent;
-import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.gui.component.components.ColourPickerGuiComponent;
 import com.wjbaker.ccm.gui.component.components.HeadingGuiComponent;
+import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
+import net.minecraft.client.resources.language.I18n;
 
 public final class OutlineSettingsGuiPanel extends PanelGuiComponent {
 
@@ -21,14 +22,13 @@ public final class OutlineSettingsGuiPanel extends PanelGuiComponent {
 
         CustomCrosshair crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
 
-        HeadingGuiComponent heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, "Outline Settings");
+        var heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.outline_settings"));
 
-        CheckBoxGuiComponent isOutlineEnabledCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Enable Outline", crosshair.isOutlineEnabled.get());
+        var isOutlineEnabledCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.enable_outline"), crosshair.isOutlineEnabled.get());
         isOutlineEnabledCheckBox.bind(crosshair.isOutlineEnabled);
 
-        ColourPickerGuiComponent outlineColourColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, crosshair, -1, -1, "Outline Colour");
+        var outlineColourColourPicker = new ColourPickerGuiComponent(this.parentGuiScreen, crosshair, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.outline_colour"));
         outlineColourColourPicker.bind(crosshair.outlineColour);
 
         this.addComponent(heading);

@@ -3,10 +3,11 @@ package com.wjbaker.ccm.gui.screen.screens.editCrosshair.components;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.gui.component.components.CheckBoxGuiComponent;
-import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.gui.component.components.ColourPickerGuiComponent;
 import com.wjbaker.ccm.gui.component.components.HeadingGuiComponent;
+import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
+import net.minecraft.client.resources.language.I18n;
 
 public final class HighlightSettingsGuiPanel extends PanelGuiComponent {
 
@@ -21,30 +22,30 @@ public final class HighlightSettingsGuiPanel extends PanelGuiComponent {
 
         CustomCrosshair crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
 
-        HeadingGuiComponent heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, "Highlight Settings");
+        var heading = new HeadingGuiComponent(this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.highlight_settings"));
 
-        CheckBoxGuiComponent isHighlightHostilesEnabledCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Enable Hostile Mob Highlighting", crosshair.isHighlightHostilesEnabled.get());
+        var isHighlightHostilesEnabledCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.enable_highlight_hostiles"), crosshair.isHighlightHostilesEnabled.get());
         isHighlightHostilesEnabledCheckBox.bind(crosshair.isHighlightHostilesEnabled);
 
-        ColourPickerGuiComponent hostilesColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, crosshair, -1, -1, "Hostile Mobs Colour");
+        var hostilesColourPicker = new ColourPickerGuiComponent(
+            this.parentGuiScreen, crosshair, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.highlight_hostiles_colour"));
         hostilesColourPicker.bind(crosshair.highlightHostilesColour);
 
-        CheckBoxGuiComponent isHighlightPassivesEnabledCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Enable Passive Mob Highlighting", crosshair.isHighlightPassivesEnabled.get());;
+        var isHighlightPassivesEnabledCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.enable_highlight_passives"), crosshair.isHighlightPassivesEnabled.get());
         isHighlightPassivesEnabledCheckBox.bind(crosshair.isHighlightPassivesEnabled);
 
-        ColourPickerGuiComponent passivesColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, crosshair, -1, -1, "Passive Mobs Colour");
+        var passivesColourPicker = new ColourPickerGuiComponent(
+            this.parentGuiScreen, crosshair, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.highlight_passives_colour"));
         passivesColourPicker.bind(crosshair.highlightPassivesColour);
 
-        CheckBoxGuiComponent isHighlightPlayersEnabledCheckBox = new CheckBoxGuiComponent(
-            this.parentGuiScreen, -1, -1, "Enable Player Highlighting", crosshair.isHighlightPlayersEnabled.get());;
+        var isHighlightPlayersEnabledCheckBox = new CheckBoxGuiComponent(
+            this.parentGuiScreen, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.enable_highlight_players"), crosshair.isHighlightPlayersEnabled.get());
         isHighlightPlayersEnabledCheckBox.bind(crosshair.isHighlightPlayersEnabled);
 
-        ColourPickerGuiComponent playersColourPicker = new ColourPickerGuiComponent(
-            this.parentGuiScreen, crosshair, -1, -1, "Players Colour");
+        var playersColourPicker = new ColourPickerGuiComponent(
+            this.parentGuiScreen, crosshair, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_crosshair.highlight_players_colour"));
         playersColourPicker.bind(crosshair.highlightPlayersColour);
 
         this.addComponent(heading);
