@@ -84,13 +84,13 @@ public final class CrosshairRenderManager {
         transformMatrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
         RenderSystem.applyModelViewMatrix();
 
-        this.drawDefaultAttackIndicator(guiGraphics, computedProperties, 0, 0);
+        this.drawDefaultAttackIndicator(guiGraphics);
 
         if (isDotEnabled && crosshair.style.get() != BaseCrosshairStyle.Styles.VANILLA)
             this.renderManager.drawCircle(guiGraphics.pose(), 0, 0, 0.5F, 1.0F, crosshair.dotColour.get());
 
         if (isItemCooldownEnabled)
-            this.drawItemCooldownIndicator(guiGraphics.pose(), crosshair, computedProperties, 0, 0);
+            this.drawItemCooldownIndicator(guiGraphics.pose(), crosshair, computedProperties);
 
         style.draw(guiGraphics, 0, 0, computedProperties);
 
@@ -137,9 +137,7 @@ public final class CrosshairRenderManager {
     private void drawItemCooldownIndicator(
         final PoseStack matrixStack,
         final CustomCrosshair crosshair,
-        final ComputedProperties computedProperties,
-        final int x,
-        final int y) {
+        final ComputedProperties computedProperties) {
 
         var player = Minecraft.getInstance().player;
         if (player == null)
@@ -161,7 +159,7 @@ public final class CrosshairRenderManager {
 
             this.renderManager.drawPartialCircle(
                 matrixStack,
-                x, y,
+                0, 0,
                 computedProperties.gap() + maxSize + offset,
                 0,
                 progress,
@@ -172,11 +170,7 @@ public final class CrosshairRenderManager {
         }
     }
 
-    private void drawDefaultAttackIndicator(
-        final GuiGraphics guiGraphics,
-        final ComputedProperties computedProperties,
-        final int x, final int y) {
-
+    private void drawDefaultAttackIndicator(final GuiGraphics guiGraphics) {
         RenderSystem.blendFuncSeparate(
             GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
             GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
@@ -194,8 +188,8 @@ public final class CrosshairRenderManager {
                 flag = flag & mc.crosshairPickEntity.isAlive();
             }
 
-            var drawX = x - 8;
-            var drawY = y - 7 + 16;
+            var drawX = -8;
+            var drawY = -7 + 16;
 
             if (flag) {
                 guiGraphics.blit(GUI_ICONS_LOCATION, drawX, drawY, 0, 68, 94, 16, 16, 256, 256);

@@ -14,7 +14,7 @@ public final class ComputedProperties {
     private final int gap;
     private final RGBA colour;
     private final boolean isVisible;
-    private List<ComputeIndicators.IndicatorItem> indicatorItems;
+    private final List<ComputeIndicators.IndicatorItem> indicatorItems;
 
     public ComputedProperties(final CustomCrosshair crosshair) {
         this.gap = ComputeGap.compute(crosshair);

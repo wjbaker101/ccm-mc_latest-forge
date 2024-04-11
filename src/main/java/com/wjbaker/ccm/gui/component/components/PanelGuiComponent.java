@@ -104,10 +104,6 @@ public class PanelGuiComponent extends GuiComponent {
         this.components.add(component);
     }
 
-    public void removeComponent(final GuiComponent component) {
-        this.components.remove(component);
-    }
-
     public void pack() {
         if (this.orientation == PanelOrientation.VERTICAL)
             this.packVertically();
@@ -161,9 +157,5 @@ public class PanelGuiComponent extends GuiComponent {
         super.setPosition(x, y);
 
         this.pack();
-    }
-
-    public void setScissoringEnabled(final boolean isScissoringEnabled) {
-        this.isScissoringEnabled = isScissoringEnabled;
     }
 }
