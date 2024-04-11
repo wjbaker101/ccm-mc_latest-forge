@@ -16,6 +16,7 @@ import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.type.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.language.I18n;
 
 public final class EditColourGuiScreen extends GuiScreen {
 
@@ -30,38 +31,40 @@ public final class EditColourGuiScreen extends GuiScreen {
         this.panelWidth = 300;
         this.colour = colour;
 
-        HeadingGuiComponent titleHeading = new HeadingGuiComponent(this, -1, -1, "Edit Colour");
+        var titleHeading = new HeadingGuiComponent(this, -1, -1, I18n.get("custom_crosshair_mod.screen.edit_colour.heading"));
 
-        IntegerProperty red = new IntegerProperty("fake_red", this.colour.get().getRed());
-        IntegerSliderGuiComponent redSlider = new IntegerSliderGuiComponent(this, -1, -1, 260, "Red", 0, 255, red.get());
+        var red = new IntegerProperty("fake_red", colour.get().getRed());
+        var redSlider = new IntegerSliderGuiComponent(this, -1, -1, 260, I18n.get("custom_crosshair_mod.screen.edit_colour.red"), 0, 255, red.get());
         redSlider.setBaseThumbColour(new RGBA(240, 20, 20, 255));
         redSlider.setHoverThumbColour(new RGBA(210, 40, 40, 255));
         redSlider.bind(red);
-        redSlider.addEvent(IOnValueChangedEvent.class, () -> this.colour.set(this.colour.get().setRed(redSlider.getValue())));
+        redSlider.addEvent(IOnValueChangedEvent.class, () -> colour.set(colour.get().setRed(redSlider.getValue())));
 
-        IntegerProperty green = new IntegerProperty("fake_green", this.colour.get().getGreen());
-        IntegerSliderGuiComponent greenSlider = new IntegerSliderGuiComponent(this, -1, -1, 260, "Green", 0, 255, green.get());
+        var green = new IntegerProperty("fake_green", colour.get().getGreen());
+        var greenSlider = new IntegerSliderGuiComponent(this, -1, -1, 260, I18n.get("custom_crosshair_mod.screen.edit_colour.green"), 0, 255, green.get());
         greenSlider.setBaseThumbColour(new RGBA(20, 240, 20, 255));
         greenSlider.setHoverThumbColour(new RGBA(40, 210, 40, 255));
         greenSlider.bind(green);
-        greenSlider.addEvent(IOnValueChangedEvent.class, () -> this.colour.set(this.colour.get().setGreen(greenSlider.getValue())));
+        greenSlider.addEvent(IOnValueChangedEvent.class, () -> colour.set(colour.get().setGreen(greenSlider.getValue())));
 
-        IntegerProperty blue = new IntegerProperty("fake_blue", this.colour.get().getBlue());
-        IntegerSliderGuiComponent blueSlider = new IntegerSliderGuiComponent(this, -1, -1, 260, "Blue", 0, 255, blue.get());
+        var blue = new IntegerProperty("fake_blue", colour.get().getBlue());
+        var blueSlider = new IntegerSliderGuiComponent(this, -1, -1, 260, I18n.get("custom_crosshair_mod.screen.edit_colour.blue"), 0, 255, blue.get());
         blueSlider.setBaseThumbColour(new RGBA(20, 20, 240, 255));
         blueSlider.setHoverThumbColour(new RGBA(40, 40, 210, 255));
         blueSlider.bind(blue);
-        blueSlider.addEvent(IOnValueChangedEvent.class, () -> this.colour.set(this.colour.get().setBlue(blueSlider.getValue())));
+        blueSlider.addEvent(IOnValueChangedEvent.class, () -> colour.set(colour.get().setBlue(blueSlider.getValue())));
 
-        IntegerProperty opacity = new IntegerProperty("fake_opacity", this.colour.get().getOpacity());
-        IntegerSliderGuiComponent opacitySlider = new IntegerSliderGuiComponent(this, -1, -1, 260, "Opacity", 0, 255, opacity.get());
+        var opacity = new IntegerProperty("fake_opacity", colour.get().getOpacity());
+        var opacitySlider = new IntegerSliderGuiComponent(this, -1, -1, 260, I18n.get("custom_crosshair_mod.screen.edit_colour.opacity"), 0, 255, opacity.get());
         opacitySlider.setBaseThumbColour(new RGBA(250, 250, 250, 255));
         opacitySlider.setHoverThumbColour(new RGBA(240, 240, 240, 255));
         opacitySlider.bind(opacity);
-        opacitySlider.addEvent(IOnValueChangedEvent.class, () -> this.colour.set(this.colour.get().setOpacity(opacitySlider.getValue())));
+        opacitySlider.addEvent(IOnValueChangedEvent.class, () -> colour.set(colour.get().setOpacity(opacitySlider.getValue())));
 
-        ButtonGuiComponent doneButton = new ButtonGuiComponent(this, -1, -1, 50, 35, "Done");
-        doneButton.addEvent(IOnClickEvent.class, () -> Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(crosshair)));
+        var doneButton = new ButtonGuiComponent(this, -1, -1, 50, 35, I18n.get("custom_crosshair_mod.screen.edit_colour.done"));
+        doneButton.addEvent(
+            IOnClickEvent.class,
+            () -> Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(crosshair)));
 
         ColourPreviewGuiComponent colourPreview = new ColourPreviewGuiComponent(this, -1, -1, this.colour);
 
