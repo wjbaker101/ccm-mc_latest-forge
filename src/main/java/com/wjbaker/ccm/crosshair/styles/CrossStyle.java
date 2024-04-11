@@ -3,7 +3,7 @@ package com.wjbaker.ccm.crosshair.styles;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
-import com.wjbaker.ccm.types.RGBA;
+import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.gui.GuiGraphics;
 
 public final class CrossStyle extends BaseCrosshairStyle {

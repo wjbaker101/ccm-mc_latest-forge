@@ -1,7 +1,7 @@
 package com.wjbaker.ccm.crosshair.computed.properties;
 
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
-import com.wjbaker.ccm.types.RGBA;
+import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;

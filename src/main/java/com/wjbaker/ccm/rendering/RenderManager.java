@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.wjbaker.ccm.crosshair.custom.CustomCrosshairDrawer;
 import com.wjbaker.ccm.gui.types.GuiBounds;
 import com.wjbaker.ccm.gui.types.IDrawInsideWindowCallback;
-import com.wjbaker.ccm.types.RGBA;
+import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
