@@ -5,13 +5,8 @@ import org.lwjgl.glfw.GLFW;
 
 public final class KeyBindings {
 
-    public static final KeyMapping EDIT_CROSSHAIR = create("edit_crosshair", GLFW.GLFW_KEY_GRAVE_ACCENT, "category");
-
-    private static KeyMapping create(final String type, final int key, final String category) {
-        return new KeyMapping(identifier(type), key, identifier(category));
-    }
-
-    private static String identifier(final String value) {
-        return "key.custom-crosshair-mod." + value;
-    }
+    public static final KeyMapping EDIT_CROSSHAIR = new KeyMapping(
+        "keybind.custom_crosshair_mod.open_edit_crosshair_gui",
+        GLFW.GLFW_KEY_GRAVE_ACCENT,
+        "gui.custom_crosshair_mod.mod_keybinds_category");
 }
