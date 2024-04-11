@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 public abstract class BaseCrosshairStyle {
 
     public enum Styles {
-        DEFAULT,
+        VANILLA,
         CROSS,
         CIRCLE,
         SQUARE,

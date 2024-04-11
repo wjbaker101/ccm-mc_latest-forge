@@ -9,11 +9,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public final class DefaultStyle extends BaseCrosshairStyle {
+public final class VanillaStyle extends BaseCrosshairStyle {
 
     private final ResourceLocation guiIconsLocation;
 
-    public DefaultStyle(final CustomCrosshair crosshair) {
+    public VanillaStyle(final CustomCrosshair crosshair) {
         super(crosshair);
 
         this.guiIconsLocation = new ResourceLocation("textures/gui/icons.png");
