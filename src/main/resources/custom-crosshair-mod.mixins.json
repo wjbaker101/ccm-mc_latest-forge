@@ -1,0 +1,13 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.wjbaker.ccm.mixins",
+    "mixins": [],
+    "client": [
+        "GuiMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "refmap": "mixins.ccm.refmap.json"
+}

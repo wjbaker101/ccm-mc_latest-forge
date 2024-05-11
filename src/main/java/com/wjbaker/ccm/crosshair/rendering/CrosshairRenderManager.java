@@ -22,9 +22,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Set;
 
@@ -53,12 +50,6 @@ public final class CrosshairRenderManager {
 
         var guiGraphics = new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
 
-        MinecraftForge.EVENT_BUS.post(new RenderGuiOverlayEvent.Pre(
-            Minecraft.getInstance().getWindow(),
-            guiGraphics,
-            1.0F,
-            VanillaGuiOverlay.CROSSHAIR.type()));
-
         var calculatedStyle = Minecraft.getInstance().getDebugOverlay().showDebugScreen() && crosshair.isKeepDebugEnabled.get()
             ? BaseCrosshairStyle.Styles.DEBUG
             : crosshair.style.get();
@@ -67,9 +58,7 @@ public final class CrosshairRenderManager {
         var isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
         var isDotEnabled = crosshair.isDotEnabled.get();
 
-        var transformMatrixStack = calculatedStyle == BaseCrosshairStyle.Styles.DEBUG
-            ? RenderSystem.getModelViewStack()
-            : guiGraphics.pose();
+        var transformMatrixStack = guiGraphics.pose();
 
         var renderX = x + crosshair.offsetX.get();
         var renderY = y + crosshair.offsetY.get();
@@ -95,12 +84,6 @@ public final class CrosshairRenderManager {
         style.draw(guiGraphics, 0, 0, computedProperties);
 
         this.postTransformation(transformMatrixStack);
-
-        MinecraftForge.EVENT_BUS.post(new RenderGuiOverlayEvent.Post(
-            Minecraft.getInstance().getWindow(),
-            guiGraphics,
-            1.0F,
-            VanillaGuiOverlay.CROSSHAIR.type()));
     }
 
     private BaseCrosshairStyle mapCrosshairStyle(final BaseCrosshairStyle.Styles style, final CustomCrosshair crosshair) {

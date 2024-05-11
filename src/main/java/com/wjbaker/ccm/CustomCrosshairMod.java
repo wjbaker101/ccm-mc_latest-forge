@@ -5,15 +5,12 @@ import com.wjbaker.ccm.config.GlobalProperties;
 import com.wjbaker.ccm.crosshair.rendering.CrosshairRenderManager;
 import com.wjbaker.ccm.events.KeyBindings;
 import com.wjbaker.ccm.events.ModEventBusRegistrar;
-import com.wjbaker.ccm.helpers.Helper;
 import com.wjbaker.ccm.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
+import com.wjbaker.ccm.helpers.Helper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -105,14 +102,6 @@ public final class CustomCrosshairMod {
     public static void onClientTickEvent(final TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().screen == null && KeyBindings.EDIT_CROSSHAIR.isDown())
             Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(CustomCrosshairMod.INSTANCE.properties.getCrosshair()));
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onRenderCrosshair(final RenderGuiOverlayEvent.Pre event) {
-        if (event.getOverlay().id() != VanillaGuiOverlay.CROSSHAIR.id())
-            return;
-
-        event.setCanceled(CustomCrosshairMod.INSTANCE.properties.getIsModEnabled().get());
     }
 
     @SubscribeEvent

@@ -1,7 +1,6 @@
 package com.wjbaker.ccm.crosshair.styles;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
@@ -18,9 +17,9 @@ public final class DebugStyle extends BaseCrosshairStyle {
         var camera = this.mc.gameRenderer.getMainCamera();
 
         var renderMatrixStack = RenderSystem.getModelViewStack();
-        renderMatrixStack.pushPose();
-        renderMatrixStack.mulPose(Axis.XN.rotationDegrees(camera.getXRot()));
-        renderMatrixStack.mulPose(Axis.YP.rotationDegrees(camera.getYRot()));
+        renderMatrixStack.pushMatrix();
+        renderMatrixStack.rotateX(-camera.getXRot() * 0.017453292F);
+        renderMatrixStack.rotateY(camera.getYRot() * 0.017453292F);
         renderMatrixStack.scale(-1, -1, -1);
 
         RenderSystem.applyModelViewMatrix();
@@ -28,7 +27,7 @@ public final class DebugStyle extends BaseCrosshairStyle {
         RenderSystem.defaultBlendFunc();
         RenderSystem.renderCrosshair(10);
 
-        renderMatrixStack.popPose();
+        renderMatrixStack.popMatrix();
         RenderSystem.applyModelViewMatrix();
     }
 }
