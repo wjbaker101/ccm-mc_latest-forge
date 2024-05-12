@@ -11,12 +11,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public final class VanillaStyle extends BaseCrosshairStyle {
 
-    private final ResourceLocation guiIconsLocation;
+    private static final ResourceLocation CROSSHAIR_SPRITE = new ResourceLocation("hud/crosshair");
 
     public VanillaStyle(final CustomCrosshair crosshair) {
         super(crosshair);
-
-        this.guiIconsLocation = new ResourceLocation("textures/gui/icons.png");
     }
 
     @Override
@@ -32,20 +30,16 @@ public final class VanillaStyle extends BaseCrosshairStyle {
             GlStateManager.DestFactor.ZERO);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, this.guiIconsLocation);
 
-        int crosshairSize = 15;
-        int textureSize = 256;
+        var crosshairSize = 15;
 
-        guiGraphics.blit(
-            this.guiIconsLocation,
-            x - Math.round(crosshairSize / 2.0F),
-            y - Math.round(crosshairSize / 2.0F),
-            0, 0,
-            crosshairSize, crosshairSize,
-            textureSize, textureSize);
+        guiGraphics.blitSprite(
+            CROSSHAIR_SPRITE,
+            x - Math.round(crosshairSize / 2f),
+            y - Math.round(crosshairSize / 2f),
+            crosshairSize,
+            crosshairSize);
 
         RenderSystem.disableBlend();
         RenderSystem.enableDepthTest();
