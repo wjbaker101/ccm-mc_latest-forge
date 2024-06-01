@@ -69,7 +69,7 @@ public final class CrosshairRenderManager {
 
         this.preTransformation(transformMatrixStack, crosshair, renderX, renderY);
 
-        this.drawToolDamageIndicator(guiGraphics, crosshair, computedProperties, renderX, renderY);
+        this.drawIndicators(guiGraphics, crosshair, computedProperties, renderX, renderY);
 
         transformMatrixStack.mulPose(Axis.ZP.rotationDegrees(crosshair.rotation.get()));
         transformMatrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
@@ -186,7 +186,7 @@ public final class CrosshairRenderManager {
         }
     }
 
-    private void drawToolDamageIndicator(
+    private void drawIndicators(
         final GuiGraphics guiGraphics,
         final CustomCrosshair crosshair,
         final ComputedProperties computedProperties,
