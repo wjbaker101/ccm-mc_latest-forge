@@ -18,6 +18,7 @@ public final class DebugStyle extends BaseCrosshairStyle {
 
         var renderMatrixStack = RenderSystem.getModelViewStack();
         renderMatrixStack.pushMatrix();
+        renderMatrixStack.mul(guiGraphics.pose().last().pose());
         renderMatrixStack.rotateX(-camera.getXRot() * 0.017453292F);
         renderMatrixStack.rotateY(camera.getYRot() * 0.017453292F);
         renderMatrixStack.scale(-1, -1, -1);
