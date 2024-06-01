@@ -52,6 +52,8 @@ public abstract class ComputeIndicators {
         if (projectile == ItemStack.EMPTY)
             return;
 
-        indicators.add(new IndicatorItem("" + projectile.getCount(), projectile));
+        var count = mc.player.isCreative() ? "" : projectile.getCount();
+
+        indicators.add(new IndicatorItem("" + count, projectile));
     }
 }
