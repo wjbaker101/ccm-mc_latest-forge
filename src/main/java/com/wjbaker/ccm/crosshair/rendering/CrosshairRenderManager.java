@@ -27,7 +27,9 @@ import java.util.Set;
 
 public final class CrosshairRenderManager {
 
-    private static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
+    private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE = new ResourceLocation("hud/crosshair_attack_indicator_full");
+    private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE = new ResourceLocation("hud/crosshair_attack_indicator_background");
+    private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE = new ResourceLocation("hud/crosshair_attack_indicator_progress");
 
     private final boolean isForGui;
     private final RenderManager renderManager;
@@ -175,12 +177,11 @@ public final class CrosshairRenderManager {
             var drawY = -7 + 16;
 
             if (flag) {
-                guiGraphics.blit(GUI_ICONS_LOCATION, drawX, drawY, 0, 68, 94, 16, 16, 256, 256);
-            }
-            else if (f < 1.0F) {
+                guiGraphics.blitSprite(CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE, drawX, drawY, 16, 16);
+            } else if (f < 1.0F) {
                 int l = (int)(f * 17.0F);
-                guiGraphics.blit(GUI_ICONS_LOCATION ,drawX, drawY, 0, 36, 94, 16, 4, 256, 256);
-                guiGraphics.blit(GUI_ICONS_LOCATION, drawX, drawY, 0, 52, 94, l, 4, 256, 256);
+                guiGraphics.blitSprite(CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE, drawX, drawY, 16, 4);
+                guiGraphics.blitSprite(CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE, 16, 4, 0, 0, drawX, drawY, l, 4);
             }
         }
     }
