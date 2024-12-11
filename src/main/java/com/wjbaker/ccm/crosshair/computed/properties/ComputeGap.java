@@ -47,7 +47,7 @@ public abstract class ComputeGap {
             float progress;
 
             if (mc.player.getUseItem().getItem() == Items.CROSSBOW) {
-                usageItemDuration = (float) CrossbowItem.getChargeDuration(mc.player.getUseItem());
+                usageItemDuration = (float) CrossbowItem.getChargeDuration(mc.player.getUseItem(), mc.player);
                 progress = Math.min(usageItemDuration, mc.player.getTicksUsingItem());
             }
             else {

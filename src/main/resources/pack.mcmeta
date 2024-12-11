@@ -1,8 +1,6 @@
 {
-  "pack": {
-    "description": {
-      "text": "A dynamic and customisable crosshair."
-    },
-    "pack_format": 22
-  }
+    "pack": {
+        "description": "A dynamic and customisable crosshair.",
+        "pack_format": 34
+    }
 }

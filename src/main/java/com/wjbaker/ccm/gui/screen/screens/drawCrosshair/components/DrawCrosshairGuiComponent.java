@@ -4,8 +4,8 @@ import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.custom.CustomCrosshairDrawer;
 import com.wjbaker.ccm.crosshair.properties.IntegerProperty;
 import com.wjbaker.ccm.gui.component.GuiComponent;
-import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
+import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.gui.GuiGraphics;
 

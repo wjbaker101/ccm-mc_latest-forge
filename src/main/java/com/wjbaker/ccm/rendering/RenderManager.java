@@ -2,6 +2,7 @@ package com.wjbaker.ccm.rendering;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -48,8 +49,7 @@ public final class RenderManager {
         final boolean isBlendEnabled) {
 
         var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        var bufferBuilder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
 
@@ -63,13 +63,12 @@ public final class RenderManager {
 
         for (int i = 0; i < points.length; i += 2) {
             bufferBuilder
-                .vertex(matrixStack.last().pose(), points[i], points[i + 1], 0.0F)
-                .color(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
-                .normal(matrixStack.last(), 0.0F, 0.0F, 0.0F)
-                .endVertex();
+                .addVertex(matrixStack.last().pose(), points[i], points[i + 1], 0.0F)
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
+                .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
         }
 
-        tesselator.end();
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 
         this.postRender(matrixStack);
     }
@@ -87,8 +86,7 @@ public final class RenderManager {
         this.setGlProperty(GL11.GL_LINE_SMOOTH, false);
 
         var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
+        var bufferBuilder = tesselator.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
 
@@ -102,12 +100,11 @@ public final class RenderManager {
 
         for (int i = 0; i < points.length; i += 2) {
             bufferBuilder
-                .vertex(matrixStack.last().pose(), points[i], points[i + 1], 0.0F)
-                .color(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
-                .endVertex();
+                .addVertex(matrixStack.last().pose(), points[i], points[i + 1], 0.0F)
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
         }
 
-        tesselator.end();
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 
         this.postRender(matrixStack);
     }
@@ -207,8 +204,7 @@ public final class RenderManager {
         var ratio = (float)Math.PI / 180.F;
 
         var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        var bufferBuilder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
 
@@ -216,13 +212,12 @@ public final class RenderManager {
             var radians = (i - 90) * ratio;
 
             bufferBuilder
-                .vertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * radius, y + (float)Math.sin(radians) * radius, 0.0F)
-                .color(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
-                .normal(matrixStack.last(), 0.0F, 0.0F, 0.0F)
-                .endVertex();
+                .addVertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * radius, y + (float)Math.sin(radians) * radius, 0.0F)
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
+                .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
         }
 
-        tesselator.end();
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 
         this.postRender(matrixStack);
     }
@@ -249,8 +244,7 @@ public final class RenderManager {
         var ratio = (float)Math.PI / 180.F;
 
         var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        var bufferBuilder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         this.preRender(matrixStack);
 
@@ -258,19 +252,17 @@ public final class RenderManager {
             var radians = (i - 90) * ratio;
 
             bufferBuilder
-                .vertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * innerRadius, y + (float)Math.sin(radians) * innerRadius, 0.0F)
-                .color(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
-                .normal(matrixStack.last(), 0.0F, 0.0F, 0.0F)
-                .endVertex();
+                .addVertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * innerRadius, y + (float)Math.sin(radians) * innerRadius, 0.0F)
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
+                .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
 
             bufferBuilder
-                .vertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * outerRadius, y + (float)Math.sin(radians) * outerRadius, 0.0F)
-                .color(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
-                .normal(matrixStack.last(), 0.0F, 0.0F, 0.0F)
-                .endVertex();
+                .addVertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * outerRadius, y + (float)Math.sin(radians) * outerRadius, 0.0F)
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
+                .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
         }
 
-        tesselator.end();
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 
         this.postRender(matrixStack);
     }

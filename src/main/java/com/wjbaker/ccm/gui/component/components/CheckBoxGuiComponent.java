@@ -3,8 +3,8 @@ package com.wjbaker.ccm.gui.component.components;
 import com.wjbaker.ccm.crosshair.properties.BooleanProperty;
 import com.wjbaker.ccm.gui.component.GuiComponent;
 import com.wjbaker.ccm.gui.component.type.IBindableGuiComponent;
-import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
+import com.wjbaker.ccm.rendering.ModTheme;
 import net.minecraft.client.gui.GuiGraphics;
 
 public final class CheckBoxGuiComponent extends GuiComponent implements IBindableGuiComponent<BooleanProperty> {

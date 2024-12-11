@@ -2,8 +2,8 @@ package com.wjbaker.ccm.gui.component.components;
 
 import com.wjbaker.ccm.crosshair.properties.EnumProperty;
 import com.wjbaker.ccm.gui.component.type.IBindableGuiComponent;
-import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
+import com.wjbaker.ccm.rendering.ModTheme;
 import net.minecraft.client.gui.GuiGraphics;
 import org.apache.commons.lang3.StringUtils;
 

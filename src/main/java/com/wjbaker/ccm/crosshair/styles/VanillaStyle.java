@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public final class VanillaStyle extends BaseCrosshairStyle {
 
-    private static final ResourceLocation CROSSHAIR_SPRITE = new ResourceLocation("hud/crosshair");
+    private static final ResourceLocation CROSSHAIR_SPRITE = ResourceLocation.withDefaultNamespace("hud/crosshair");
 
     public VanillaStyle(final CustomCrosshair crosshair) {
         super(crosshair);

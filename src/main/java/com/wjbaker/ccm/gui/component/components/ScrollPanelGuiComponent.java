@@ -2,8 +2,8 @@ package com.wjbaker.ccm.gui.component.components;
 
 import com.wjbaker.ccm.gui.component.GuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
-import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.gui.types.GuiBounds;
+import com.wjbaker.ccm.rendering.ModTheme;
 import net.minecraft.client.gui.GuiGraphics;
 
 public final class ScrollPanelGuiComponent extends PanelGuiComponent {

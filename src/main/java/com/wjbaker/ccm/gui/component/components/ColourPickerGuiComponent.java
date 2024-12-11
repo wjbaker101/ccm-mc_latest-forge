@@ -4,9 +4,9 @@ import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.properties.RgbaProperty;
 import com.wjbaker.ccm.gui.component.GuiComponent;
 import com.wjbaker.ccm.gui.component.type.IBindableGuiComponent;
+import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.gui.screen.screens.editColour.EditColourGuiScreen;
 import com.wjbaker.ccm.rendering.ModTheme;
-import com.wjbaker.ccm.gui.screen.GuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
