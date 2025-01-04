@@ -12,7 +12,7 @@ import com.wjbaker.ccm.gui.types.IDrawInsideWindowCallback;
 import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
 import org.lwjgl.opengl.GL11;
 
 public final class RenderManager {
@@ -28,7 +28,7 @@ public final class RenderManager {
         matrixStack.pushPose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
@@ -306,7 +306,6 @@ public final class RenderManager {
 
         matrixStack.pushPose();
         matrixStack.scale(0.5F, 0.5F, 1.0F);
-        RenderSystem.applyModelViewMatrix();
 
         this.drawText(guiGraphics, text, x * 2, y * 2, colour, hasShadow);
         matrixStack.popPose();
@@ -317,7 +316,6 @@ public final class RenderManager {
 
         matrixStack.pushPose();
         matrixStack.scale(1.5F, 1.5F, 1.0F);
-        RenderSystem.applyModelViewMatrix();
 
         this.drawText(guiGraphics, text, (int)(x * 0.666F), (int)(y * 0.666F), colour, hasShadow);
         matrixStack.popPose();

@@ -2,18 +2,16 @@ package com.wjbaker.ccm;
 
 import com.wjbaker.ccm.config.ConfigManager;
 import com.wjbaker.ccm.config.GlobalProperties;
-import com.wjbaker.ccm.crosshair.rendering.CrosshairRenderManager;
 import com.wjbaker.ccm.events.KeyBindings;
 import com.wjbaker.ccm.events.ModEventBusRegistrar;
 import com.wjbaker.ccm.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
 import com.wjbaker.ccm.helpers.Helper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -30,7 +28,7 @@ public final class CustomCrosshairMod {
 
     public static final String TITLE = "Custom Crosshair Mod";
     public static final String VERSION = "1.6.0-forge";
-    public static final String MC_VERSION = "1.21.1-forge";
+    public static final String MC_VERSION = "1.21.4-forge";
     public static final String CURSEFORGE_PAGE = "https://www.curseforge.com/projects/242995/";
     public static final String MC_FORUMS_PAGE = "https://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2637819/";
     public static final String PATREON_PAGE = "https://www.patreon.com/bePatron?u=66431720";
@@ -38,14 +36,12 @@ public final class CustomCrosshairMod {
 
     private final Logger logger;
     private final GlobalProperties properties;
-    private final CrosshairRenderManager crosshairRenderManager;
 
     private ConfigManager configManager;
 
     public CustomCrosshairMod() {
         this.logger = getLogger(CustomCrosshairMod.class);
         this.properties = new GlobalProperties();
-        this.crosshairRenderManager = new CrosshairRenderManager(false);
 
         INSTANCE = this;
 
@@ -54,7 +50,7 @@ public final class CustomCrosshairMod {
 
         this.properties.getCustomCrosshairDrawer().loadImage();
 
-        FMLJavaModLoadingContext.get().getModEventBus().register(new ModEventBusRegistrar());
+        MinecraftForge.EVENT_BUS.register(new ModEventBusRegistrar());
     }
 
     private void loadConfig() {
@@ -102,25 +98,6 @@ public final class CustomCrosshairMod {
     public static void onClientTickEvent(final TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().screen == null && KeyBindings.EDIT_CROSSHAIR.isDown())
             Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(CustomCrosshairMod.INSTANCE.properties.getCrosshair()));
-    }
-
-    @SubscribeEvent
-    public static void onRenderTickEvent(final TickEvent.RenderTickEvent event) {
-        if (!CustomCrosshairMod.INSTANCE.properties.getIsModEnabled().get())
-            return;
-        if (Minecraft.getInstance().screen != null && !(Minecraft.getInstance().screen instanceof ChatScreen))
-            return;
-
-        int width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
-        int height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
-
-        int x = Math.round(width / 2.0F);
-        int y = Math.round(height / 2.0F);
-
-        CustomCrosshairMod.INSTANCE.crosshairRenderManager.draw(
-            CustomCrosshairMod.INSTANCE.properties.getCrosshair(),
-            x,
-            y);
     }
 
     public GlobalProperties properties() {

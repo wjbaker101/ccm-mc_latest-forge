@@ -4,7 +4,8 @@
     "package": "com.wjbaker.ccm.mixins",
     "mixins": [],
     "client": [
-        "GuiMixin"
+        "GuiMixin",
+        "GameRendererMixin"
     ],
     "injectors": {
         "defaultRequire": 1

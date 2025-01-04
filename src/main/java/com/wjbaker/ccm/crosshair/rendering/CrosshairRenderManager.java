@@ -15,13 +15,11 @@ import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.ForgeHooksClient;
 
 import java.util.Set;
 
@@ -31,7 +29,6 @@ public final class CrosshairRenderManager {
     private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_background");
     private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_progress");
 
-    private final boolean isForGui;
     private final RenderManager renderManager;
 
     private final Set<Item> itemCooldownItems = ImmutableSet.of(
@@ -39,8 +36,7 @@ public final class CrosshairRenderManager {
         Items.CHORUS_FRUIT
     );
 
-    public CrosshairRenderManager(final boolean isForGui) {
-        this.isForGui = isForGui;
+    public CrosshairRenderManager() {
         this.renderManager = new RenderManager();
     }
 
@@ -73,7 +69,6 @@ public final class CrosshairRenderManager {
 
         transformMatrixStack.mulPose(Axis.ZP.rotationDegrees(crosshair.rotation.get()));
         transformMatrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
-        RenderSystem.applyModelViewMatrix();
 
         this.drawDefaultAttackIndicator(guiGraphics);
 
@@ -108,15 +103,12 @@ public final class CrosshairRenderManager {
         final int x,
         final int y) {
 
-        var z = this.isForGui ? 0.0F : 1000F - ForgeHooksClient.getGuiFarPlane();
-
         matrixStack.pushPose();
-        matrixStack.translate(x, y, z);
+        matrixStack.translate(x, y, 0);
     }
 
     private void postTransformation(final PoseStack matrixStack) {
         matrixStack.popPose();
-        RenderSystem.applyModelViewMatrix();
     }
 
     private void drawItemCooldownIndicator(
@@ -136,7 +128,7 @@ public final class CrosshairRenderManager {
         var offset = 3;
 
         for (final Item item : this.itemCooldownItems) {
-            var cooldown = player.getCooldowns().getCooldownPercent(item, 0.0F);
+            var cooldown = player.getCooldowns().getCooldownPercent(item.getDefaultInstance(), 0.0F);
             if (cooldown == 0.0F)
                 continue;
 
@@ -177,11 +169,11 @@ public final class CrosshairRenderManager {
             var drawY = -7 + 16;
 
             if (flag) {
-                guiGraphics.blitSprite(CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE, drawX, drawY, 16, 16);
+                guiGraphics.blitSprite(RenderType::crosshair, CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE, drawX, drawY, 16, 16);
             } else if (f < 1.0F) {
                 int l = (int)(f * 17.0F);
-                guiGraphics.blitSprite(CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE, drawX, drawY, 16, 4);
-                guiGraphics.blitSprite(CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE, 16, 4, 0, 0, drawX, drawY, l, 4);
+                guiGraphics.blitSprite(RenderType::crosshair, CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE, drawX, drawY, 16, 4);
+                guiGraphics.blitSprite(RenderType::crosshair, CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE, 16, 4, 0, 0, drawX, drawY, l, 4);
             }
         }
     }
@@ -195,8 +187,6 @@ public final class CrosshairRenderManager {
         var drawX = crosshair.gap.get() + 5;
         var drawY = crosshair.gap.get() + 5;
 
-        var mc = Minecraft.getInstance();
-        var itemRenderer = mc.getItemRenderer();
         var indicatorItems = computedProperties.indicatorItems();
 
         RenderSystem.enableBlend();
@@ -205,19 +195,11 @@ public final class CrosshairRenderManager {
         Lighting.setupForFlatItems();
 
         var matrixStack = guiGraphics.pose();
-        var bufferSource = guiGraphics.bufferSource();
 
         for (var indicatorItem : indicatorItems) {
-            matrixStack.pushPose();
-            matrixStack.translate(drawX, drawY, 0.0D);
-            matrixStack.scale(1.0F, -1.0F, 1.0F);
-            matrixStack.scale(8F, 8F, 8F);
-
-            var model = itemRenderer.getModel(indicatorItem.icon(), null, null, 0);
-            itemRenderer.render(indicatorItem.icon(), ItemDisplayContext.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, model);
-
-            bufferSource.endBatch();
-            matrixStack.popPose();
+            matrixStack.scale(0.5F, 0.5F, 1F);
+            guiGraphics.renderItem(indicatorItem.icon(), drawX * 2 - 8, drawY * 2 - 8);
+            matrixStack.scale(2F, 2F, 1F);
 
             this.renderManager.drawSmallText(guiGraphics, indicatorItem.text(), drawX + 5, drawY, ModTheme.WHITE, true);
 
