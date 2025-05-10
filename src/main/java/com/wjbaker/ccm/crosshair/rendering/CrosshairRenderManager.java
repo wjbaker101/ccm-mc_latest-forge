@@ -1,7 +1,6 @@
 package com.wjbaker.ccm.crosshair.rendering;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -148,12 +147,6 @@ public final class CrosshairRenderManager {
     }
 
     private void drawDefaultAttackIndicator(final GuiGraphics guiGraphics) {
-        RenderSystem.blendFuncSeparate(
-            GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
-            GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
-            GlStateManager.SourceFactor.ONE,
-            GlStateManager.DestFactor.ZERO);
-
         var mc = Minecraft.getInstance();
 
         if (mc.options.attackIndicator().get() == AttackIndicatorStatus.CROSSHAIR && mc.player != null) {
@@ -189,8 +182,6 @@ public final class CrosshairRenderManager {
 
         var indicatorItems = computedProperties.indicatorItems();
 
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         Lighting.setupForFlatItems();
 
@@ -206,7 +197,6 @@ public final class CrosshairRenderManager {
             drawX += 15;
         }
 
-        RenderSystem.enableDepthTest();
         Lighting.setupFor3DItems();
     }
 }

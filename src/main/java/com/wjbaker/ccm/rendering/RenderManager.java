@@ -1,18 +1,14 @@
 package com.wjbaker.ccm.rendering;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.wjbaker.ccm.crosshair.custom.CustomCrosshairDrawer;
 import com.wjbaker.ccm.gui.types.GuiBounds;
 import com.wjbaker.ccm.gui.types.IDrawInsideWindowCallback;
 import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.RenderType;
 import org.lwjgl.opengl.GL11;
 
 public final class RenderManager {
@@ -22,19 +18,6 @@ public final class RenderManager {
             GL11.glEnable(property);
         else
             GL11.glDisable(property);
-    }
-
-    private void preRender(final PoseStack matrixStack) {
-        matrixStack.pushPose();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    }
-
-    private void postRender(final PoseStack matrixStack) {
-        RenderSystem.disableBlend();
-        matrixStack.popPose();
     }
 
     public void drawLines(final PoseStack matrixStack, float[] points, final float thickness, final RGBA colour) {
@@ -48,29 +31,19 @@ public final class RenderManager {
         final RGBA colour,
         final boolean isBlendEnabled) {
 
-        var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        this.setGlProperty(GL11.GL_LINE_SMOOTH, false);
 
-        this.preRender(matrixStack);
+        var bufferBuilders = Minecraft.getInstance().renderBuffers();
+        var immediate = bufferBuilders.bufferSource();
+        var vertexConsumer = immediate.getBuffer(RenderType.debugLineStrip(thickness));
 
-        if (isBlendEnabled) {
-            RenderSystem.blendFuncSeparate(
-                GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
-                GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
-                GlStateManager.SourceFactor.ONE,
-                GlStateManager.DestFactor.ZERO);
+        for (var i = 0; i < points.length; i += 2) {
+            vertexConsumer
+                .addVertex(matrixStack.last(), points[i], points[i + 1], 0.0F)
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
         }
 
-        for (int i = 0; i < points.length; i += 2) {
-            bufferBuilder
-                .addVertex(matrixStack.last().pose(), points[i], points[i + 1], 0.0F)
-                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
-                .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
-        }
-
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-
-        this.postRender(matrixStack);
+        immediate.endBatch();
     }
 
     public void drawFilledShape(final PoseStack matrixStack, final float[] points, final RGBA colour) {
@@ -85,28 +58,17 @@ public final class RenderManager {
 
         this.setGlProperty(GL11.GL_LINE_SMOOTH, false);
 
-        var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
+        var bufferBuilders = Minecraft.getInstance().renderBuffers();
+        var immediate = bufferBuilders.bufferSource();
+        var vertexConsumer = immediate.getBuffer(RenderType.gui());
 
-        this.preRender(matrixStack);
-
-        if (isBlendEnabled) {
-            RenderSystem.blendFuncSeparate(
-                GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
-                GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
-                GlStateManager.SourceFactor.ONE,
-                GlStateManager.DestFactor.ZERO);
-        }
-
-        for (int i = 0; i < points.length; i += 2) {
-            bufferBuilder
-                .addVertex(matrixStack.last().pose(), points[i], points[i + 1], 0.0F)
+        for (var i = 0; i < points.length; i += 2) {
+            vertexConsumer
+                .addVertex(matrixStack.last(), points[i], points[i + 1], 0.0F)
                 .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
         }
 
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-
-        this.postRender(matrixStack);
+        immediate.endBatch();
     }
 
     public void drawLine(
@@ -130,10 +92,11 @@ public final class RenderManager {
         final RGBA colour) {
 
         this.drawLines(matrixStack, new float[] {
-            x1, y1, x2, y1,
-            x2, y1, x2, y2,
-            x1, y2, x2, y2,
-            x1, y1, x1, y2
+            x1, y1,
+            x2, y1,
+            x2, y2,
+            x1, y2,
+            x1, y1
         }, thickness, colour);
     }
 
@@ -203,23 +166,19 @@ public final class RenderManager {
 
         var ratio = (float)Math.PI / 180.F;
 
-        var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        var bufferBuilders = Minecraft.getInstance().renderBuffers();
+        var immediate = bufferBuilders.bufferSource();
+        var vertexConsumer = immediate.getBuffer(RenderType.debugLineStrip(thickness));
 
-        this.preRender(matrixStack);
-
-        for (int i = startAngle; i <= endAngle; ++i) {
+        for (var i = startAngle; i <= endAngle; ++i) {
             var radians = (i - 90) * ratio;
 
-            bufferBuilder
+            vertexConsumer
                 .addVertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * radius, y + (float)Math.sin(radians) * radius, 0.0F)
-                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
-                .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
         }
 
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-
-        this.postRender(matrixStack);
+        immediate.endBatch();
     }
 
     public void drawCircle(
@@ -243,28 +202,25 @@ public final class RenderManager {
 
         var ratio = (float)Math.PI / 180.F;
 
-        var tesselator = RenderSystem.renderThreadTesselator();
-        var bufferBuilder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        var bufferBuilders = Minecraft.getInstance().renderBuffers();
+        var immediate = bufferBuilders.bufferSource();
+        var vertexConsumer = immediate.getBuffer(RenderType.gui());
 
-        this.preRender(matrixStack);
-
-        for (int i = 0; i <= 360; ++i) {
+        for (var i = 0; i <= 360; ++i) {
             var radians = (i - 90) * ratio;
 
-            bufferBuilder
+            vertexConsumer
                 .addVertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * innerRadius, y + (float)Math.sin(radians) * innerRadius, 0.0F)
                 .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
                 .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
 
-            bufferBuilder
+            vertexConsumer
                 .addVertex(matrixStack.last().pose(), x + (float)Math.cos(radians) * outerRadius, y + (float)Math.sin(radians) * outerRadius, 0.0F)
                 .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
                 .setNormal(matrixStack.last(), 0.0F, 0.0F, 0.0F);
         }
 
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-
-        this.postRender(matrixStack);
+        immediate.endBatch();
     }
 
     public void drawImage(

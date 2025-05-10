@@ -1,12 +1,10 @@
 package com.wjbaker.ccm.crosshair.styles;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
@@ -20,16 +18,7 @@ public final class VanillaStyle extends BaseCrosshairStyle {
 
     @Override
     public void draw(final GuiGraphics guiGraphics, final int x, final int y, final ComputedProperties computedProperties) {
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-        RenderSystem.blendFuncSeparate(
-            GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR,
-            GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR,
-            GlStateManager.SourceFactor.ONE,
-            GlStateManager.DestFactor.ZERO);
 
         var crosshairSize = 15;
 
@@ -40,7 +29,5 @@ public final class VanillaStyle extends BaseCrosshairStyle {
             y - Math.round(crosshairSize / 2f),
             crosshairSize,
             crosshairSize);
-
-        RenderSystem.disableBlend();
     }
 }
