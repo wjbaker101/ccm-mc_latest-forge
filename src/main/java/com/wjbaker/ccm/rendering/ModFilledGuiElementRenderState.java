@@ -1,0 +1,49 @@
+package com.wjbaker.ccm.rendering;
+
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.wjbaker.ccm.rendering.types.RGBA;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.gui.render.state.GuiElementRenderState;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2f;
+
+@OnlyIn(Dist.CLIENT)
+public record ModFilledGuiElementRenderState(Matrix3x2f pose, float[] points, RGBA colour) implements GuiElementRenderState {
+
+    @Override
+    public RenderPipeline pipeline() {
+        return RenderPipelines.GUI;
+    }
+
+    @Override
+    public void buildVertices(final VertexConsumer vertices, final float depth) {
+        for (var i = 0; i < points.length; i += 2) {
+            vertices
+                .addVertexWith2DPose(this.pose, points[i], points[i + 1], depth)
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
+        }
+    }
+
+    @Override
+    public @NotNull TextureSetup textureSetup() {
+        return TextureSetup.noTexture();
+    }
+
+    @Override
+    public @Nullable ScreenRectangle scissorArea() {
+        return null;
+    }
+
+    @Override
+    public ScreenRectangle bounds() {
+        var window = Minecraft.getInstance().getWindow();
+        return new ScreenRectangle(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight()).transformMaxBounds(pose);
+    }
+}

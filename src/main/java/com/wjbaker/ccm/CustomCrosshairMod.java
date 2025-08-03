@@ -3,15 +3,15 @@ package com.wjbaker.ccm;
 import com.wjbaker.ccm.config.ConfigManager;
 import com.wjbaker.ccm.config.GlobalProperties;
 import com.wjbaker.ccm.events.KeyBindings;
-import com.wjbaker.ccm.events.ModEventBusRegistrar;
 import com.wjbaker.ccm.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
 import com.wjbaker.ccm.helpers.Helper;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -28,7 +28,7 @@ public final class CustomCrosshairMod {
 
     public static final String TITLE = "Custom Crosshair Mod";
     public static final String VERSION = "1.6.0-forge";
-    public static final String MC_VERSION = "1.21.5-forge";
+    public static final String MC_VERSION = "1.21.7-forge";
     public static final String CURSEFORGE_PAGE = "https://www.curseforge.com/projects/242995/";
     public static final String MC_FORUMS_PAGE = "https://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2637819/";
     public static final String PATREON_PAGE = "https://www.patreon.com/bePatron?u=66431720";
@@ -39,7 +39,7 @@ public final class CustomCrosshairMod {
 
     private ConfigManager configManager;
 
-    public CustomCrosshairMod() {
+    public CustomCrosshairMod(final FMLJavaModLoadingContext context) {
         this.logger = getLogger(CustomCrosshairMod.class);
         this.properties = new GlobalProperties();
 
@@ -50,7 +50,7 @@ public final class CustomCrosshairMod {
 
         this.properties.getCustomCrosshairDrawer().loadImage();
 
-        MinecraftForge.EVENT_BUS.register(new ModEventBusRegistrar());
+        RegisterKeyMappingsEvent.getBus(context.getModBusGroup()).addListener(event -> event.register(KeyBindings.EDIT_CROSSHAIR.get()));
     }
 
     private void loadConfig() {
@@ -96,7 +96,7 @@ public final class CustomCrosshairMod {
 
     @SubscribeEvent
     public static void onClientTickEvent(final TickEvent.ClientTickEvent event) {
-        if (Minecraft.getInstance().screen == null && KeyBindings.EDIT_CROSSHAIR.isDown())
+        if (Minecraft.getInstance().screen == null && KeyBindings.EDIT_CROSSHAIR.get().isDown())
             Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(CustomCrosshairMod.INSTANCE.properties.getCrosshair()));
     }
 

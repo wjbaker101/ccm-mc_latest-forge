@@ -40,7 +40,7 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
                     : ModTheme.DARK_GREY.setOpacity(140);
 
                 this.renderManager.drawFilledRectangle(
-                    guiGraphics.pose(),
+                    guiGraphics,
                     this.x + gridSize * gridX,
                     this.y + gridSize * gridY,
                     this.x + gridSize * gridX + gridSize,
@@ -50,13 +50,13 @@ public final class CrosshairPreviewGuiComponent extends GuiComponent {
         }
 
         this.renderManager.drawRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,
             ModTheme.PRIMARY);
 
-        this.crosshairRenderManager.draw(this.crosshair, this.x + (this.width / 2), this.y + (this.height / 2));
+        this.crosshairRenderManager.draw(this.crosshair, guiGraphics, this.x + (this.width / 2), this.y + (this.height / 2));
 
         if (!CustomCrosshairMod.INSTANCE.properties().getIsModEnabled().get())
             this.renderManager.drawSmallText(

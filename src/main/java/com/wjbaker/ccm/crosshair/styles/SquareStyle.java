@@ -27,7 +27,7 @@ public final class SquareStyle extends BaseCrosshairStyle {
 
             // Inner
             this.renderManager.drawRectangle(
-                guiGraphics.pose(),
+                guiGraphics,
                 x - width - gap + 0.5F, y - height - gap + 0.5F,
                 x + width + gap - 0.5F, y + height + gap - 0.5F,
                 2.0F,
@@ -35,7 +35,7 @@ public final class SquareStyle extends BaseCrosshairStyle {
 
             // Outer
             this.renderManager.drawRectangle(
-                guiGraphics.pose(),
+                guiGraphics,
                 x - width - thickness - gap - 0.5F, y - height - thickness - gap - 0.5F,
                 x + width + thickness + gap + 0.5F, y + height + thickness + gap + 0.5F,
                 2.0F,
@@ -44,28 +44,28 @@ public final class SquareStyle extends BaseCrosshairStyle {
 
         // Top
         this.renderManager.drawFilledRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             x - width - thickness - gap, y - height - thickness - gap,
             x + width + thickness + gap, y - height - gap,
             colour, isAdaptiveColourEnabled);
 
         // Bottom
         this.renderManager.drawFilledRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             x - width - thickness - gap, y + height + gap,
             x + width + thickness + gap, y + height + thickness + gap,
             colour, isAdaptiveColourEnabled);
 
         // Left
         this.renderManager.drawFilledRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             x - width - thickness - gap, y - gap - height,
             x - width - gap, y + gap + height,
             colour, isAdaptiveColourEnabled);
 
         // Right
         this.renderManager.drawFilledRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             x + width + gap, y - gap - height,
             x + width + thickness + gap, y + gap + height,
             colour, isAdaptiveColourEnabled);

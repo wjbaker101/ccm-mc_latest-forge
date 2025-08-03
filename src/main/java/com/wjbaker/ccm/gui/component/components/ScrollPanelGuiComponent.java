@@ -51,7 +51,7 @@ public final class ScrollPanelGuiComponent extends PanelGuiComponent {
             return;
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x + this.width - this.scrollBarWidth, this.y + 1,
             this.x + this.width, this.y + this.height - 1,
             2.0F,
@@ -59,7 +59,7 @@ public final class ScrollPanelGuiComponent extends PanelGuiComponent {
             this.currentBackgroundColour);
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x + this.width - this.scrollBarWidth, this.y + 1 + this.scrollBarPosition,
             this.x + this.width, this.y + this.scrollBarPosition + this.scrollBarSize,
             2.0F,
@@ -68,18 +68,18 @@ public final class ScrollPanelGuiComponent extends PanelGuiComponent {
 
         float thumbCentreX = this.x + this.width - (this.scrollBarWidth / 2.0F);
 
-        this.renderManager.drawLines(guiGraphics.pose(), new float[] {
-            thumbCentreX - 2, this.y + this.scrollBarPosition + 6,
-            thumbCentreX, this.y + this.scrollBarPosition + 4,
-            thumbCentreX, this.y + this.scrollBarPosition + 4,
-            thumbCentreX + 2, this.y + this.scrollBarPosition + 6
+        this.renderManager.drawLines(guiGraphics, new Float[] {
+            thumbCentreX - 2, (float)this.y + this.scrollBarPosition + 6,
+            thumbCentreX, (float)this.y + this.scrollBarPosition + 4,
+            thumbCentreX, (float)this.y + this.scrollBarPosition + 4,
+            thumbCentreX + 2, (float)this.y + this.scrollBarPosition + 6
         }, 2.0F, ModTheme.WHITE);
 
-        this.renderManager.drawLines(guiGraphics.pose(), new float[] {
-            thumbCentreX - 2, this.y + this.scrollBarPosition + this.scrollBarSize - 5,
-            thumbCentreX, this.y + this.scrollBarPosition + this.scrollBarSize - 3,
-            thumbCentreX, this.y + this.scrollBarPosition + this.scrollBarSize - 3,
-            thumbCentreX + 2, this.y + this.scrollBarPosition + this.scrollBarSize - 5
+        this.renderManager.drawLines(guiGraphics, new Float[] {
+            thumbCentreX - 2, (float)this.y + this.scrollBarPosition + this.scrollBarSize - 5,
+            thumbCentreX, (float)this.y + this.scrollBarPosition + this.scrollBarSize - 3,
+            thumbCentreX, (float)this.y + this.scrollBarPosition + this.scrollBarSize - 3,
+            thumbCentreX + 2, (float)this.y + this.scrollBarPosition + this.scrollBarSize - 5
         }, 2.0F, ModTheme.WHITE);
     }
 

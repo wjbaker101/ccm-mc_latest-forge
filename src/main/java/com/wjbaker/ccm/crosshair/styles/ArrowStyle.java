@@ -18,9 +18,9 @@ public final class ArrowStyle extends BaseCrosshairStyle {
         int thickness = this.crosshair.thickness.get();
         var isAdaptiveColourEnabled = this.crosshair.isAdaptiveColourEnabled.get();
 
-        this.renderManager.drawLines(guiGraphics.pose(), new float[] {
-            x - width, y + height, x, y,
-            x, y, x + width, y + height
+        this.renderManager.drawLines(guiGraphics, new Float[] {
+            (float)x - width, (float)y + height, (float)x, (float)y,
+            (float)x, (float)y, (float)x + width, (float)y + height
         }, thickness, computedProperties.colour(), isAdaptiveColourEnabled);
     }
 }

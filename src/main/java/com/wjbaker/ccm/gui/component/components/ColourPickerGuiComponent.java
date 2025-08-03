@@ -43,7 +43,7 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
         super.draw(guiGraphics);
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x, this.y,
             this.x + this.boxSize, this.y + this.boxSize,
             2.0F,
@@ -51,7 +51,7 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
             this.currentBackgroundColour);
 
         this.renderManager.drawFilledRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x + 2, this.y + 2,
             this.x + this.boxSize - 2, this.y + this.boxSize - 2,
             this.colour.get());

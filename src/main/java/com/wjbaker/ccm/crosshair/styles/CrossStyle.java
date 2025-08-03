@@ -34,18 +34,18 @@ public final class CrossStyle extends BaseCrosshairStyle {
             float adjustedHeight = height + 1.0F;
             float adjustedGap = gap - 0.5F;
 
-            this.renderManager.drawBorderedRectangle(guiGraphics.pose(), x - thickness, y - adjustedGap - adjustedHeight, x + thickness, y - adjustedGap, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
-            this.renderManager.drawBorderedRectangle(guiGraphics.pose(), x - thickness, y + adjustedGap, x + thickness, y + adjustedGap + adjustedHeight, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
-            this.renderManager.drawBorderedRectangle(guiGraphics.pose(), x - adjustedGap - adjustedWidth, y - thickness, x - adjustedGap, y + thickness, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
-            this.renderManager.drawBorderedRectangle(guiGraphics.pose(), x + adjustedGap, y - thickness, x + adjustedGap + adjustedWidth, y + thickness, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawBorderedRectangle(guiGraphics, x - thickness, y - adjustedGap - adjustedHeight, x + thickness, y - adjustedGap, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawBorderedRectangle(guiGraphics, x - thickness, y + adjustedGap, x + thickness, y + adjustedGap + adjustedHeight, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawBorderedRectangle(guiGraphics, x - adjustedGap - adjustedWidth, y - thickness, x - adjustedGap, y + thickness, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawBorderedRectangle(guiGraphics, x + adjustedGap, y - thickness, x + adjustedGap + adjustedWidth, y + thickness, 2.0F, outlineColour, baseColour, isAdaptiveColourEnabled);
         }
         else {
             float adjustedThickness = thickness - 0.5F;
 
-            this.renderManager.drawFilledRectangle(guiGraphics.pose(), x - adjustedThickness, y - gap - height, x + adjustedThickness, y - gap, baseColour, isAdaptiveColourEnabled);
-            this.renderManager.drawFilledRectangle(guiGraphics.pose(), x - adjustedThickness, y + gap, x + adjustedThickness, y + gap + height, baseColour, isAdaptiveColourEnabled);
-            this.renderManager.drawFilledRectangle(guiGraphics.pose(), x - gap - width, y - adjustedThickness, x - gap, y + adjustedThickness, baseColour, isAdaptiveColourEnabled);
-            this.renderManager.drawFilledRectangle(guiGraphics.pose(), x + gap, y - adjustedThickness, x + gap + width, y + adjustedThickness, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawFilledRectangle(guiGraphics, x - adjustedThickness, y - gap - height, x + adjustedThickness, y - gap, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawFilledRectangle(guiGraphics, x - adjustedThickness, y + gap, x + adjustedThickness, y + gap + height, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawFilledRectangle(guiGraphics, x - gap - width, y - adjustedThickness, x - gap, y + adjustedThickness, baseColour, isAdaptiveColourEnabled);
+            this.renderManager.drawFilledRectangle(guiGraphics, x + gap, y - adjustedThickness, x + gap + width, y + adjustedThickness, baseColour, isAdaptiveColourEnabled);
         }
     }
 }

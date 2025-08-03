@@ -66,7 +66,7 @@ public class PanelGuiComponent extends GuiComponent {
     @Override
     public void draw(final GuiGraphics guiGraphics) {
         this.renderManager.drawBorderedRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,

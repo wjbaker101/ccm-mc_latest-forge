@@ -24,6 +24,6 @@ public final class ColourPreviewGuiComponent extends GuiComponent {
     public void draw(final GuiGraphics guiGraphics) {
         super.draw(guiGraphics);
 
-        this.renderManager.drawFilledRectangle(guiGraphics.pose(), this.x, this.y, this.x + this.width, this.y + this.height, this.colour.get());
+        this.renderManager.drawFilledRectangle(guiGraphics, this.x, this.y, this.x + this.width, this.y + this.height, this.colour.get());
     }
 }

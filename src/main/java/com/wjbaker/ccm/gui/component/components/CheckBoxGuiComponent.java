@@ -43,7 +43,7 @@ public final class CheckBoxGuiComponent extends GuiComponent implements IBindabl
         super.draw(guiGraphics);
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x, this.y,
             this.x + this.boxSize, this.y + this.boxSize,
             2.0F,
@@ -54,7 +54,7 @@ public final class CheckBoxGuiComponent extends GuiComponent implements IBindabl
 
         if (this.isChecked.get()) {
             this.renderManager.drawFilledRectangle(
-                guiGraphics.pose(),
+                guiGraphics,
                 this.x + inset, this.y + inset,
                 this.x + this.boxSize - inset, this.y + this.boxSize - inset,
                 ModTheme.SUCCESS);

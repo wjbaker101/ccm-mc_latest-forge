@@ -33,7 +33,7 @@ public final class ButtonGuiComponent extends GuiComponent {
         super.draw(guiGraphics);
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics.pose(),
+            guiGraphics,
             this.x, this.y,
             this.x + this.width, this.y + this.height,
             2.0F,

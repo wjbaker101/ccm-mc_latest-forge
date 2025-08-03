@@ -87,7 +87,7 @@ public abstract class GuiScreen extends GuiScreenAdapter {
 
     @Override
     public void draw(final GuiGraphics guiGraphics) {
-        this.renderManager.drawFilledRectangle(guiGraphics.pose(), 0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
+        this.renderManager.drawFilledRectangle(guiGraphics, 0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
 
         this.components.forEach(x -> x.draw(guiGraphics));
 
@@ -95,8 +95,8 @@ public abstract class GuiScreen extends GuiScreenAdapter {
     }
 
     private void drawHeader(final GuiGraphics guiGraphics) {
-        this.renderManager.drawFilledRectangle(guiGraphics.pose(), 0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
-        this.renderManager.drawLine(guiGraphics.pose(), 0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
+        this.renderManager.drawFilledRectangle(guiGraphics, 0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
+        this.renderManager.drawLine(guiGraphics, 0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
 
         int titleWidth = this.renderManager.textWidth(CustomCrosshairMod.TITLE);
         int centreY = (this.headerHeight / 2) - (7 / 2);

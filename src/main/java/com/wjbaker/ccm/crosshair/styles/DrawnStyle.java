@@ -17,6 +17,6 @@ public final class DrawnStyle extends BaseCrosshairStyle {
         var image = CustomCrosshairMod.INSTANCE.properties().getCustomCrosshairDrawer();
         var baseColour = computedProperties.colour();
 
-        this.renderManager.drawImage(guiGraphics.pose(), x, y, image, baseColour, true);
+        this.renderManager.drawImage(guiGraphics, x, y, image, baseColour, true);
     }
 }

@@ -20,13 +20,13 @@ public final class TriangleStyle extends BaseCrosshairStyle {
         RGBA colour = computedProperties.colour();
         var isAdaptiveColourEnabled = this.crosshair.isAdaptiveColourEnabled.get();
 
-        this.renderManager.drawLines(guiGraphics.pose(), new float[] {
-            x, y - (height / 2.0F) - gap,
+        this.renderManager.drawLines(guiGraphics, new Float[] {
+            (float)x, y - (height / 2.0F) - gap,
             x + width / 2.0F + gap, y + (height / 2.0F) + gap,
             x + width / 2.0F + gap, y + (height / 2.0F) + gap,
             x - (width / 2.0F) - gap, y + (height / 2.0F) + gap,
             x - (width / 2.0F) - gap, y + (height / 2.0F) + gap,
-            x, y - (height / 2.0F) - gap
+            (float)x, y - (height / 2.0F) - gap
         }, 1.0F, colour, isAdaptiveColourEnabled);
     }
 }

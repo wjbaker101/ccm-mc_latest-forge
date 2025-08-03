@@ -1,10 +1,6 @@
 package com.wjbaker.ccm.crosshair.rendering;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.crosshair.styles.*;
@@ -14,11 +10,12 @@ import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.joml.Matrix3x2fStack;
 
 import java.util.Set;
 
@@ -39,13 +36,11 @@ public final class CrosshairRenderManager {
         this.renderManager = new RenderManager();
     }
 
-    public void draw(final CustomCrosshair crosshair, final int x, final int y) {
+    public void draw(final CustomCrosshair crosshair, final GuiGraphics guiGraphics, final int x, final int y) {
         var computedProperties = new ComputedProperties(crosshair);
 
         if (!computedProperties.isVisible())
             return;
-
-        var guiGraphics = new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
 
         var calculatedStyle = Minecraft.getInstance().getDebugOverlay().showDebugScreen() && crosshair.isKeepDebugEnabled.get()
             ? BaseCrosshairStyle.Styles.DEBUG
@@ -55,31 +50,26 @@ public final class CrosshairRenderManager {
         var isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
         var isDotEnabled = crosshair.isDotEnabled.get();
 
-        var transformMatrixStack = guiGraphics.pose();
+        var matrices = guiGraphics.pose();
 
         var renderX = x + crosshair.offsetX.get();
         var renderY = y + crosshair.offsetY.get();
-        var scale = crosshair.scale.get() - 2;
-        var windowScaling = (float)Minecraft.getInstance().getWindow().getGuiScale() / 2.0F;
-
-        this.preTransformation(transformMatrixStack, crosshair, renderX, renderY);
 
         this.drawIndicators(guiGraphics, crosshair, computedProperties, renderX, renderY);
 
-        transformMatrixStack.mulPose(Axis.ZP.rotationDegrees(crosshair.rotation.get()));
-        transformMatrixStack.scale(scale / 100.0F / windowScaling, scale / 100.0F / windowScaling, 1.0F);
+        this.preTransformation(matrices, crosshair, renderX, renderY);
 
         this.drawDefaultAttackIndicator(guiGraphics);
 
         if (isDotEnabled && crosshair.style.get() != BaseCrosshairStyle.Styles.VANILLA)
-            this.renderManager.drawCircle(guiGraphics.pose(), 0, 0, 0.5F, 1.0F, crosshair.dotColour.get());
+            this.renderManager.drawCircle(guiGraphics, 0, 0, 0.5F, 1.0F, crosshair.dotColour.get());
 
         if (isItemCooldownEnabled)
-            this.drawItemCooldownIndicator(guiGraphics.pose(), crosshair, computedProperties);
+            this.drawItemCooldownIndicator(guiGraphics, crosshair, computedProperties);
 
         style.draw(guiGraphics, 0, 0, computedProperties);
 
-        this.postTransformation(transformMatrixStack);
+        this.postTransformation(matrices, crosshair);
     }
 
     private BaseCrosshairStyle mapCrosshairStyle(final BaseCrosshairStyle.Styles style, final CustomCrosshair crosshair) {
@@ -97,21 +87,36 @@ public final class CrosshairRenderManager {
     }
 
     private void preTransformation(
-        final PoseStack matrixStack,
+        final Matrix3x2fStack matrices,
         final CustomCrosshair crosshair,
         final int x,
         final int y) {
 
-        matrixStack.pushPose();
-        matrixStack.translate(x, y, 0);
+        if (crosshair.style.get() == BaseCrosshairStyle.Styles.DEBUG) {
+            return;
+        }
+
+        matrices.pushMatrix();
+
+        var rotation = crosshair.rotation.get();
+        var scale = crosshair.scale.get() - 2;
+
+        matrices.scale(scale / 100.0F, scale / 100.0F);
+        matrices.rotateLocal(rotation);
+
+        matrices.translateLocal(x, y);
     }
 
-    private void postTransformation(final PoseStack matrixStack) {
-        matrixStack.popPose();
+    private void postTransformation(final Matrix3x2fStack matrixStack, final CustomCrosshair crosshair) {
+        if (crosshair.style.get() == BaseCrosshairStyle.Styles.DEBUG) {
+            return;
+        }
+
+        matrixStack.popMatrix();
     }
 
     private void drawItemCooldownIndicator(
-        final PoseStack matrixStack,
+        final GuiGraphics guiGraphics,
         final CustomCrosshair crosshair,
         final ComputedProperties computedProperties) {
 
@@ -134,7 +139,7 @@ public final class CrosshairRenderManager {
             var progress = Math.round(360 - (360 * cooldown));
 
             this.renderManager.drawPartialCircle(
-                matrixStack,
+                guiGraphics,
                 0, 0,
                 computedProperties.gap() + maxSize + offset,
                 0,
@@ -162,11 +167,12 @@ public final class CrosshairRenderManager {
             var drawY = -7 + 16;
 
             if (flag) {
-                guiGraphics.blitSprite(RenderType::crosshair, CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE, drawX, drawY, 16, 16);
-            } else if (f < 1.0F) {
-                int l = (int)(f * 17.0F);
-                guiGraphics.blitSprite(RenderType::crosshair, CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE, drawX, drawY, 16, 4);
-                guiGraphics.blitSprite(RenderType::crosshair, CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE, 16, 4, 0, 0, drawX, drawY, l, 4);
+                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE, drawX, drawY, 16, 16);
+            }
+            else if (f < 1.0F) {
+                var l = (int)(f * 17.0F);
+                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE, drawX, drawY, 16, 4);
+                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE, 16, 4, 0, 0, drawX, drawY, l, 4);
             }
         }
     }
@@ -177,26 +183,21 @@ public final class CrosshairRenderManager {
         final ComputedProperties computedProperties,
         final int x, final int y) {
 
-        var drawX = crosshair.gap.get() + 5;
-        var drawY = crosshair.gap.get() + 5;
+        var drawX = x + crosshair.gap.get() + 5;
+        var drawY = y + crosshair.gap.get() + 5;
 
         var indicatorItems = computedProperties.indicatorItems();
-
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        Lighting.setupForFlatItems();
 
         var matrixStack = guiGraphics.pose();
 
         for (var indicatorItem : indicatorItems) {
-            matrixStack.scale(0.5F, 0.5F, 1F);
+            matrixStack.scale(0.5F, 0.5F);
             guiGraphics.renderItem(indicatorItem.icon(), drawX * 2 - 8, drawY * 2 - 8);
-            matrixStack.scale(2F, 2F, 1F);
+            matrixStack.scale(2F, 2F);
 
             this.renderManager.drawSmallText(guiGraphics, indicatorItem.text(), drawX + 5, drawY, ModTheme.WHITE, true);
 
             drawX += 15;
         }
-
-        Lighting.setupFor3DItems();
     }
 }
