@@ -12,5 +12,5 @@ public final class KeyBindings {
         "keybind.custom_crosshair_mod.open_edit_crosshair_gui",
         InputConstants.Type.KEYSYM,
         GLFW.GLFW_KEY_GRAVE_ACCENT,
-        new KeyMapping.Category(ResourceLocation.parse("gui.custom_crosshair_mod.mod_keybinds_category"))));
+        new KeyMapping.Category(ResourceLocation.fromNamespaceAndPath("custom_crosshair_mod", "key_bindings"))));
 }
