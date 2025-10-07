@@ -28,7 +28,7 @@ public final class CustomCrosshairMod {
 
     public static final String TITLE = "Custom Crosshair Mod";
     public static final String VERSION = "1.6.0-forge";
-    public static final String MC_VERSION = "1.21.7-forge";
+    public static final String MC_VERSION = "1.21.9-forge";
     public static final String CURSEFORGE_PAGE = "https://www.curseforge.com/projects/242995/";
     public static final String MC_FORUMS_PAGE = "https://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2637819/";
     public static final String PATREON_PAGE = "https://www.patreon.com/bePatron?u=66431720";
@@ -95,7 +95,7 @@ public final class CustomCrosshairMod {
     }
 
     @SubscribeEvent
-    public static void onClientTickEvent(final TickEvent.ClientTickEvent event) {
+    public static void onClientTickEvent(final TickEvent.ClientTickEvent.Post event) {
         if (Minecraft.getInstance().screen == null && KeyBindings.EDIT_CROSSHAIR.get().isDown())
             Minecraft.getInstance().setScreen(new EditCrosshairGuiScreen(CustomCrosshairMod.INSTANCE.properties.getCrosshair()));
     }

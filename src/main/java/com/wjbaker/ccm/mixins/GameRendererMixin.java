@@ -23,7 +23,7 @@ public final class GameRendererMixin {
     @Inject(
         at = @At(
             value = "CONSTANT",
-            args = "stringValue=gui"
+            args = "stringValue=guiExtraction"
         ),
         method = "render"
     )

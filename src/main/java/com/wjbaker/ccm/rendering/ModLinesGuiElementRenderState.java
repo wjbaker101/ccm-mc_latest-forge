@@ -23,15 +23,15 @@ public record ModLinesGuiElementRenderState(Matrix3x2f pose, Float[] points, RGB
     }
 
     @Override
-    public void buildVertices(final VertexConsumer vertices, final float depth) {
+    public void buildVertices(final VertexConsumer vertices) {
         for (var i = 0; i < points.length; i += 2) {
             vertices
-                .addVertexWith2DPose(this.pose, points[i], points[i + 1], depth)
+                .addVertexWith2DPose(this.pose, points[i], points[i + 1])
                 .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
         }
 
         vertices
-            .addVertexWith2DPose(this.pose, points[points.length - 2], points[points.length - 1], depth)
+            .addVertexWith2DPose(this.pose, points[points.length - 2], points[points.length - 1])
             .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
     }
 
