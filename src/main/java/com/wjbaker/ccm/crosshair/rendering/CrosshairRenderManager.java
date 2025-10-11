@@ -102,7 +102,7 @@ public final class CrosshairRenderManager {
         var scale = crosshair.scale.get() - 2;
 
         matrices.scale(scale / 100.0F, scale / 100.0F);
-        matrices.rotateLocal(rotation);
+        matrices.rotateLocal(rotation * 0.01745329F);
 
         matrices.translateLocal(x, y);
     }
