@@ -41,8 +41,11 @@ public final class GameRendererMixin {
         var x = window.getGuiScaledWidth() / 2;
         var y = window.getGuiScaledHeight() / 2;
 
+        var mouseX = (int)mc.mouseHandler.getScaledXPos(window);
+        var mouseY = (int)mc.mouseHandler.getScaledYPos(window);
+
         var crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
-        var guiGraphics = new GuiGraphics(mc, this.guiRenderState);
+        var guiGraphics = new GuiGraphics(mc, this.guiRenderState, mouseX, mouseY);
 
         this.crosshairRenderManager.draw(crosshair, guiGraphics, x, y);
     }

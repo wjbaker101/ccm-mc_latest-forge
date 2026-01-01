@@ -1,13 +1,16 @@
 package com.wjbaker.ccm.rendering;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.gui.render.state.GuiElementRenderState;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -17,9 +20,22 @@ import org.joml.Matrix3x2f;
 @OnlyIn(Dist.CLIENT)
 public record ModLinesGuiElementRenderState(Matrix3x2f pose, Float[] points, RGBA colour) implements GuiElementRenderState {
 
+    private static final RenderPipeline DEBUG_LINES = registerRenderPipeline();
+
+    private static RenderPipeline registerRenderPipeline() {
+        var pipeline = RenderPipeline
+            .builder(RenderPipelines.GUI_SNIPPET)
+            .withLocation(Identifier.fromNamespaceAndPath("custom-crosshair-mod", "pipeline/debug_lines"))
+            .withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.DEBUG_LINE_STRIP)
+            .build();
+
+        RenderPipelines.PIPELINES_BY_LOCATION.put(pipeline.getLocation(), pipeline);
+        return pipeline;
+    }
+
     @Override
     public RenderPipeline pipeline() {
-        return RenderPipelines.DEBUG_LINE_STRIP;
+        return DEBUG_LINES;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.wjbaker.ccm.helpers;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
