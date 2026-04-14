@@ -8,7 +8,7 @@ import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.gui.screen.screens.editColour.EditColourGuiScreen;
 import com.wjbaker.ccm.rendering.ModTheme;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class ColourPickerGuiComponent extends GuiComponent implements IBindableGuiComponent<RgbaProperty> {
 
@@ -39,11 +39,11 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
     }
 
     @Override
-    public void draw(final GuiGraphics guiGraphics) {
-        super.draw(guiGraphics);
+    public void draw(final GuiGraphicsExtractor graphics) {
+        super.draw(graphics);
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics,
+            graphics,
             this.x, this.y,
             this.x + this.boxSize, this.y + this.boxSize,
             2.0F,
@@ -51,13 +51,13 @@ public final class ColourPickerGuiComponent extends GuiComponent implements IBin
             this.currentBackgroundColour);
 
         this.renderManager.drawFilledRectangle(
-            guiGraphics,
+            graphics,
             this.x + 2, this.y + 2,
             this.x + this.boxSize - 2, this.y + this.boxSize - 2,
             this.colour.get());
 
         this.renderManager.drawText(
-            guiGraphics,
+            graphics,
             this.label,
             this.x + this.boxSize + this.labelSpacing,
             this.y + (this.boxSize / 2) - 3,

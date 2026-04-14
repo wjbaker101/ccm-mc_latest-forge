@@ -1,7 +1,7 @@
 package com.wjbaker.ccm.gui.component;
 
 import com.wjbaker.ccm.gui.event.IMouseEvents;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ public abstract class GuiComponentWithComponents extends GuiComponentTheme imple
         this.components.clear();
     }
 
-    public void draw(final GuiGraphics guiGraphics) {
-        this.components.forEach(x -> x.draw(guiGraphics));
+    public void draw(final GuiGraphicsExtractor graphics) {
+        this.components.forEach(x -> x.draw(graphics));
     }
 
     @Override

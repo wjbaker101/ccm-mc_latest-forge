@@ -8,7 +8,7 @@ import com.wjbaker.ccm.helpers.Helper;
 import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.language.I18n;
 
 import java.util.ArrayList;
@@ -86,25 +86,25 @@ public abstract class GuiScreen extends GuiScreenAdapter {
     }
 
     @Override
-    public void draw(final GuiGraphics guiGraphics) {
-        this.renderManager.drawFilledRectangle(guiGraphics, 0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
+    public void draw(final GuiGraphicsExtractor graphics) {
+        this.renderManager.drawFilledRectangle(graphics, 0, 0, this.width, this.height, ModTheme.BLACK.setOpacity(140));
 
-        this.components.forEach(x -> x.draw(guiGraphics));
+        this.components.forEach(x -> x.draw(graphics));
 
-        this.drawHeader(guiGraphics);
+        this.drawHeader(graphics);
     }
 
-    private void drawHeader(final GuiGraphics guiGraphics) {
-        this.renderManager.drawFilledRectangle(guiGraphics, 0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
-        this.renderManager.drawLine(guiGraphics, 0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
+    private void drawHeader(final GuiGraphicsExtractor graphics) {
+        this.renderManager.drawFilledRectangle(graphics, 0, 0, this.width, this.headerHeight, ModTheme.PRIMARY);
+        this.renderManager.drawLine(graphics, 0, this.headerHeight, this.width, this.headerHeight, 2.0F, ModTheme.DARK_GREY);
 
         int titleWidth = this.renderManager.textWidth(CustomCrosshairMod.TITLE);
         int centreY = (this.headerHeight / 2) - (7 / 2);
 
-        this.renderManager.drawText(guiGraphics, CustomCrosshairMod.TITLE, 5, centreY, ModTheme.WHITE, true);
+        this.renderManager.drawText(graphics, CustomCrosshairMod.TITLE, 5, centreY, ModTheme.WHITE, true);
 
         this.renderManager.drawSmallText(
-            guiGraphics,
+            graphics,
             "v" + CustomCrosshairMod.VERSION,
             8 + titleWidth,
             (headerHeight / 2),
@@ -112,10 +112,10 @@ public abstract class GuiScreen extends GuiScreenAdapter {
             false);
 
         if (!CustomCrosshairMod.INSTANCE.properties().isLatestVersion().get())
-            this.newVersionButton.draw(guiGraphics);
+            this.newVersionButton.draw(graphics);
 
-        this.patreonButton.draw(guiGraphics);
-        this.paypalButton.draw(guiGraphics);
+        this.patreonButton.draw(graphics);
+        this.paypalButton.draw(graphics);
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
 import com.wjbaker.ccm.rendering.types.RGBA;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class TriangleStyle extends BaseCrosshairStyle {
 
@@ -13,14 +13,14 @@ public final class TriangleStyle extends BaseCrosshairStyle {
     }
 
     @Override
-    public void draw(final GuiGraphics guiGraphics, final int x, final int y, final ComputedProperties computedProperties) {
+    public void draw(final GuiGraphicsExtractor graphics, final int x, final int y, final ComputedProperties computedProperties) {
         int width = this.crosshair.width.get();
         int height = this.crosshair.height.get();
         int gap = computedProperties.gap();
         RGBA colour = computedProperties.colour();
         var isAdaptiveColourEnabled = this.crosshair.isAdaptiveColourEnabled.get();
 
-        this.renderManager.drawLines(guiGraphics, new Float[] {
+        this.renderManager.drawLines(graphics, new Float[] {
             (float)x, y - (height / 2.0F) - gap,
             x + width / 2.0F + gap, y + (height / 2.0F) + gap,
             x + width / 2.0F + gap, y + (height / 2.0F) + gap,

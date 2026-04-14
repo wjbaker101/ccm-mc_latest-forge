@@ -3,7 +3,7 @@ package com.wjbaker.ccm.crosshair.styles;
 import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.crosshair.types.BaseCrosshairStyle;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class ArrowStyle extends BaseCrosshairStyle {
 
@@ -12,13 +12,13 @@ public final class ArrowStyle extends BaseCrosshairStyle {
     }
 
     @Override
-    public void draw(final GuiGraphics guiGraphics, final int x, final int y, final ComputedProperties computedProperties) {
+    public void draw(final GuiGraphicsExtractor graphics, final int x, final int y, final ComputedProperties computedProperties) {
         int width = this.crosshair.width.get();
         int height = this.crosshair.height.get();
         int thickness = this.crosshair.thickness.get();
         var isAdaptiveColourEnabled = this.crosshair.isAdaptiveColourEnabled.get();
 
-        this.renderManager.drawLines(guiGraphics, new Float[] {
+        this.renderManager.drawLines(graphics, new Float[] {
             (float)x - width, (float)y + height, (float)x, (float)y,
             (float)x, (float)y, (float)x + width, (float)y + height
         }, thickness, computedProperties.colour(), isAdaptiveColourEnabled);

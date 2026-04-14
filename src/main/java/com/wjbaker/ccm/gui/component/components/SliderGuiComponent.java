@@ -5,7 +5,7 @@ import com.wjbaker.ccm.gui.component.event.IGuiComponentEvent;
 import com.wjbaker.ccm.gui.component.event.IOnValueChangedEvent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.rendering.types.RGBA;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public abstract class SliderGuiComponent extends GuiComponent {
 
@@ -53,15 +53,15 @@ public abstract class SliderGuiComponent extends GuiComponent {
     }
 
     @Override
-    public void draw(final GuiGraphics guiGraphics) {
-        super.draw(guiGraphics);
+    public void draw(final GuiGraphicsExtractor graphics) {
+        super.draw(graphics);
 
-        this.renderManager.drawText(guiGraphics, this.label, this.x, this.y, this.currentTextColour, false);
+        this.renderManager.drawText(graphics, this.label, this.x, this.y, this.currentTextColour, false);
 
         int posY = this.y + 8 + this.titleSpacing;
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics,
+            graphics,
             this.x, posY + (this.thumbSize / 2.0F) - 2,
             this.x + this.width, posY + (this.thumbSize / 2.0F) - 1 + 3,
             2.0F,
@@ -69,14 +69,14 @@ public abstract class SliderGuiComponent extends GuiComponent {
             this.baseBackgroundColour);
 
         this.renderManager.drawBorderedRectangle(
-            guiGraphics,
+            graphics,
             this.x + this.thumbPosition, posY,
             this.x + this.thumbPosition + this.thumbSize, posY + this.thumbSize,
             2.0F,
             this.currentBorderColour,
             this.currentThumbColour);
 
-        this.drawLabel(guiGraphics);
+        this.drawLabel(graphics);
     }
 
     @Override
@@ -135,7 +135,7 @@ public abstract class SliderGuiComponent extends GuiComponent {
     }
 
     protected abstract void calculateValue();
-    protected abstract void drawLabel(final GuiGraphics guiGraphics);
+    protected abstract void drawLabel(final GuiGraphicsExtractor graphics);
 
     public void setBaseThumbColour(final RGBA baseThumbColour) {
         this.baseThumbColour = baseThumbColour;

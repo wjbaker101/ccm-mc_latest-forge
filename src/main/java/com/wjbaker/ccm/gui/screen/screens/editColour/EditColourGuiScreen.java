@@ -15,7 +15,7 @@ import com.wjbaker.ccm.gui.screen.screens.editCrosshair.EditCrosshairGuiScreen;
 import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.language.I18n;
 
 public final class EditColourGuiScreen extends GuiScreen {
@@ -115,9 +115,9 @@ public final class EditColourGuiScreen extends GuiScreen {
     }
 
     @Override
-    public void draw(final GuiGraphics guiGraphics) {
-        super.draw(guiGraphics);
+    public void draw(final GuiGraphicsExtractor graphics) {
+        super.draw(graphics);
 
-        this.crosshairPreviewPanel.draw(guiGraphics);
+        this.crosshairPreviewPanel.draw(graphics);
     }
 }

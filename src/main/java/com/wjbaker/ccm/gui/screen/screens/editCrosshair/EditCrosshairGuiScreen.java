@@ -8,7 +8,7 @@ import com.wjbaker.ccm.gui.component.custom.CrosshairPreviewGuiComponent;
 import com.wjbaker.ccm.gui.component.event.IOnClickEvent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.gui.screen.screens.editCrosshair.components.*;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.language.I18n;
 
 public final class EditCrosshairGuiScreen extends GuiScreen {
@@ -96,11 +96,11 @@ public final class EditCrosshairGuiScreen extends GuiScreen {
     }
 
     @Override
-    public void draw(final GuiGraphics guiGraphics) {
-        super.draw(guiGraphics);
+    public void draw(final GuiGraphicsExtractor graphics) {
+        super.draw(graphics);
 
-        this.crosshairPreviewPanel.draw(guiGraphics);
-        this.resetButton.draw(guiGraphics);
+        this.crosshairPreviewPanel.draw(graphics);
+        this.resetButton.draw(graphics);
     }
 
     @Override

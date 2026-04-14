@@ -1,11 +1,10 @@
 package com.wjbaker.ccm.gui.screen;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
 
@@ -26,9 +25,9 @@ public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
     }
 
     @Override
-    public void render(final @NotNull GuiGraphics guiGraphics, final int mouseX, final int mouseY, final float delta) {
-        super.render(guiGraphics, mouseX, mouseY, delta);
-        this.draw(guiGraphics);
+    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
+        this.draw(graphics);
     }
 
     @Override
@@ -56,24 +55,24 @@ public abstract class GuiScreenAdapter extends Screen implements IGuiScreen {
     }
 
     @Override
-    public boolean mouseScrolled(final double mouseX, final double mouseY, final double amountX, final double amountY) {
-        if (amountY > 0)
+    public boolean mouseScrolled(final double mouseX, final double mouseY, final double horizontalAmount, final double verticalAmount) {
+        if (verticalAmount > 0)
             this.onMouseScrollUp();
         else
             this.onMouseScrollDown();
 
-        return super.mouseScrolled(mouseX, mouseY, amountX, amountY);
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
     @Override
-    public boolean keyPressed(final KeyEvent event) {
-        this.onKeyDown(event.key());
-        return super.keyPressed(event);
+    public boolean keyPressed(final KeyEvent input) {
+        this.onKeyDown(input.key());
+        return super.keyPressed(input);
     }
 
     @Override
-    public boolean keyReleased(final KeyEvent event) {
-        this.onKeyUp(event.key());
-        return super.keyReleased(event);
+    public boolean keyReleased(final KeyEvent input) {
+        this.onKeyUp(input.key());
+        return super.keyReleased(input);
     }
 }

@@ -7,7 +7,7 @@ import com.wjbaker.ccm.gui.component.components.IntegerSliderGuiComponent;
 import com.wjbaker.ccm.gui.component.components.PanelGuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.rendering.ModTheme;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.language.I18n;
 
 public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
@@ -33,7 +33,7 @@ public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
             this.parentGuiScreen, -1, -1, 250, I18n.get("custom_crosshair_mod.screen.edit_crosshair.rainbow_speed"), 0, 1000, crosshair.rainbowSpeed.get()) {
 
             @Override
-            protected void drawLabel(final GuiGraphics guiGraphics) {
+            protected void drawLabel(final GuiGraphicsExtractor graphics) {
                 String label = this.getValue() < 333
                     ? I18n.get("custom_crosshair_mod.screen.edit_crosshair.rainbow_speed.slow")
                     : this.getValue() < 666
@@ -43,7 +43,7 @@ public final class RainbowSettingsGuiPanel extends PanelGuiComponent {
                 int posY = this.y + 8 + this.titleSpacing;
 
                 this.renderManager.drawText(
-                    guiGraphics,
+                    graphics,
                     label,
                     this.x + this.width + this.titleSpacing,
                     posY + (this.thumbSize / 2) - 3,

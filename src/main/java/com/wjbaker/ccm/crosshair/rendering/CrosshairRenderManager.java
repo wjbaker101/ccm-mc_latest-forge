@@ -9,7 +9,7 @@ import com.wjbaker.ccm.rendering.ModTheme;
 import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +36,7 @@ public final class CrosshairRenderManager {
         this.renderManager = new RenderManager();
     }
 
-    public void draw(final CustomCrosshair crosshair, final GuiGraphics guiGraphics, final int x, final int y) {
+    public void draw(final CustomCrosshair crosshair, final GuiGraphicsExtractor graphics, final int x, final int y) {
         var computedProperties = new ComputedProperties(crosshair);
 
         if (!computedProperties.isVisible())
@@ -50,24 +50,24 @@ public final class CrosshairRenderManager {
         var isItemCooldownEnabled = crosshair.isItemCooldownEnabled.get();
         var isDotEnabled = crosshair.isDotEnabled.get();
 
-        var matrices = guiGraphics.pose();
+        var matrices = graphics.pose();
 
         var renderX = x + crosshair.offsetX.get();
         var renderY = y + crosshair.offsetY.get();
 
-        this.drawIndicators(guiGraphics, crosshair, computedProperties, renderX, renderY);
+        this.drawIndicators(graphics, crosshair, computedProperties, renderX, renderY);
 
         this.preTransformation(matrices, crosshair, renderX, renderY);
 
-        this.drawDefaultAttackIndicator(guiGraphics);
+        this.drawDefaultAttackIndicator(graphics);
 
         if (isDotEnabled && crosshair.style.get() != BaseCrosshairStyle.Styles.VANILLA)
-            this.renderManager.drawCircle(guiGraphics, 0, 0, 0.5F, 1.0F, crosshair.dotColour.get());
+            this.renderManager.drawCircle(graphics, 0, 0, 0.5F, 1.0F, crosshair.dotColour.get());
 
         if (isItemCooldownEnabled)
-            this.drawItemCooldownIndicator(guiGraphics, crosshair, computedProperties);
+            this.drawItemCooldownIndicator(graphics, crosshair, computedProperties);
 
-        style.draw(guiGraphics, 0, 0, computedProperties);
+        style.draw(graphics, 0, 0, computedProperties);
 
         this.postTransformation(matrices, crosshair);
     }
@@ -116,7 +116,7 @@ public final class CrosshairRenderManager {
     }
 
     private void drawItemCooldownIndicator(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final CustomCrosshair crosshair,
         final ComputedProperties computedProperties) {
 
@@ -139,7 +139,7 @@ public final class CrosshairRenderManager {
             var progress = Math.round(360 - (360 * cooldown));
 
             this.renderManager.drawPartialCircle(
-                guiGraphics,
+                graphics,
                 0, 0,
                 computedProperties.gap() + maxSize + offset,
                 0,
@@ -151,7 +151,7 @@ public final class CrosshairRenderManager {
         }
     }
 
-    private void drawDefaultAttackIndicator(final GuiGraphics guiGraphics) {
+    private void drawDefaultAttackIndicator(final GuiGraphicsExtractor graphics) {
         var mc = Minecraft.getInstance();
 
         if (mc.options.attackIndicator().get() == AttackIndicatorStatus.CROSSHAIR && mc.player != null) {
@@ -167,18 +167,18 @@ public final class CrosshairRenderManager {
             var drawY = -7 + 16;
 
             if (flag) {
-                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE, drawX, drawY, 16, 16);
+                graphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE, drawX, drawY, 16, 16);
             }
             else if (f < 1.0F) {
                 var l = (int)(f * 17.0F);
-                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE, drawX, drawY, 16, 4);
-                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE, 16, 4, 0, 0, drawX, drawY, l, 4);
+                graphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE, drawX, drawY, 16, 4);
+                graphics.blitSprite(RenderPipelines.CROSSHAIR, CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE, 16, 4, 0, 0, drawX, drawY, l, 4);
             }
         }
     }
 
     private void drawIndicators(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final CustomCrosshair crosshair,
         final ComputedProperties computedProperties,
         final int x, final int y) {
@@ -188,14 +188,14 @@ public final class CrosshairRenderManager {
 
         var indicatorItems = computedProperties.indicatorItems();
 
-        var matrixStack = guiGraphics.pose();
+        var matrixStack = graphics.pose();
 
         for (var indicatorItem : indicatorItems) {
             matrixStack.scale(0.5F, 0.5F);
-            guiGraphics.renderItem(indicatorItem.icon(), drawX * 2 - 8, drawY * 2 - 8);
+            graphics.item(indicatorItem.icon(), drawX * 2 - 8, drawY * 2 - 8);
             matrixStack.scale(2F, 2F);
 
-            this.renderManager.drawSmallText(guiGraphics, indicatorItem.text(), drawX + 5, drawY, ModTheme.WHITE, true);
+            this.renderManager.drawSmallText(graphics, indicatorItem.text(), drawX + 5, drawY, ModTheme.WHITE, true);
 
             drawX += 15;
         }

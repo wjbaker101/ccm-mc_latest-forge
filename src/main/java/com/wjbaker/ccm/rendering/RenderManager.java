@@ -5,7 +5,7 @@ import com.wjbaker.ccm.gui.types.GuiBounds;
 import com.wjbaker.ccm.gui.types.IDrawInsideWindowCallback;
 import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.joml.Matrix3x2f;
 import org.lwjgl.opengl.GL11;
 
@@ -20,54 +20,54 @@ public final class RenderManager {
             GL11.glDisable(property);
     }
 
-    public void drawLines(final GuiGraphics guiGraphics, Float[] points, final float thickness, final RGBA colour) {
-        this.drawLines(guiGraphics, points, thickness, colour, false);
+    public void drawLines(final GuiGraphicsExtractor graphics, Float[] points, final float thickness, final RGBA colour) {
+        this.drawLines(graphics, points, thickness, colour, false);
     }
 
     public void drawLines(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         Float[] points,
         final float thickness,
         final RGBA colour,
         final boolean isBlendEnabled) {
 
-        guiGraphics.getRenderState().submitGuiElement(new ModLinesGuiElementRenderState(new Matrix3x2f(guiGraphics.pose()), points, colour));
+        graphics.getRenderState().addGuiElement(new ModLinesGuiElementRenderState(new Matrix3x2f(graphics.pose()), points, colour));
     }
 
-    public void drawFilledShape(final GuiGraphics guiGraphics, final float[] points, final RGBA colour) {
-        this.drawFilledShape(guiGraphics, points, colour, false);
+    public void drawFilledShape(final GuiGraphicsExtractor graphics, final float[] points, final RGBA colour) {
+        this.drawFilledShape(graphics, points, colour, false);
     }
 
     public void drawFilledShape(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float[] points,
         final RGBA colour,
         final boolean isBlendEnabled) {
 
-        guiGraphics.getRenderState().submitGuiElement(new ModFilledGuiElementRenderState(new Matrix3x2f(guiGraphics.pose()), points, colour));
+        graphics.getRenderState().addGuiElement(new ModFilledGuiElementRenderState(new Matrix3x2f(graphics.pose()), points, colour));
     }
 
     public void drawLine(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x1, final float y1,
         final float x2, final float y2,
         final float thickness,
         final RGBA colour) {
 
-        this.drawLines(guiGraphics, new Float[] {
+        this.drawLines(graphics, new Float[] {
             x1, y1,
             x2, y2
         }, thickness, colour);
     }
 
     public void drawRectangle(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x1, final float y1,
         final float x2, final float y2,
         final float thickness,
         final RGBA colour) {
 
-        this.drawLines(guiGraphics, new Float[] {
+        this.drawLines(graphics, new Float[] {
             x1, y1,
             x2, y1,
             x2, y2,
@@ -77,22 +77,22 @@ public final class RenderManager {
     }
 
     public void drawFilledRectangle(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x1, final float y1,
         final float x2, final float y2,
         final RGBA colour) {
 
-        this.drawFilledRectangle(guiGraphics, x1, y1, x2, y2, colour, false);
+        this.drawFilledRectangle(graphics, x1, y1, x2, y2, colour, false);
     }
 
     public void drawFilledRectangle(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x1, final float y1,
         final float x2, final float y2,
         final RGBA colour,
         final boolean isBlendEnabled) {
 
-        this.drawFilledShape(guiGraphics, new float[] {
+        this.drawFilledShape(graphics, new float[] {
             x1, y1,
             x1, y2,
             x2, y2,
@@ -101,18 +101,18 @@ public final class RenderManager {
     }
 
     public void drawBorderedRectangle(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x1, final float y1,
         final float x2, final float y2,
         final float borderThickness,
         final RGBA borderColour,
         final RGBA fillColour) {
 
-        this.drawBorderedRectangle(guiGraphics, x1, y1, x2, y2, borderThickness, borderColour, fillColour, false);
+        this.drawBorderedRectangle(graphics, x1, y1, x2, y2, borderThickness, borderColour, fillColour, false);
     }
 
     public void drawBorderedRectangle(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x1, final float y1,
         final float x2, final float y2,
         final float borderThickness,
@@ -120,12 +120,12 @@ public final class RenderManager {
         final RGBA fillColour,
         final boolean isBlendEnabled) {
 
-        this.drawFilledRectangle(guiGraphics, x1, y1, x2, y2, fillColour, isBlendEnabled);
-        this.drawRectangle(guiGraphics, x1, y1, x2, y2, borderThickness, borderColour);
+        this.drawFilledRectangle(graphics, x1, y1, x2, y2, fillColour, isBlendEnabled);
+        this.drawRectangle(graphics, x1, y1, x2, y2, borderThickness, borderColour);
     }
 
     public void drawPartialCircle(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x, final float y,
         final float radius,
         final int startAngleAt,
@@ -145,22 +145,22 @@ public final class RenderManager {
             points.add(y + (float)Math.sin(radians) * radius);
         }
 
-        guiGraphics.getRenderState().submitGuiElement(new ModLinesGuiElementRenderState(new Matrix3x2f(guiGraphics.pose()), points.toArray(new Float[0]), colour));
+        graphics.getRenderState().addGuiElement(new ModLinesGuiElementRenderState(new Matrix3x2f(graphics.pose()), points.toArray(new Float[0]), colour));
     }
 
     public void drawCircle(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final float x, final float y,
         final float radius,
         final float thickness,
         final RGBA colour) {
 
-        this.drawPartialCircle(guiGraphics, x, y, radius, 0, 360, thickness, colour);
-        this.drawPartialCircle(guiGraphics, x, y, radius, 0, 360, thickness, colour);
+        this.drawPartialCircle(graphics, x, y, radius, 0, 360, thickness, colour);
+        this.drawPartialCircle(graphics, x, y, radius, 0, 360, thickness, colour);
     }
 
     public void drawImage(
-        final GuiGraphics guiGraphics,
+        final GuiGraphicsExtractor graphics,
         final int x, final int y,
         final CustomCrosshairDrawer image,
         final RGBA colour,
@@ -178,38 +178,38 @@ public final class RenderManager {
                     var drawX = x + imageX - offsetX;
                     var drawY = y + imageY - offsetY;
 
-                    this.drawFilledRectangle(guiGraphics, drawX, drawY, drawX + 1, drawY + 1, colour);
+                    this.drawFilledRectangle(graphics, drawX, drawY, drawX + 1, drawY + 1, colour);
                 }
             }
         }
     }
 
-    public void drawText(final GuiGraphics guiGraphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+    public void drawText(final GuiGraphicsExtractor graphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
         var colourAsInt = this.rgbaAsInt(colour);
 
         if (hasShadow)
-            guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, colourAsInt, true);
+            graphics.text(Minecraft.getInstance().font, text, x, y, colourAsInt, true);
         else
-            guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, colourAsInt);
+            graphics.text(Minecraft.getInstance().font, text, x, y, colourAsInt, false);
     }
 
-    public void drawSmallText(final GuiGraphics guiGraphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
-        var matrixStack = guiGraphics.pose();
+    public void drawSmallText(final GuiGraphicsExtractor graphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+        var matrixStack = graphics.pose();
 
         matrixStack.pushMatrix();
         matrixStack.scale(0.5F, 0.5F);
 
-        this.drawText(guiGraphics, text, x * 2, y * 2, colour, hasShadow);
+        this.drawText(graphics, text, x * 2, y * 2, colour, hasShadow);
         matrixStack.popMatrix();
     }
 
-    public void drawBigText(final GuiGraphics guiGraphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
-        var matrixStack = guiGraphics.pose();
+    public void drawBigText(final GuiGraphicsExtractor graphics, final String text, final int x, final int y, final RGBA colour, final boolean hasShadow) {
+        var matrixStack = graphics.pose();
 
         matrixStack.pushMatrix();
         matrixStack.scale(1.5F, 1.5F);
 
-        this.drawText(guiGraphics, text, (int)(x * 0.666F), (int)(y * 0.666F), colour, hasShadow);
+        this.drawText(graphics, text, (int)(x * 0.666F), (int)(y * 0.666F), colour, hasShadow);
         matrixStack.popMatrix();
     }
 

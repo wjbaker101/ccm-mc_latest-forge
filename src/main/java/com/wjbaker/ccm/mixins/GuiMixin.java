@@ -12,10 +12,10 @@ public class GuiMixin {
 
     @Inject(
         at = @At("HEAD"),
-        method = "renderCrosshair",
+        method = "extractCrosshair",
         cancellable = true
     )
-    private void renderCrosshair(final CallbackInfo info) {
+    private void extractCrosshair(final CallbackInfo info) {
         if (!CustomCrosshairMod.INSTANCE.properties().getIsModEnabled().get())
             return;
 

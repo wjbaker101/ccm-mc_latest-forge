@@ -4,7 +4,7 @@ import com.wjbaker.ccm.crosshair.properties.IntegerProperty;
 import com.wjbaker.ccm.gui.component.type.IBindableGuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.rendering.ModTheme;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class IntegerSliderGuiComponent
     extends SliderGuiComponent
@@ -40,11 +40,11 @@ public class IntegerSliderGuiComponent
     }
 
     @Override
-    protected void drawLabel(final GuiGraphics guiGraphics) {
+    protected void drawLabel(final GuiGraphicsExtractor graphics) {
         int posY = this.y + 8 + this.titleSpacing;
 
         this.renderManager.drawText(
-            guiGraphics,
+            graphics,
             "" + this.value.get(),
             this.x + this.width + this.titleSpacing,
             posY + (this.thumbSize / 2) - 3,

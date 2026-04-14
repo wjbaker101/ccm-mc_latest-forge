@@ -3,9 +3,9 @@ package com.wjbaker.ccm.mixins;
 import com.wjbaker.ccm.CustomCrosshairMod;
 import com.wjbaker.ccm.crosshair.rendering.CrosshairRenderManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.render.state.GuiRenderState;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.state.GameRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public final class GameRendererMixin {
 
     @Shadow
-    private GuiRenderState guiRenderState;
+    private GameRenderState gameRenderState;
 
     private final CrosshairRenderManager crosshairRenderManager = new CrosshairRenderManager();
 
     @Inject(
         at = @At(
             value = "CONSTANT",
-            args = "stringValue=guiExtraction"
+            args = "stringValue=gui"
         ),
         method = "render"
     )
@@ -45,7 +45,7 @@ public final class GameRendererMixin {
         var mouseY = (int)mc.mouseHandler.getScaledYPos(window);
 
         var crosshair = CustomCrosshairMod.INSTANCE.properties().getCrosshair();
-        var guiGraphics = new GuiGraphics(mc, this.guiRenderState, mouseX, mouseY);
+        var guiGraphics = new GuiGraphicsExtractor(mc, this.gameRenderState.guiRenderState, mouseX, mouseY);
 
         this.crosshairRenderManager.draw(crosshair, guiGraphics, x, y);
     }

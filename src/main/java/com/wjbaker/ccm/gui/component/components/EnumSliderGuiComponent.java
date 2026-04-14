@@ -4,7 +4,7 @@ import com.wjbaker.ccm.crosshair.properties.EnumProperty;
 import com.wjbaker.ccm.gui.component.type.IBindableGuiComponent;
 import com.wjbaker.ccm.gui.screen.GuiScreen;
 import com.wjbaker.ccm.rendering.ModTheme;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.apache.commons.lang3.StringUtils;
 
 public final class EnumSliderGuiComponent<TEnum extends Enum<TEnum>>
@@ -39,11 +39,11 @@ public final class EnumSliderGuiComponent<TEnum extends Enum<TEnum>>
     }
 
     @Override
-    protected void drawLabel(final GuiGraphics guiGraphics) {
+    protected void drawLabel(final GuiGraphicsExtractor graphics) {
         int posY = this.y + 8 + this.titleSpacing;
 
         this.renderManager.drawText(
-            guiGraphics,
+            graphics,
             StringUtils.capitalize(this.value.get().name().toLowerCase()),
             this.x + this.width + this.titleSpacing,
             posY + (this.thumbSize / 2) - 3,

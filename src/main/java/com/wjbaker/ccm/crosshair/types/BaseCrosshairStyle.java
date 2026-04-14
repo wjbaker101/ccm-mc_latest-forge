@@ -4,7 +4,7 @@ import com.wjbaker.ccm.crosshair.CustomCrosshair;
 import com.wjbaker.ccm.crosshair.computed.ComputedProperties;
 import com.wjbaker.ccm.rendering.RenderManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public abstract class BaseCrosshairStyle {
 
@@ -29,5 +29,5 @@ public abstract class BaseCrosshairStyle {
         this.mc = Minecraft.getInstance();
     }
 
-    public abstract void draw(final GuiGraphics guiGraphics, final int x, final int y, final ComputedProperties computedProperties);
+    public abstract void draw(final GuiGraphicsExtractor graphics, final int x, final int y, final ComputedProperties computedProperties);
 }
