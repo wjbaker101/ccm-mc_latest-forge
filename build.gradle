@@ -5,7 +5,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[7.0.17,8)'
 }
 
-version = "1.6.6-forge"
+version = "1.6.7-forge"
 group = "com.wjbaker.ccm"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
