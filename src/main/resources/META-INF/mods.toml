@@ -4,7 +4,7 @@ license = "All Rights Reserved"
 
 [[mods]]
 modId = "custom_crosshair_mod"
-version = "1.6.6-forge"
+version = "1.6.7-forge"
 displayName = "Custom Crosshair Mod"
 authors = "Sparkless101"
 displayURL = "https://www.curseforge.com/projects/242995/"
