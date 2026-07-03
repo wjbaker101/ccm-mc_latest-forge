@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[64,)"
+loaderVersion = "[65,)"
 license = "All Rights Reserved"
 
 [[mods]]
@@ -15,13 +15,13 @@ description = '''A dynamic and customisable crosshair.'''
 [[dependencies.custom_crosshair_mod]]
 modId = "forge"
 mandatory = true
-versionRange = "[64,)"
+versionRange = "[65,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.custom_crosshair_mod]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[26.1.2,26.2,)"
+versionRange="[26.2,26.3,)"
 ordering = "NONE"
 side = "BOTH"

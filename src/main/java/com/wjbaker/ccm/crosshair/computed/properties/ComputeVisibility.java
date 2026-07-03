@@ -33,7 +33,7 @@ public abstract class ComputeVisibility {
         if (!crosshair.isVisibleDefault.get())
             return false;
 
-        if (!crosshair.isVisibleHiddenGui.get() && mc.options.hideGui)
+        if (!crosshair.isVisibleHiddenGui.get() && mc.gui.hud.isHidden())
             return false;
 
         var isThirdPerson = !mc.options.getCameraType().isFirstPerson();

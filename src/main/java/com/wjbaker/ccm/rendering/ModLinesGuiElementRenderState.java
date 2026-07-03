@@ -1,9 +1,9 @@
 package com.wjbaker.ccm.rendering;
 
+import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.wjbaker.ccm.rendering.types.RGBA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
@@ -17,13 +17,13 @@ import org.joml.Matrix3x2f;
 
 public record ModLinesGuiElementRenderState(Matrix3x2f pose, Float[] points, RGBA colour) implements GuiElementRenderState {
 
-    private static final RenderPipeline DEBUG_LINES = registerRenderPipeline();
-
-    private static RenderPipeline registerRenderPipeline() {
+    @Override
+    public RenderPipeline pipeline() {
         var pipeline = RenderPipeline
             .builder(RenderPipelines.GUI_SNIPPET)
             .withLocation(Identifier.fromNamespaceAndPath("custom-crosshair-mod", "pipeline/debug_lines"))
-            .withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.DEBUG_LINE_STRIP)
+            .withVertexBinding(0, DefaultVertexFormat.POSITION_COLOR)
+            .withPrimitiveTopology(PrimitiveTopology.DEBUG_LINE_STRIP)
             .build();
 
         RenderPipelines.PIPELINES_BY_LOCATION.put(pipeline.getLocation(), pipeline);
@@ -31,21 +31,13 @@ public record ModLinesGuiElementRenderState(Matrix3x2f pose, Float[] points, RGB
     }
 
     @Override
-    public RenderPipeline pipeline() {
-        return DEBUG_LINES;
-    }
-
-    @Override
     public void buildVertices(final VertexConsumer vertices) {
         for (var i = 0; i < points.length; i += 2) {
             vertices
                 .addVertexWith2DPose(this.pose, points[i], points[i + 1])
-                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
+                .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity())
+                .setLineWidth(2.0F);
         }
-
-        vertices
-            .addVertexWith2DPose(this.pose, points[points.length - 2], points[points.length - 1])
-            .setColor(colour.getRed(), colour.getGreen(), colour.getBlue(), colour.getOpacity());
     }
 
     @Override
@@ -55,29 +47,12 @@ public record ModLinesGuiElementRenderState(Matrix3x2f pose, Float[] points, RGB
 
     @Override
     public @Nullable ScreenRectangle scissorArea() {
-        var minX = points[0];
-        var minY = points[1];
-        var maxX = points[0];
-        var maxY = points[1];
-
-        for (int i = 2; i < points.length; i++) {
-            if (i % 2 == 0) {
-                minX = Math.min(minX, points[i]);
-                maxX = Math.max(maxX, points[i]);
-            }
-            else {
-                minY = Math.min(minY, points[i]);
-                maxY = Math.max(maxY, points[i]);
-            }
-        }
-
-        var window = Minecraft.getInstance().getWindow();
-        return new ScreenRectangle(-minX.intValue(), -minY.intValue(), window.getGuiScaledWidth() + maxX.intValue(), window.getGuiScaledHeight() + maxY.intValue());
+        return null;
     }
 
     @Override
     public ScreenRectangle bounds() {
         var window = Minecraft.getInstance().getWindow();
-        return new ScreenRectangle(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight()).transformMaxBounds(pose);
+        return new ScreenRectangle(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight()).transformAxisAligned(pose);
     }
 }

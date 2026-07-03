@@ -156,7 +156,6 @@ public final class RenderManager {
         final RGBA colour) {
 
         this.drawPartialCircle(graphics, x, y, radius, 0, 360, thickness, colour);
-        this.drawPartialCircle(graphics, x, y, radius, 0, 360, thickness, colour);
     }
 
     public void drawImage(

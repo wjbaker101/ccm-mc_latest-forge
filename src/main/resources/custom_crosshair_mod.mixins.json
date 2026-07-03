@@ -4,8 +4,9 @@
     "package": "com.wjbaker.ccm.mixins",
     "mixins": [],
     "client": [
-        "GuiMixin",
-        "GameRendererMixin"
+        "GameRendererMixin",
+        "HudMixin",
+        "DebugCrosshairRendererMixin"
     ],
     "injectors": {
         "defaultRequire": 1
